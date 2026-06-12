@@ -13,11 +13,16 @@ const state = {
   view:"path", element:"all", category:"all", search:"", flashIndex:0, quiz:null, quizCorrect:savedQuizStats.correct||0, quizTotal:savedQuizStats.total||0,
   selfElement:"木", cast:[], mastery:JSON.parse(localStorage.getItem("liuyao-mastery") || "{}"),
   viewed:new Set(JSON.parse(localStorage.getItem("liuyao-viewed") || "[]")),
-  visitedViews:new Set(JSON.parse(localStorage.getItem("liuyao-visited-views") || "[]")),
+  learnedModules:new Set(JSON.parse(localStorage.getItem("liuyao-learned-modules") || "[]")),
   castMode:"random", manualCoins:["字","背","字"]
 };
-state.visitedViews.add("path");
-localStorage.setItem("liuyao-visited-views",JSON.stringify([...state.visitedViews]));
+const learningModules = [
+  ["foundation-01","术数定位"],["foundation-02","五行能量与万物象"],["foundation-03","五行生克与六亲"],
+  ["foundation-04","河图洛书与先后天八卦"],["foundation-05","四时旺衰"],["foundation-06","地支时空"],
+  ["foundation-07","八卦体系"],["foundation-08","十天干"],["foundation-09","五味五脏五常"],
+  ["foundation-10","节气月令"],["foundation-11","四时五行细论"],["casting-workbench","起卦与动变"],
+  ["casting-relatives","古籍六亲"],["casting-yongshen","取用神"],["branches-images","十二地支万物类象"]
+];
 const hexagramNames = {
   "乾乾":"乾为天","乾兑":"天泽履","乾离":"天火同人","乾震":"天雷无妄","乾巽":"天风姤","乾坎":"天水讼","乾艮":"天山遁","乾坤":"天地否",
   "兑乾":"泽天夬","兑兑":"兑为泽","兑离":"泽火革","兑震":"泽雷随","兑巽":"泽风大过","兑坎":"泽水困","兑艮":"泽山咸","兑坤":"泽地萃",
@@ -33,9 +38,6 @@ function colorOf(e) { return elements[e].color; }
 function shuffle(a) { return [...a].sort(() => Math.random() - .5); }
 function setView(view) {
   state.view = view;
-  state.visitedViews.add(view);
-  localStorage.setItem("liuyao-visited-views",JSON.stringify([...state.visitedViews]));
-  updateProgress();
   document.querySelectorAll(".view").forEach(el => el.classList.toggle("active", el.id === view));
   document.querySelectorAll(".nav-item").forEach(el => el.classList.toggle("active", el.dataset.view === view));
   window.scrollTo({ top:0, behavior:"smooth" });
@@ -408,16 +410,127 @@ function answerQuiz(button){
   localStorage.setItem("liuyao-quiz-stats",JSON.stringify({correct:state.quizCorrect,total:state.quizTotal}));
   document.querySelectorAll(".quiz-option").forEach(b=>{b.disabled=true;if(b.dataset.answer===state.quiz.answer)b.classList.add("correct");});if(!ok)button.classList.add("wrong");
   document.querySelector("#quizFeedback").innerHTML=`${ok?"回答正确。":"这次没有选对。"}<br>${state.quiz.feedback}`;document.querySelector("#quizCorrect").textContent=state.quizCorrect;document.querySelector("#quizTotal").textContent=state.quizTotal;document.querySelector("#nextQuiz").disabled=false;
+  updateProgress();
 }
+
+function getProgressBreakdown(){
+  const content=state.learnedModules.size/learningModules.length;
+  const flash=Object.values(state.mastery).reduce((sum,value)=>sum+({again:0,hard:.5,known:1}[value]||0),0)/12;
+  const accuracy=state.quizTotal ? state.quizCorrect/state.quizTotal : 0;
+  const volume=Math.min(state.quizTotal/20,1);
+  const training=state.quizTotal ? volume*(accuracy*.7+.3) : 0;
+  return {
+    content,flash,training,accuracy,volume,
+    total:Math.min(1,content*.25+flash*.4+training*.35)
+  };
+}
+
 function updateProgress(){
-  const masteryScore=Object.values(state.mastery).reduce((sum,value)=>sum+({again:.2,hard:.6,known:1}[value]||0),0)/12;
-  const viewScore=state.visitedViews.size/5;
-  const branchScore=state.viewed.size/12;
-  const quizScore=state.quizTotal ? Math.min(state.quizTotal/20,1)*(state.quizCorrect/state.quizTotal) : 0;
-  const progress=Math.min(100,Math.round((viewScore*.2+branchScore*.2+masteryScore*.4+quizScore*.2)*100));
+  const score=getProgressBreakdown();
+  const progress=Math.round(score.total*100);
   const display=document.querySelector("#headerProgress");
   display.textContent=`${progress}%`;
-  display.parentElement.title="掌握度＝模块访问20%＋地支查阅20%＋闪卡自评40%＋训练答题20%，仅保存在当前浏览器";
+  display.parentElement.title="点击查看掌握度明细";
+  document.querySelector("#quizCorrect").textContent=state.quizCorrect;
+  document.querySelector("#quizTotal").textContent=state.quizTotal;
+  const detail=document.querySelector("#progressDetail");
+  if(detail){
+    detail.querySelector("[data-progress-total]").textContent=`${progress}%`;
+    detail.querySelector("[data-progress-content]").textContent=`${Math.round(score.content*25)} / 25`;
+    detail.querySelector("[data-progress-content-note]").textContent=`已学 ${state.learnedModules.size} / ${learningModules.length} 个知识模块`;
+    detail.querySelector("[data-progress-flash]").textContent=`${Math.round(score.flash*40)} / 40`;
+    detail.querySelector("[data-progress-flash-note]").textContent=`已评价 ${Object.keys(state.mastery).length} / 12 个地支`;
+    detail.querySelector("[data-progress-training]").textContent=`${Math.round(score.training*35)} / 35`;
+    detail.querySelector("[data-progress-training-note]").textContent=state.quizTotal
+      ? `正确率 ${Math.round(score.accuracy*100)}% · 已答 ${state.quizTotal} / 20 题量目标`
+      : "尚未答题";
+  }
+}
+
+function renderLearningTracking(){
+  const targets = new Map();
+  document.querySelectorAll("#foundation .section-heading").forEach(heading=>{
+    const index=heading.querySelector(".section-index")?.textContent.trim();
+    if(index) targets.set(`foundation-${index}`,heading);
+  });
+  targets.set("casting-workbench",document.querySelector("#casting .casting-workbench .panel-heading"));
+  const castingSections=document.querySelectorAll("#casting .section-block .section-heading");
+  targets.set("casting-relatives",castingSections[0]);
+  targets.set("casting-yongshen",castingSections[1]);
+  targets.set("branches-images",document.querySelector("#branches .page-intro"));
+
+  learningModules.forEach(([key,label])=>{
+    const target=targets.get(key);
+    if(!target)return;
+    target.dataset.learningModule=key;
+    let button=target.querySelector(".learn-module-button");
+    if(!button){
+      button=document.createElement("button");
+      button.className="learn-module-button";
+      button.type="button";
+      target.append(button);
+    }
+    const refresh=()=>{
+      const learned=state.learnedModules.has(key);
+      button.classList.toggle("learned",learned);
+      button.setAttribute("aria-pressed",String(learned));
+      button.innerHTML=learned?`<i>✓</i> 已学：${label}`:`<i>○</i> 标记已学`;
+    };
+    button.onclick=event=>{
+      event.stopPropagation();
+      state.learnedModules.has(key)?state.learnedModules.delete(key):state.learnedModules.add(key);
+      localStorage.setItem("liuyao-learned-modules",JSON.stringify([...state.learnedModules]));
+      refresh();
+      updateProgress();
+    };
+    refresh();
+  });
+}
+
+function initProgressDetail(){
+  const panel=document.createElement("div");
+  panel.className="progress-detail";
+  panel.id="progressDetail";
+  panel.setAttribute("aria-hidden","true");
+  panel.innerHTML=`
+    <button class="progress-detail-backdrop" aria-label="关闭掌握度明细"></button>
+    <aside>
+      <button class="progress-detail-close" aria-label="关闭">×</button>
+      <span>本地学习记录</span>
+      <h2>掌握度 <strong data-progress-total>0%</strong></h2>
+      <p>导航、滚动和普通点击不计分；只有明确学习行为才会改变掌握度。</p>
+      <div class="progress-parts">
+        <article><b>内容学习</b><strong data-progress-content>0 / 25</strong><small data-progress-content-note></small></article>
+        <article><b>闪卡自评</b><strong data-progress-flash>0 / 40</strong><small data-progress-flash-note></small></article>
+        <article><b>训练表现</b><strong data-progress-training>0 / 35</strong><small data-progress-training-note></small></article>
+      </div>
+      <div class="progress-formula">
+        <b>计算逻辑</b>
+        <span>内容：15个知识模块，手动“标记已学”</span>
+        <span>闪卡：模糊 0%、基本想起 50%、掌握 100%，每支以最新评价覆盖</span>
+        <span>训练：正确率占70%、完成题量占30%；正确率得分随题量逐步释放，20题达到完整权重</span>
+      </div>
+      <button class="reset-progress-button" type="button">重置本地学习记录</button>
+    </aside>`;
+  document.body.append(panel);
+  const close=()=>{panel.classList.remove("open");panel.setAttribute("aria-hidden","true");};
+  document.querySelector(".header-progress").setAttribute("role","button");
+  document.querySelector(".header-progress").setAttribute("tabindex","0");
+  document.querySelector(".header-progress").addEventListener("click",()=>{updateProgress();panel.classList.add("open");panel.setAttribute("aria-hidden","false");});
+  document.querySelector(".header-progress").addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();document.querySelector(".header-progress").click();}});
+  panel.querySelector(".progress-detail-backdrop").addEventListener("click",close);
+  panel.querySelector(".progress-detail-close").addEventListener("click",close);
+  panel.querySelector(".reset-progress-button").addEventListener("click",()=>{
+    if(!confirm("确定清空当前浏览器中的模块学习、闪卡自评和训练答题记录吗？"))return;
+    state.learnedModules.clear();
+    state.mastery={};
+    state.quizCorrect=0;
+    state.quizTotal=0;
+    ["liuyao-learned-modules","liuyao-mastery","liuyao-quiz-stats"].forEach(key=>localStorage.removeItem(key));
+    renderLearningTracking();
+    updateProgress();
+  });
+  updateProgress();
 }
 
 let revealObserver;
@@ -634,7 +747,7 @@ document.querySelectorAll("[data-cast-mode]").forEach(button=>button.addEventLis
 document.querySelector("#resetCast").addEventListener("click",()=>{state.cast=[];state.manualCoins=["字","背","字"];renderCoins();renderCast();});
 
 document.querySelectorAll("[data-map]").forEach(b=>b.addEventListener("click",()=>renderMap(b.dataset.map)));
-renderPath();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();updateProgress();
+renderPath();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderLearningTracking();initProgressDetail();updateProgress();
 initImmersiveMotion();
 const initialView=new URLSearchParams(location.search).get("view");
 if(["path","foundation","casting","branches","training"].includes(initialView))setView(initialView);
