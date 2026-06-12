@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="以老师讲义为主线，结合古籍校注、万物类象与主动回忆训练的六爻学习网站。">
+  <title>爻象研习 · 六爻学习系统</title>
+  <link rel="stylesheet" href="./styles.css?v=20260612-tai-bg-v2">
+</head>
+<body>
+  <div class="paper-noise"></div>
+  <div class="ambient-qi" aria-hidden="true"><i></i><i></i><i></i></div>
+  <header class="site-header">
+    <button class="brand" data-view-link="path" aria-label="返回学习路径">
+      <span class="brand-seal">爻</span>
+      <span><strong>爻象研习</strong><small>从基础关系到断卦实证</small></span>
+    </button>
+    <nav class="main-nav" aria-label="主导航">
+      <button class="nav-item active" data-view="path">学习路径</button>
+      <button class="nav-item" data-view="foundation">讲义主课</button>
+      <button class="nav-item" data-view="casting">古籍预习</button>
+      <button class="nav-item" data-view="branches">地支象意</button>
+      <button class="nav-item" data-view="training">训练</button>
+    </nav>
+    <div class="header-progress"><span>本地掌握度</span><strong id="headerProgress">0%</strong></div>
+  </header>
+
+  <main>
+    <section class="view active" id="path">
+      <div class="path-hero">
+        <div>
+          <span class="eyebrow">A COMPLETE LEARNING CHAIN</span>
+          <h1>每一步，<br><em>都为下一步服务。</em></h1>
+          <p>不从零散口诀开始，而是先建立断卦所需的完整因果链。点击任一阶段，查看它解决什么问题、依赖什么知识。</p>
+          <div class="hero-actions">
+            <button class="primary-button" data-jump="foundation">从五行生克开始</button>
+            <button class="ghost-button" data-jump="casting">查看下一阶段</button>
+          </div>
+          <div class="source-note"><span>资料层级</span><strong>老师讲义为主 ·《增删卜易》等古籍补充</strong></div>
+        </div>
+        <div class="path-compass">
+          <div class="compass-rings"></div>
+          <div class="compass-center"><span>断</span><b>由理入象</b></div>
+          <div id="pathOrbit"></div>
+        </div>
+      </div>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div><span class="section-index">01</span><h2>完整学习路线</h2></div>
+          <p>从底层作用关系开始，最后才进入万物类象；这样细节越多，结构反而越稳。</p>
+        </div>
+        <div class="learning-chain" id="learningChain"></div>
+        <div class="chain-detail" id="chainDetail"></div>
+      </section>
+
+      <section class="section-block three-principles">
+        <article><span>主线</span><h3>老师讲义</h3><p>确定课程顺序、术语口径和当前必须掌握的内容。</p></article>
+        <article><span>校验</span><h3>古籍条文</h3><p>补充定义、边界、古例和规则的适用条件，不与讲义混写。</p></article>
+        <article><span>验证</span><h3>真实案例</h3><p>记录占问、起卦时间、判断过程与结果反馈，形成自己的经验。</p></article>
+      </section>
+    </section>
+
+    <section class="view" id="foundation">
+      <div class="page-intro">
+        <span class="eyebrow">LECTURE 2026-06-06 · CORE STRUCTURE</span>
+        <h1>讲义主课</h1>
+        <p>严格按照老师讲义顺序展开：术数定位 → 五行能量与万物象 → 河图洛书与先后天八卦 → 干支节气 → 四时旺衰 → 十二地支类象。</p>
+      </div>
+
+      <section class="lecture-sequence">
+        <article><b>01</b><span>术数定位</span><p>六爻在山医命相卜中的位置与用途。</p></article>
+        <article><b>02</b><span>五行能量</span><p>阴阳扩缩、五行阶段与五行万物象。</p></article>
+        <article><b>03</b><span>生克六亲</span><p>五行生克关系及六亲的推导逻辑。</p></article>
+        <article><b>04</b><span>河图洛书</span><p>先后天八卦、河图之数与洛书九宫。</p></article>
+        <article><b>05</b><span>四时旺衰</span><p>五行进入四季后的旺相休囚死。</p></article>
+        <article><b>06</b><span>地支时空</span><p>十二地支对应月份、时辰与方位。</p></article>
+        <article><b>07</b><span>八卦体系</span><p>爻画、阴阳、五行、方位及万物象。</p></article>
+        <article><b>08</b><span>十天干</span><p>十天干各自的阴阳与五行属性。</p></article>
+        <article><b>09</b><span>五味五常</span><p>五味、五脏、性味功效与五常。</p></article>
+        <article><b>10</b><span>节气月令</span><p>二十四节气、四季月支与月令边界。</p></article>
+        <article><b>11</b><span>四时细论</span><p>各季五行的寒暖燥湿、喜忌与调候。</p></article>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div><span class="section-index">01</span><h2>六爻在山医命相卜中的位置</h2></div>
+          <p>讲义首先区分“看一个人的整体命运”和“判断一件具体事情”。六爻属于占卜，重点在事。</p>
+        </div>
+        <div class="five-arts">
+          <article><strong>山</strong><span>修炼、修仙、山洞</span><p>身心修持</p></article>
+          <article><strong>医</strong><span>道医、中医</span><p>健康与治疗</p></article>
+          <article><strong>命</strong><span>四柱、紫微、铁板神数</span><p>人的整体命运</p></article>
+          <article><strong>相</strong><span>面相、手相、阴阳宅风水</span><p>人与环境之形</p></article>
+          <article class="active"><strong>卜</strong><span>六爻、大六壬、奇门、太乙</span><p>具体事情的吉凶与策略</p></article>
+        </div>
+        <div class="divination-roles">
+          <span><b>六爻</b>断一件事的吉凶</span><span><b>大六壬</b>讲义称“占人事第一”</span>
+          <span><b>奇门遁甲</b>策略、战术、排兵布阵</span><span><b>太乙神数</b>天象与宏观发展</span>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div><span class="section-index">02</span><h2>五行不是五种材料，而是能量阶段</h2></div>
+          <p>讲义用“扩张—收缩”解释阴阳，再把金水木火视为四种运动状态，土负责承载与运化。</p>
+        </div>
+        <div class="energy-axis">
+          <article class="water"><span>收缩至极</span><strong>水 · 太阴</strong><p>润下、收藏、吸收</p></article>
+          <i>→</i><article class="wood"><span>开始扩张</span><strong>木 · 少阳</strong><p>生发、上升、成长</p></article>
+          <i>→</i><article class="fire"><span>扩张至极</span><strong>火 · 太阳</strong><p>炎上、显现、表达</p></article>
+          <i>→</i><article class="metal"><span>开始收缩</span><strong>金 · 少阴</strong><p>收敛、肃降、决断</p></article>
+          <div class="earth-platform"><b>土</b><span>承载 · 运化 · 四时转换</span></div>
+        </div>
+        <div class="element-image-tabs" id="elementImageTabs"></div>
+        <div class="element-image-detail" id="elementImageDetail"></div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div><span class="section-index">03</span><h2>五行生克与六亲推导</h2></div>
+          <p>先看五行之间如何生克，再以“我”为中心，把五类关系翻译为六亲。</p>
+        </div>
+        <div class="foundation-grid">
+          <article class="relationship-lab">
+            <div class="panel-heading">
+              <div><h2>五行生克关系图</h2></div>
+              <div class="relation-legend"><i class="sheng"></i>相生 <i class="ke"></i>相克</div>
+            </div>
+            <div id="wuxingDiagram" class="wuxing-diagram"></div>
+            <div id="wuxingExplanation" class="relation-explanation"></div>
+          </article>
+
+          <article class="relation-transformer">
+            <div class="panel-heading"><div><h2>从五行推导六亲</h2></div></div>
+            <p class="muted">选择“我”的五行，观察五类关系如何自动转换为六亲。</p>
+            <div class="self-element-picker" id="selfElementPicker"></div>
+            <div class="relative-wheel" id="relativeWheel"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div><span class="section-index">04</span><h2>河图洛书与先后天八卦</h2></div>
+          <p>讲义强调：先天反映宇宙初始之形，后天反映自然与社会现实；实际判断多用后天八卦。</p>
+        </div>
+        <div class="map-switcher">
+          <div class="map-tabs"><button class="active" data-map="hetu">河图 · 先天</button><button data-map="luoshu">洛书 · 后天九宫</button></div>
+          <div id="mapVisualization"></div>
+        </div>
+      </section>
+
+      <section class="section-block split-block">
+        <div>
+          <div class="section-heading compact"><div><span class="section-index">05</span><h2>四时旺衰</h2></div></div>
+          <p class="module-lead">五行进入季节后，力量不再相等。先判断“有没有力”，再谈吉凶作用。</p>
+          <div class="season-tabs" id="seasonTabs"></div>
+          <div class="season-result" id="seasonResult"></div>
+        </div>
+        <div>
+          <div class="section-heading compact"><div><span class="section-index">06</span><h2>十二支时空环</h2></div></div>
+          <p class="module-lead">地支把五行装入具体月份、时辰、方位和现实类象。</p>
+          <div class="branch-wheel-wrap">
+            <div id="branchWheel" class="branch-wheel"></div>
+            <div class="wheel-center"><small>点击地支</small><strong id="wheelCenterBranch">子</strong><span id="wheelCenterMeta">阳水 · 正北</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div><span class="section-index">07</span><h2>八卦的爻画、阴阳、五行与方位</h2></div>
+          <p>点击八卦观察先天序数、阴阳卦属性、卦五行、方位、家庭角色、身体和万物象。</p>
+        </div>
+        <div class="trigram-lab">
+          <div class="trigram-grid" id="trigramGrid"></div>
+          <div class="trigram-detail" id="trigramDetail"></div>
+        </div>
+      </section>
+
+      <section class="section-block split-block">
+        <div>
+          <div class="section-heading compact"><div><span class="section-index">08</span><h2>十天干阴阳五行</h2></div></div>
+          <div class="stem-grid" id="stemGrid"></div>
+        </div>
+        <div>
+          <div class="section-heading compact"><div><span class="section-index">09</span><h2>五味、五脏与五常</h2></div></div>
+          <div class="correspondence-list" id="correspondenceList"></div>
+        </div>
+        <div class="stem-link-lab" id="stemLinkLab"></div>
+      </section>
+
+      <section class="section-block" id="solarTermsSection">
+        <div class="section-heading">
+          <div><span class="section-index">10</span><h2>二十四节气与四季月令</h2></div>
+          <p>月令以“节”为边界，不按公历每月一日切换。寅月从立春开始，卯月从惊蛰开始。</p>
+        </div>
+        <div class="solar-grid" id="solarGrid"></div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div><span class="section-index">11</span><h2>四时中的五行细论</h2></div>
+          <p>旺相休囚死只是总纲；讲义还逐项说明春夏秋冬中每个五行的寒暖燥湿、喜忌与调候。</p>
+        </div>
+        <div class="season-note-filters" id="seasonNoteFilters"></div>
+        <div class="season-note-grid" id="seasonNoteGrid"></div>
+      </section>
+
+      <section class="lecture-next">
+        <div><span>讲义下一段</span><h2>十二地支万物类象</h2><p>已整理为完整八维象意库，可继续按网页学习结构深入掌握。</p></div>
+        <button class="primary-button" data-jump="branches">进入地支象意 →</button>
+      </section>
+    </section>
+
+    <section class="view" id="casting">
+      <div class="page-intro">
+        <span class="eyebrow">CLASSICS SUPPLEMENT · NOT YET THE LECTURE MAINLINE</span>
+        <h1>古籍预习 · 装卦入门</h1>
+        <p>此区内容主要依据《增删卜易》入门章节补充，作为后续课程预习；老师讲义更新后将按课堂口径修订。</p>
+      </div>
+
+      <div class="casting-roadmap">
+        <article><b>1</b><h3>起六次</h3><p>每次得到少阴、少阳、老阴或老阳。</p></article>
+        <i>→</i><article><b>2</b><h3>由下向上</h3><p>第一次是初爻，第六次是上爻。</p></article>
+        <i>→</i><article><b>3</b><h3>分上下卦</h3><p>初二三为下卦，四五上为上卦。</p></article>
+        <i>→</i><article><b>4</b><h3>动则有变</h3><p>老阳变阴，老阴变阳，形成变卦。</p></article>
+      </div>
+
+      <section class="casting-workbench">
+        <article class="coin-panel">
+          <div class="panel-heading">
+            <div><h2>模拟起卦</h2></div>
+            <button class="text-button" id="resetCast">清空</button>
+          </div>
+          <p class="muted">点击“掷三枚铜钱”，系统依次从初爻向上记录。此处用于学习爻序与动变，不代替正式起卦。</p>
+          <div class="cast-mode-tabs">
+            <button class="active" data-cast-mode="random">自动投掷</button>
+            <button data-cast-mode="manual">手动定面</button>
+          </div>
+          <div class="coins" id="coins"></div>
+          <p class="manual-hint" id="manualHint">点击任意铜钱切换正反面，再确认本爻。</p>
+          <button class="primary-button full" id="tossCoins">掷三枚铜钱</button>
+          <div class="cast-key">
+            <span><b>7</b> 少阳 ━━━</span><span><b>8</b> 少阴 ━ ━</span>
+            <span><b>9</b> 老阳 ○ 变阴</span><span><b>6</b> 老阴 × 变阳</span>
+          </div>
+        </article>
+        <article class="hexagram-panel">
+          <div class="hexagram-head">
+            <div><span>本卦</span><strong id="baseHexName">等待起卦</strong></div>
+            <div><span>变卦</span><strong id="changedHexName">—</strong></div>
+          </div>
+          <div class="hexagram-board" id="hexagramBoard"></div>
+          <div class="cast-message" id="castMessage">第一次投掷将记录为初爻。</div>
+        </article>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div><span class="section-index">05</span><h2>六亲：把五行关系翻译成人事</h2></div>
+          <p>六亲不是固定好坏，而是根据占问承担不同角色。</p>
+        </div>
+        <div class="relative-cards" id="relativeCards"></div>
+      </section>
+
+      <section class="section-block yongshen-section">
+        <div class="section-heading">
+          <div><span class="section-index">06</span><h2>取用神：先问什么，再看什么</h2></div>
+          <p>选择占问主题，系统给出初步观察对象；真正断卦仍要检查旺衰、空破、动变和组合。</p>
+        </div>
+        <div class="yongshen-picker">
+          <div id="topicButtons"></div>
+          <div id="topicResult" class="topic-result"></div>
+        </div>
+      </section>
+
+      <section class="classic-note">
+        <span>古籍学习提示</span>
+        <p>《增删卜易》把入门顺序明确落在：八卦爻画、起卦、六十四卦宫、浑天甲子、六亲、世应、动变、用神及元忌仇神。网站后续将按这条顺序逐项建立古籍原文对照。</p>
+      </section>
+    </section>
+
+    <section class="view" id="branches">
+      <div class="page-intro">
+        <span class="eyebrow">IMAGE COMES AFTER RELATION</span>
+        <h1>十二地支 · 万物类象</h1>
+        <p>类象是断细节的词库，但必须经过占问、用神、旺衰动变三层筛选，不能看到一个词就直接下结论。</p>
+      </div>
+      <div class="context-ribbon"><b>取象顺序</b><span>占问主题</span><i>→</i><span>六亲用神</span><i>→</i><span>旺衰动变</span><i>→</i><span>地支类象</span><i>→</i><span>现实语境</span></div>
+      <div class="branch-toolbar">
+        <label class="search-box"><span>检索</span><input id="branchSearch" type="search" placeholder="搜索：文书、车辆、婚姻、心脏……"></label>
+        <div class="element-filters" id="elementFilters"></div>
+        <label class="category-select"><span>观察维度</span><select id="categoryFilter">
+          <option value="all">全部类别</option><option value="people">人物</option><option value="places">场所</option>
+          <option value="objects">器物</option><option value="animals">动物</option><option value="body">身体</option>
+          <option value="events">人事情境</option><option value="symbols">神将组合</option>
+        </select></label>
+      </div>
+      <div class="result-summary" id="resultSummary"></div>
+      <div class="branch-grid" id="branchGrid"></div>
+    </section>
+
+    <section class="view" id="training">
+      <div class="page-intro">
+        <span class="eyebrow">ACTIVE RECALL</span>
+        <h1>记忆训练场</h1>
+        <p>先主动回忆，再揭示答案。训练题会覆盖地支类象、五行关系和下一阶段基础。</p>
+      </div>
+      <div class="training-layout">
+        <section class="training-panel">
+          <div class="panel-heading"><div><span>模式一</span><h2>地支翻卡</h2></div><button class="text-button" id="nextFlashcard">换一张 ↻</button></div>
+          <div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="点击翻转记忆卡">
+            <div class="flashcard-inner">
+              <div class="flashcard-face flashcard-front"><span>说出五行、方位、动作与三类象</span><strong id="flashBranch">寅</strong><small>点击翻面</small></div>
+              <div class="flashcard-face flashcard-back" id="flashAnswer"></div>
+            </div>
+          </div>
+          <div class="mastery-actions"><button data-mastery="again">仍然模糊</button><button data-mastery="hard">基本想起</button><button data-mastery="known">已经掌握</button></div>
+        </section>
+        <section class="training-panel quiz-panel">
+          <div class="panel-heading"><div><span>模式二</span><h2>随机辨识</h2></div><div class="score"><small>答对</small><b id="quizCorrect">0</b><i>·</i><small>已答</small><strong id="quizTotal">0</strong></div></div>
+          <div class="quiz-content" id="quizContent"></div>
+          <button class="primary-button full" id="nextQuiz" disabled>下一题</button>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div class="branch-drawer" id="branchDrawer" aria-hidden="true">
+    <button class="drawer-backdrop" aria-label="关闭详情"></button>
+    <aside><button class="drawer-close" aria-label="关闭">×</button><div id="drawerContent"></div></aside>
+  </div>
+  <footer><span>爻象研习 · 第二版原型</span><p>关系 → 结构 → 力量 → 类象 → 验证</p></footer>
+  <script src="./data.js?v=20260612"></script>
+  <script src="./vendor/jquery-3.7.1.min.js"></script>
+  <script src="./vendor/jquery.ripples-min.js"></script>
+  <script src="./app.js?v=20260612-quiz-audit"></script>
+</body>
+</html>
