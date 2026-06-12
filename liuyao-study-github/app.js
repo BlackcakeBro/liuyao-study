@@ -8,12 +8,16 @@ const generating = { 木:"火", 火:"土", 土:"金", 金:"水", 水:"木" };
 const controlling = { 木:"土", 土:"水", 水:"火", 火:"金", 金:"木" };
 const generatedBy = Object.fromEntries(Object.entries(generating).map(([a,b]) => [b,a]));
 const controlledBy = Object.fromEntries(Object.entries(controlling).map(([a,b]) => [b,a]));
+const savedQuizStats = JSON.parse(localStorage.getItem("liuyao-quiz-stats") || '{"correct":0,"total":0}');
 const state = {
-  view:"path", element:"all", category:"all", search:"", flashIndex:0, quiz:null, quizCorrect:0, quizTotal:0,
+  view:"path", element:"all", category:"all", search:"", flashIndex:0, quiz:null, quizCorrect:savedQuizStats.correct||0, quizTotal:savedQuizStats.total||0,
   selfElement:"木", cast:[], mastery:JSON.parse(localStorage.getItem("liuyao-mastery") || "{}"),
   viewed:new Set(JSON.parse(localStorage.getItem("liuyao-viewed") || "[]")),
+  visitedViews:new Set(JSON.parse(localStorage.getItem("liuyao-visited-views") || "[]")),
   castMode:"random", manualCoins:["字","背","字"]
 };
+state.visitedViews.add("path");
+localStorage.setItem("liuyao-visited-views",JSON.stringify([...state.visitedViews]));
 const hexagramNames = {
   "乾乾":"乾为天","乾兑":"天泽履","乾离":"天火同人","乾震":"天雷无妄","乾巽":"天风姤","乾坎":"天水讼","乾艮":"天山遁","乾坤":"天地否",
   "兑乾":"泽天夬","兑兑":"兑为泽","兑离":"泽火革","兑震":"泽雷随","兑巽":"泽风大过","兑坎":"泽水困","兑艮":"泽山咸","兑坤":"泽地萃",
@@ -29,6 +33,9 @@ function colorOf(e) { return elements[e].color; }
 function shuffle(a) { return [...a].sort(() => Math.random() - .5); }
 function setView(view) {
   state.view = view;
+  state.visitedViews.add(view);
+  localStorage.setItem("liuyao-visited-views",JSON.stringify([...state.visitedViews]));
+  updateProgress();
   document.querySelectorAll(".view").forEach(el => el.classList.toggle("active", el.id === view));
   document.querySelectorAll(".nav-item").forEach(el => el.classList.toggle("active", el.dataset.view === view));
   window.scrollTo({ top:0, behavior:"smooth" });
@@ -85,12 +92,15 @@ function renderWuxing() {
     </svg>`;
   const diagram = document.querySelector("#wuxingDiagram");
   diagram.innerHTML = svg;
+  let selectedElement = null;
   const overview = `<strong>五行</strong><div><b>相生外环</b><span>木→火→土→金→水→木</span></div><div><b>相克内星</b><span>木→土→水→火→金→木</span></div><div><b>点击节点</b><span>单独高亮该五行的四种关系</span></div><div><b>继续推导</b><span>生我、同我、我生、我克、克我转为六亲</span></div>`;
   const reset = () => {
+    selectedElement = null;
     document.querySelectorAll(".wuxing-node,.relation-line").forEach(n => n.classList.remove("active","dim"));
     document.querySelector("#wuxingExplanation").innerHTML = overview;
   };
   const explain = e => {
+    selectedElement = e;
     document.querySelectorAll(".wuxing-node,.relation-line").forEach(n => n.classList.remove("active","dim"));
     document.querySelectorAll(".wuxing-node").forEach(n => { if(n.dataset.element!==e) n.classList.add("dim"); else n.classList.add("active"); });
     document.querySelectorAll(".relation-line").forEach(n => {
@@ -109,6 +119,9 @@ function renderWuxing() {
   }));
   diagram.addEventListener("click", event => {
     if (!event.target.closest(".wuxing-node")) reset();
+  });
+  document.addEventListener("click", event => {
+    if (selectedElement && !event.target.closest(".wuxing-node")) reset();
   });
   reset();
 }
@@ -152,8 +165,8 @@ function renderMap(type="hetu") {
       </div>
       <div class="prior-trigram-ring">
         <i class="map-orbit-trace"></i>
-        ${trigrams.map((t,i)=>{const a=-90+i*45,r=145;return `<div style="left:${180+Math.cos(a*Math.PI/180)*r}px;top:${180+Math.sin(a*Math.PI/180)*r}px;--c:${colorOf(t.element)}"><b>${t.number}</b><strong>${t.key}</strong><small>${t.nature}</small></div>`}).join("")}
-        <span><b>先天</b><small>乾一至坤八</small></span>
+        ${["乾","巽","坎","艮","坤","震","离","兑"].map((key,i)=>{const t=trigrams.find(item=>item.key===key),a=-90+i*45,r=145;return `<div style="left:${180+Math.cos(a*Math.PI/180)*r}px;top:${180+Math.sin(a*Math.PI/180)*r}px;--c:${colorOf(t.element)}"><b>${t.number}</b><strong>${t.key}</strong><small>${t.nature}</small></div>`}).join("")}
+        <span><b>先天</b><small>按先天方位排列</small></span>
       </div>`;
   } else {
     document.querySelector("#mapVisualization").innerHTML=`
@@ -392,10 +405,20 @@ function renderQuiz(){
 }
 function answerQuiz(button){
   if(state.quiz.answered)return;state.quiz.answered=true;state.quizTotal++;const ok=button.dataset.answer===state.quiz.answer;if(ok)state.quizCorrect++;
+  localStorage.setItem("liuyao-quiz-stats",JSON.stringify({correct:state.quizCorrect,total:state.quizTotal}));
   document.querySelectorAll(".quiz-option").forEach(b=>{b.disabled=true;if(b.dataset.answer===state.quiz.answer)b.classList.add("correct");});if(!ok)button.classList.add("wrong");
   document.querySelector("#quizFeedback").innerHTML=`${ok?"回答正确。":"这次没有选对。"}<br>${state.quiz.feedback}`;document.querySelector("#quizCorrect").textContent=state.quizCorrect;document.querySelector("#quizTotal").textContent=state.quizTotal;document.querySelector("#nextQuiz").disabled=false;
 }
-function updateProgress(){const score=Object.values(state.mastery).reduce((s,v)=>s+({again:.2,hard:.6,known:1}[v]||0),0);document.querySelector("#headerProgress").textContent=`${Math.min(100,Math.round((state.viewed.size/12*.35+score/12*.65)*100))}%`;}
+function updateProgress(){
+  const masteryScore=Object.values(state.mastery).reduce((sum,value)=>sum+({again:.2,hard:.6,known:1}[value]||0),0)/12;
+  const viewScore=state.visitedViews.size/5;
+  const branchScore=state.viewed.size/12;
+  const quizScore=state.quizTotal ? Math.min(state.quizTotal/20,1)*(state.quizCorrect/state.quizTotal) : 0;
+  const progress=Math.min(100,Math.round((viewScore*.2+branchScore*.2+masteryScore*.4+quizScore*.2)*100));
+  const display=document.querySelector("#headerProgress");
+  display.textContent=`${progress}%`;
+  display.parentElement.title="掌握度＝模块访问20%＋地支查阅20%＋闪卡自评40%＋训练答题20%，仅保存在当前浏览器";
+}
 
 let revealObserver;
 function revealVisibleSections(){
