@@ -83,7 +83,13 @@ function renderWuxing() {
       </g>`).join("")}
       <text class="diagram-caption" x="200" y="183">点击任一五行</text><text class="diagram-caption strong" x="200" y="203">查看四种关系</text>
     </svg>`;
-  document.querySelector("#wuxingDiagram").innerHTML = svg;
+  const diagram = document.querySelector("#wuxingDiagram");
+  diagram.innerHTML = svg;
+  const overview = `<strong>五行</strong><div><b>相生外环</b><span>木→火→土→金→水→木</span></div><div><b>相克内星</b><span>木→土→水→火→金→木</span></div><div><b>点击节点</b><span>单独高亮该五行的四种关系</span></div><div><b>继续推导</b><span>生我、同我、我生、我克、克我转为六亲</span></div>`;
+  const reset = () => {
+    document.querySelectorAll(".wuxing-node,.relation-line").forEach(n => n.classList.remove("active","dim"));
+    document.querySelector("#wuxingExplanation").innerHTML = overview;
+  };
   const explain = e => {
     document.querySelectorAll(".wuxing-node,.relation-line").forEach(n => n.classList.remove("active","dim"));
     document.querySelectorAll(".wuxing-node").forEach(n => { if(n.dataset.element!==e) n.classList.add("dim"); else n.classList.add("active"); });
@@ -97,8 +103,14 @@ function renderWuxing() {
       <div><b>${e}克${controlling[e]}</b><span>我克者，被我支配</span></div>
       <div><b>${controlledBy[e]}克${e}</b><span>克我者，形成约束</span></div>`;
   };
-  document.querySelectorAll(".wuxing-node").forEach(n => n.addEventListener("click", () => explain(n.dataset.element)));
-  document.querySelector("#wuxingExplanation").innerHTML = `<strong>五行</strong><div><b>相生外环</b><span>木→火→土→金→水→木</span></div><div><b>相克内星</b><span>木→土→水→火→金→木</span></div><div><b>点击节点</b><span>单独高亮该五行的四种关系</span></div><div><b>继续推导</b><span>生我、同我、我生、我克、克我转为六亲</span></div>`;
+  document.querySelectorAll(".wuxing-node").forEach(n => n.addEventListener("click", event => {
+    event.stopPropagation();
+    explain(n.dataset.element);
+  }));
+  diagram.addEventListener("click", event => {
+    if (!event.target.closest(".wuxing-node")) reset();
+  });
+  reset();
 }
 
 function renderRelativeTransformer() {
