@@ -8,6 +8,58 @@ const generating = { 木:"火", 火:"土", 土:"金", 金:"水", 水:"木" };
 const controlling = { 木:"土", 土:"水", 水:"火", 火:"金", 金:"木" };
 const generatedBy = Object.fromEntries(Object.entries(generating).map(([a,b]) => [b,a]));
 const controlledBy = Object.fromEntries(Object.entries(controlling).map(([a,b]) => [b,a]));
+
+
+const branchOrder = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+const branchRelationTypes = {
+  sanhe:{label:"三合", tone:"生成成局", note:"三合来自十二长生的长生、帝旺、墓三点；任意两支也有半合之意。", groups:[["亥","卯","未"],["寅","午","戌"],["巳","酉","丑"],["申","子","辰"]]},
+  liuchong:{label:"六冲", tone:"快速冲动", note:"冲代表速度快、力量大、碰撞、分离、对抗，也可代表调动、转机、迁移。", pairs:[["子","午"],["丑","未"],["寅","申"],["卯","酉"],["辰","戌"],["巳","亥"]]},
+  liuhe:{label:"六合", tone:"相吸绑定", note:"合代表相吸、绑定、关系建立；具体吉凶仍看用神、旺衰与所问事项。", pairs:[["子","丑"],["寅","亥"],["卯","戌"],["辰","酉"],["巳","申"],["午","未"]]},
+  xing:{label:"刑", tone:"长期酝酿", note:"刑偏长期、潜伏、僵持、官司口舌、刑伤；比冲慢，不一定立刻显现。", groups:[["子","卯"],["丑","未","戌"],["寅","巳","申"],["辰"],["午"],["酉"],["亥"]]},
+  chuan:{label:"穿 / 害", tone:"隐蔽慢克", note:"穿害多由藏干相克理解，代表长期、慢性、隐蔽的破坏。", pairs:[["子","未"],["丑","午"],["寅","巳"],["卯","辰"],["申","亥"],["酉","戌"]]},
+  jue:{label:"绝", tone:"断绝风险", note:"绝并非十二地支每支都有：水火绝偏气血不通，金木绝偏形体破坏、撞击。", pairs:[["子","巳"],["午","亥"],["寅","酉"],["卯","申"]]},
+  anhe:{label:"暗合", tone:"暗中相合", note:"暗合也不是每支都有；测婚恋常见偷偷摸摸、第三者、各取所需等象，仍须结合全卦。", pairs:[["寅","丑"],["卯","申"],["子","巳"],["午","亥"]]}
+};
+const branchRelationState = { type:"sanhe", branch:"子" };
+const sanheJu = {
+  "亥卯未": { element:"木", label:"亥卯未三合木局" },
+  "寅午戌": { element:"火", label:"寅午戌三合火局" },
+  "巳酉丑": { element:"金", label:"巳酉丑三合金局" },
+  "申子辰": { element:"水", label:"申子辰三合水局" }
+};
+const changshengStages = [
+  {name:"长生", phase:"生起", image:"出生、起点、根源、依靠", use:"长辈、父母、靠山、企业背景、资源来源", note:"事情开始有气，像根苗初生。"},
+  {name:"沐浴", phase:"洗濯", image:"桃花、暴露、裸露、坦诚、享受", use:"感情、小道消息、事情是否暴露；老年病情也需留意", note:"刚生之后洗浴，形象未稳，容易外露。"},
+  {name:"冠带", phase:"成形", image:"外表、包装、穿衣成形", use:"升职、考试、考学、工作调动、形象包装", note:"开始有名分、有外观、有可见的形。"},
+  {name:"临官", phase:"得位", image:"禄、工资、收入、职位", use:"财运、体制内职位、级别、权力", note:"临官为禄，普通人多看收入，掌权者看权位。"},
+  {name:"帝旺", phase:"极盛", image:"顶峰、旺盛、繁荣、到极致", use:"判断事情最盛、力量最强的状态", note:"旺极之处，也要防过旺转衰。"},
+  {name:"衰", phase:"退势", image:"败落、不景气、退缩、能力不足", use:"事业走低、人状态走弱、不敢反抗", note:"从高点开始下行，力量开始减退。"},
+  {name:"病", phase:"失衡", image:"漏洞、弱点、要害、受牵制", use:"疾病、项目问题、受制点", note:"病不是只指身体，也指结构中出现要害。"},
+  {name:"死", phase:"停滞", image:"停滞、终结、推不动、固执", use:"合作推进、事情是否停住", note:"死是停在那里，事情推进不了。"},
+  {name:"墓", phase:"归藏", image:"收藏、关闭、陷阱、限制、沉迷、阻塞、保护", use:"库藏、牢狱限制、沉迷、病情凶象", note:"入墓有收纳、关闭，也可能有保护。"},
+  {name:"绝", phase:"断绝", image:"没退路、心灰意冷、无可救药、不了了之", use:"要账、分手、感情死心、事情断掉", note:"绝比死更断，像关系或可能性已断。"},
+  {name:"胎", phase:"酝酿", image:"怀胎、酝酿、刚起念、初步计划", use:"测孕、项目初始想法、计划萌芽", note:"尚未成形，但已经有内在动机。"},
+  {name:"养", phase:"培育", image:"养育、培养、扶持、继续推进", use:"养胎、培养计划、扶持关系", note:"进入培育阶段，为下一轮长生蓄力。"}
+];
+const changshengNodePoints = [
+  [50, 10], [70, 15], [85, 30], [90, 50], [85, 70], [70, 85],
+  [50, 90], [30, 85], [15, 70], [10, 50], [15, 30], [30, 15]
+];
+
+const hiddenStemData = {
+  寅:{group:"四长生", stems:["甲","丙","戊"], logic:"寅属木藏甲，又为火长生藏丙，并带戊土。", relation:"与巳、申等关系中常看甲、丙、戊如何被合克。"},
+  卯:{group:"四正", stems:["乙"], logic:"卯为纯木之地，藏乙。", relation:"卯辰穿、卯申暗合/绝等，要看乙木与对方藏干。"},
+  辰:{group:"四墓库", stems:["戊","癸","乙"], logic:"辰为阳土、水库，春末有乙木余气。", relation:"卯辰穿常从卯木克辰土、水库受扰取象。"},
+  巳:{group:"四长生", stems:["丙","庚","戊"], logic:"巳属火藏丙，又为金长生藏庚，并带戊土。", relation:"寅巳穿、巳申合刑、子巳绝暗合，都离不开庚与丙。"},
+  午:{group:"四正", stems:["丁","己"], logic:"午为火地，藏丁己；注意不是藏丙。", relation:"丑午穿常看丑中癸水晦午中丁火。"},
+  未:{group:"四墓库", stems:["己","乙","丁"], logic:"未为阴土、木库，夏末有丁火余气。", relation:"子未穿看未中己土伤子癸，也可看子水反伤未中丁。"},
+  申:{group:"四长生", stems:["庚","壬","戊"], logic:"申属金藏庚，又为水长生藏壬，并带戊土。", relation:"申亥穿看申中庚金伤亥中甲木。"},
+  酉:{group:"四正", stems:["辛"], logic:"酉为纯金之地，藏辛。", relation:"酉戌穿看戌中丁火长期克酉中辛金。"},
+  戌:{group:"四墓库", stems:["戊","丁","辛"], logic:"戌为阳土、火库，秋末有辛金余气。", relation:"戌为火库，酉戌穿的慢性火克金象很明显。"},
+  亥:{group:"四长生", stems:["壬","甲"], logic:"亥属水藏壬，又为木长生藏甲。", relation:"申亥穿测孕育时，可取亥中甲木为孩子/胎象。"},
+  子:{group:"四正", stems:["癸"], logic:"子为纯水之地，藏癸。", relation:"子未穿、子巳绝暗合都常从癸水受制或水火关系看。"},
+  丑:{group:"四墓库", stems:["己","辛","癸"], logic:"丑为阴土、金库，冬末有癸水余气。", relation:"丑午穿看癸水晦丁火，或午月丁火反伤辛金。"}
+};
 const savedQuizStats = JSON.parse(localStorage.getItem("liuyao-quiz-stats") || '{"correct":0,"total":0}');
 const state = {
   view:"path", element:"all", category:"all", search:"", flashIndex:0, quiz:null, quizCorrect:savedQuizStats.correct||0, quizTotal:savedQuizStats.total||0,
@@ -17,6 +69,7 @@ const state = {
   castMode:"random", manualCoins:["字","背","字"]
 };
 const learningModules = [
+  ["lecture0704-main","旺衰关系专题"],
   ["foundation-01","术数定位"],["foundation-02","五行能量与万物象"],["foundation-03","五行生克与六亲"],
   ["foundation-04","河图洛书与先后天八卦"],["foundation-05","四时旺衰"],["foundation-06","地支时空"],
   ["foundation-07","八卦体系"],["foundation-08","十天干"],["foundation-09","五味五脏五常"],
@@ -182,6 +235,112 @@ function renderMap(type="hetu") {
     el.addEventListener("pointerenter",()=>el.parentElement.classList.add("has-focus"));
     el.addEventListener("pointerleave",()=>el.parentElement.classList.remove("has-focus"));
   });
+}
+
+function relationGroupsFor(typeKey){
+  const rel=branchRelationTypes[typeKey];
+  return rel.groups || rel.pairs || [];
+}
+function relationsForBranch(typeKey, branch){
+  return relationGroupsFor(typeKey).filter(group=>group.includes(branch));
+}
+function allActiveBranchesFor(typeKey){
+  return new Set(relationGroupsFor(typeKey).flat());
+}
+function groupKey(group){ return group.join(""); }
+function sanheInfo(group){ return sanheJu[groupKey(group)]; }
+function relationColorFor(typeKey, group){
+  const info=typeKey==="sanhe" ? sanheInfo(group) : null;
+  return info ? colorOf(info.element) : "#e5b7a8";
+}
+function lineBetweenBranches(a,b,points,color="#e5b7a8"){
+  const [x1,y1]=points[a], [x2,y2]=points[b];
+  return `<line class="branch-relation-line" style="--relation-color:${color}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+}
+function renderBranchRelationLab(typeKey=branchRelationState.type, branch=branchRelationState.branch){
+  const orbit=document.querySelector("#branchRelationOrbit");
+  const filter=document.querySelector("#relationFilter");
+  if(!orbit||!filter)return;
+  branchRelationState.type=typeKey;
+  const activeSet=allActiveBranchesFor(typeKey);
+  if(!activeSet.has(branch)) branch=[...activeSet][0]||branchOrder[0];
+  branchRelationState.branch=branch;
+  filter.innerHTML=Object.entries(branchRelationTypes).map(([key,rel])=>`<button data-relation-type="${key}" class="${key===typeKey?"active":""}"><b>${rel.label}</b><small>${rel.tone}</small></button>`).join("");
+  filter.querySelectorAll("button").forEach(btn=>btn.addEventListener("click",()=>renderBranchRelationLab(btn.dataset.relationType, branchRelationState.branch)));
+  const cx=310, cy=310, r=245;
+  const points={};
+  branchOrder.forEach((b,i)=>{ const angle=-90+i*30, rad=angle*Math.PI/180; points[b]=[cx+Math.cos(rad)*r, cy+Math.sin(rad)*r]; });
+  const selectedGroups=relationsForBranch(typeKey, branch);
+  const related=new Set(selectedGroups.flat());
+  const lines=[];
+  selectedGroups.forEach(group=>{
+    const color=relationColorFor(typeKey,group);
+    if(group.length===2) lines.push(lineBetweenBranches(group[0],group[1],points,color));
+    else {
+      for(let i=0;i<group.length;i++) lines.push(lineBetweenBranches(group[i],group[(i+1)%group.length],points,color));
+    }
+  });
+  const rel=branchRelationTypes[typeKey];
+  const activeSanhe=typeKey==="sanhe" && selectedGroups.length ? sanheInfo(selectedGroups[0]) : null;
+  const activeRelationColor=activeSanhe ? colorOf(activeSanhe.element) : "#e5b7a8";
+  orbit.innerHTML=`
+    <svg class="branch-relation-svg" viewBox="0 0 620 620" aria-hidden="true">
+      <circle class="branch-relation-base" cx="${cx}" cy="${cy}" r="${r}"/>
+      <circle class="branch-relation-inner" cx="${cx}" cy="${cy}" r="145"/>
+      <g>${lines.join("")}</g>
+    </svg>
+    <div class="relation-core" style="--relation-color:${activeRelationColor}"><small>${activeSanhe?activeSanhe.label:rel.label}</small><strong>${branch}</strong><span>${selectedGroups.length?"已选地支":"无此关系"}</span></div>
+    ${branchOrder.map((b,i)=>{
+      const [x,y]=points[b];
+      const has=activeSet.has(b), isSelected=b===branch, isRelated=related.has(b);
+      const cls=["branch-relation-node",has?"has-relation":"no-relation",isSelected?"selected":"",isRelated?"related":""].join(" ");
+      const meta=branches.find(x=>x.key===b);
+      const nodeInfo=typeKey==="sanhe"&&isRelated&&selectedGroups.length ? sanheInfo(selectedGroups.find(g=>g.includes(b))) : null;
+      const nodeColor=nodeInfo ? colorOf(nodeInfo.element) : "#e5b7a8";
+      const nodeLabel=nodeInfo ? `${nodeInfo.element}局` : (meta?.element||"");
+      return `<button class="${cls}" data-branch-rel="${b}" style="left:${x}px;top:${y}px;--relation-color:${nodeColor}"><b>${b}</b><small>${nodeLabel}</small></button>`;
+    }).join("")}`;
+  orbit.querySelectorAll("[data-branch-rel]").forEach(btn=>btn.addEventListener("click",()=>{
+    const b=btn.dataset.branchRel;
+    if(activeSet.has(b)) renderBranchRelationLab(typeKey,b);
+  }));
+  const readable=selectedGroups.length?selectedGroups.map(g=>typeKey==="sanhe"?`${sanheInfo(g)?.label||g.join(" · ")}（${g.join(" · ")}）`:g.join(" · ")).join(" / "):"此支在该关系中无对应组合";
+  const colorNote=activeSanhe ? `当前 ${branch} 属于 <b style="color:${activeRelationColor}">${activeSanhe.label}</b>，圆环中相关地支按 ${activeSanhe.element} 的五行颜色标出。` : "";
+  document.querySelector("#relationInspector").innerHTML=`<span>${rel.label} · ${rel.tone}</span><h3>${branch} 的关系</h3><p>${rel.note}${colorNote?`<br>${colorNote}`:""}</p><div><b>当前连线</b><strong>${readable}</strong></div><small>${selectedGroups.length?"点击圆环其他地支，可切换观察对象。":"该关系并非覆盖全部十二地支，淡色节点表示没有此关系。"}</small>`;
+}
+
+function renderChangsheng(activeName="长生") {
+  const orbit=document.querySelector("#changshengOrbit");
+  if(!orbit)return;
+  orbit.querySelectorAll(".changsheng-node").forEach(n=>n.remove());
+  changshengStages.forEach((stage,i)=>{
+    const btn=document.createElement("button");
+    btn.type="button";
+    btn.className="changsheng-node";
+    btn.dataset.stage=stage.name;
+    const [x,y]=changshengNodePoints[i] || [50,50];
+    btn.style.setProperty("--i",i);
+    btn.style.left=`${x}%`;
+    btn.style.top=`${y}%`;
+    btn.innerHTML=`<b>${String(i+1).padStart(2,"0")}</b><strong>${stage.name}</strong><small>${stage.phase}</small>`;
+    btn.addEventListener("click",()=>renderChangsheng(stage.name));
+    orbit.append(btn);
+  });
+  const stage=changshengStages.find(x=>x.name===activeName)||changshengStages[0];
+  document.querySelectorAll(".changsheng-node").forEach(n=>n.classList.toggle("active",n.dataset.stage===stage.name));
+  document.querySelector("#changshengActiveName").textContent=stage.name;
+  document.querySelector("#changshengActivePhase").textContent=stage.phase;
+  document.querySelector("#changshengDetail").innerHTML=`<span>当前阶段</span><h3>${stage.name} · ${stage.phase}</h3><p>${stage.note}</p><div><b>核心象</b><strong>${stage.image}</strong></div><div><b>常用场景</b><strong>${stage.use}</strong></div><ol>${changshengStages.map(x=>`<li class="${x.name===stage.name?"active":""}">${x.name}</li>`).join("")}</ol>`;
+}
+
+function renderHiddenStems(active="寅") {
+  const picker=document.querySelector("#hiddenBranchPicker");
+  if(!picker)return;
+  const order=["寅","卯","辰","巳","午","未","申","酉","戌","亥","子","丑"];
+  picker.innerHTML=order.map(k=>`<button data-hidden-branch="${k}" class="${k===active?"active":""}"><b>${k}</b><small>${hiddenStemData[k].group}</small></button>`).join("");
+  const x=hiddenStemData[active];
+  document.querySelector("#hiddenStemDetail").innerHTML=`<span>${x.group}</span><h3>${active}中藏干</h3><div class="stem-beads">${x.stems.map(st=>`<b>${st}</b>`).join("")}</div><p>${x.logic}</p><em>${x.relation}</em>`;
+  picker.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>renderHiddenStems(b.dataset.hiddenBranch)));
 }
 
 function renderLectureTables() {
@@ -458,6 +617,7 @@ function renderLearningTracking(){
   targets.set("casting-relatives",castingSections[0]);
   targets.set("casting-yongshen",castingSections[1]);
   targets.set("branches-images",document.querySelector("#branches .page-intro"));
+  targets.set("lecture0704-main",document.querySelector("#lecture0704 .page-intro"));
 
   learningModules.forEach(([key,label])=>{
     const target=targets.get(key);
@@ -506,7 +666,7 @@ function initProgressDetail(){
       </div>
       <div class="progress-formula">
         <b>计算逻辑</b>
-        <span>内容：15个知识模块，手动“标记已学”</span>
+        <span>内容：16个知识模块，手动“标记已学”</span>
         <span>闪卡：模糊 0%、基本想起 50%、掌握 100%，每支以最新评价覆盖</span>
         <span>训练：正确率占70%、完成题量占30%；正确率得分随题量逐步释放，20题达到完整权重</span>
       </div>
@@ -622,7 +782,7 @@ function initImmersiveMotion(){
   updateScrollProgress();
 
   const revealTargets=document.querySelectorAll(
-    ".section-block,.foundation-grid,.lecture-sequence,.casting-roadmap,.casting-workbench,.lecture-next,.path-hero"
+    ".section-block,.foundation-grid,.lecture-sequence,.audit-chain,.harm-grid,.casting-roadmap,.casting-workbench,.lecture-next,.path-hero"
   );
   revealTargets.forEach(el=>el.classList.add("motion-reveal"));
   if(!reduceMotion&&"IntersectionObserver" in window){
@@ -747,7 +907,7 @@ document.querySelectorAll("[data-cast-mode]").forEach(button=>button.addEventLis
 document.querySelector("#resetCast").addEventListener("click",()=>{state.cast=[];state.manualCoins=["字","背","字"];renderCoins();renderCast();});
 
 document.querySelectorAll("[data-map]").forEach(b=>b.addEventListener("click",()=>renderMap(b.dataset.map)));
-renderPath();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderLearningTracking();initProgressDetail();updateProgress();
+renderPath();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderLearningTracking();initProgressDetail();updateProgress();
 initImmersiveMotion();
 const initialView=new URLSearchParams(location.search).get("view");
-if(["path","foundation","casting","branches","training"].includes(initialView))setView(initialView);
+if(["path","foundation","lecture0704","casting","branches","training"].includes(initialView))setView(initialView);
