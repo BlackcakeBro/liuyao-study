@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="以陈师讲义为主线，结合古籍校注、万物类象与主动回忆训练的六爻学习网站。">
-  <title>爻象研习 · 六爻学习系统｜旺衰与地支关系副本</title>
-  <link rel="stylesheet" href="./styles.css?v=20260708-changsheng-ring-v3">
+  <title>爻象研习 · 六爻学习系统｜旺衰、地支关系与八宫卦谱</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./styles.css?v=20260721-scroll-v1">
 </head>
 <body>
   <div class="paper-noise"></div>
@@ -13,12 +14,13 @@
   <header class="site-header">
     <button class="brand" data-view-link="path" aria-label="返回学习路径">
       <span class="brand-seal">爻</span>
-      <span><strong>爻象研习</strong><small>旺衰与地支关系副本 · 原站未改</small></span>
+      <span><strong>爻象研习</strong><small>从基础关系到卦象推演</small></span>
     </button>
     <nav class="main-nav" aria-label="主导航">
       <button class="nav-item active" data-view="path">学习路径</button>
       <button class="nav-item" data-view="foundation">基础讲义</button>
       <button class="nav-item" data-view="lecture0704">旺衰关系</button>
+      <button class="nav-item" data-view="lecture0718">八宫卦谱</button>
       <button class="nav-item" data-view="casting">古籍预习</button>
       <button class="nav-item" data-view="branches">地支象意</button>
       <button class="nav-item" data-view="training">训练</button>
@@ -328,6 +330,59 @@
     </section>
 
 
+    <section class="view" id="lecture0718">
+      <div class="page-intro gua-atlas-intro" data-learning-module="lecture0718-main">
+        <h1>六爻结构与八宫六十四卦</h1>
+        <p>从六爻识图入手，按八宫归属辨卦象、记卦序、联系核心取象。</p>
+      </div>
+
+      <section class="section-block yao-atlas-section">
+        <div class="section-heading">
+          <div><span class="section-index">01</span><h2>六爻识图：从下往上</h2></div>
+          <p>第一次投掷是初爻；下三爻为内卦，上三爻为外卦。</p>
+        </div>
+        <div class="yao-position-layout atlas-yao-layout">
+          <div class="yao-stack" id="yao0718Stack"></div>
+          <article class="yao-inspector" id="yao0718Inspector"></article>
+        </div>
+      </section>
+
+      <section class="section-block scroll-atlas-section">
+        <div class="section-heading">
+          <div><span class="section-index">02</span><h2>八宫六十四卦：一宫八卦</h2></div>
+          <p>八宫按先天卦序排列；每宫依次为本宫、一世至五世、游魂、归魂。</p>
+        </div>
+        <div class="scroll-atlas-shell" id="scroll0718Shell">
+          <div class="scroll-unroll-mask">
+            <div class="scroll-paper" aria-hidden="true"></div>
+            <div class="scroll-atlas-content">
+              <header class="scroll-atlas-heading">
+                <div><span>八宫卦谱</span><h3>先辨卦象，再记宫位</h3></div>
+                <p>卦象图、卦名、所属宫、宫五行与宫内序位同时记忆。</p>
+              </header>
+              <div class="scroll-palace-tabs" id="scroll0718PalaceTabs"></div>
+              <div class="scroll-palace-layout">
+                <aside class="scroll-palace-meta" id="scroll0718PalaceMeta"></aside>
+                <div class="scroll-gua-grid" id="scroll0718GuaGrid"></div>
+              </div>
+            </div>
+          </div>
+          <div class="scroll-roller scroll-roller-left" aria-hidden="true"></div>
+          <div class="scroll-roller scroll-roller-right" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <section class="section-block contrast-atlas-section">
+        <div class="section-heading">
+          <div><span class="section-index">03</span><h2>易混卦象对照</h2></div>
+          <p>同时看卦象、宫位和差异词，把相近与相反之处放在同一张对页中。</p>
+        </div>
+        <div class="scroll-contrast-tabs" id="scroll0718ContrastTabs"></div>
+        <div class="scroll-contrast-book" id="scroll0718ContrastBook"></div>
+      </section>
+    </section>
+
+
     <section class="view" id="casting">
       <div class="page-intro">
         <span class="eyebrow">CLASSICS SUPPLEMENT · NOT YET THE LECTURE MAINLINE</span>
@@ -446,11 +501,12 @@
     <button class="drawer-backdrop" aria-label="关闭详情"></button>
     <aside><button class="drawer-close" aria-label="关闭">×</button><div id="drawerContent"></div></aside>
   </div>
-  <footer><span>爻象研习 · 第二版原型</span><p>关系 → 结构 → 力量 → 类象 → 验证</p></footer>
-  <script src="./data.js?v=20260708-changsheng-ring-v3"></script>
+  <footer><span>爻象研习 · 六爻知识体系</span><p>关系 → 结构 → 力量 → 类象 → 验证</p></footer>
+  <script src="./data.js?v=20260721-scroll-v1"></script>
+  <script src="./course-0718.js?v=20260721-scroll-v1"></script>
   <script src="./vendor/jquery-3.7.1.min.js"></script>
   <script src="./vendor/jquery.ripples-min.js"></script>
-  <script src="./app.js?v=20260708-changsheng-ring-v3"></script>
+  <script src="./app.js?v=20260721-scroll-v1"></script>
   <script>
     window.addEventListener('load', function(){
       setTimeout(function(){

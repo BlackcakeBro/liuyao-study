@@ -69,7 +69,7 @@ const state = {
   castMode:"random", manualCoins:["字","背","字"]
 };
 const learningModules = [
-  ["lecture0704-main","旺衰关系专题"],
+  ["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],
   ["foundation-01","术数定位"],["foundation-02","五行能量与万物象"],["foundation-03","五行生克与六亲"],
   ["foundation-04","河图洛书与先后天八卦"],["foundation-05","四时旺衰"],["foundation-06","地支时空"],
   ["foundation-07","八卦体系"],["foundation-08","十天干"],["foundation-09","五味五脏五常"],
@@ -92,12 +92,93 @@ function shuffle(a) { return [...a].sort(() => Math.random() - .5); }
 function setView(view) {
   state.view = view;
   document.querySelectorAll(".view").forEach(el => el.classList.toggle("active", el.id === view));
-  document.querySelectorAll(".nav-item").forEach(el => el.classList.toggle("active", el.dataset.view === view));
+
+
+const atlas0718State={palace:"乾",hexagram:0,contrast:0,contrastSide:null};
+const contrast0718Pairs=[
+  ["天地否","地天泰","阴阳不交 · 闭塞阻滞","阴阳交通 · 顺通和合"],
+  ["水火既济","火水未济","当下已成 · 防物极必反","当下未成 · 变化仍在酝酿"],
+  ["山天大畜","风天小畜","长周期积蓄与停留","短暂收敛与蓄力"],
+  ["山地剥","山泽损","从高处剥落下跌","内空、减少与亏损"],
+  ["坎为水","艮为山","险阻、深陷、坑坎","山重、难越、止步"],
+  ["火地晋","地风升","向前晋升，疾病问事防反取","向上晋升，疾病问事防反取"]
+];
+
+function find0718Hexagram(name){
+  for(const palaceKey of course0718.palaceOrder){
+    const index=course0718.palaces[palaceKey].hexagrams.findIndex(item=>item[0]===name);
+    if(index>=0)return {palaceKey,index,item:course0718.palaces[palaceKey].hexagrams[index]};
+  }
+  return null;
+}
+
+function render0718Yao(active=5){
+  const stack=document.querySelector("#yao0718Stack");
+  const inspector=document.querySelector("#yao0718Inspector");
+  if(!stack||!inspector)return;
+  stack.innerHTML=course0718.yao.map(x=>`<button type="button" data-yao0718="${x.n}" class="${x.n===active?"active":""}" style="--yao-delay:${(x.n-1)*.07}s"><i></i><b>${x.n}</b><span>${x.name}</span><small>${x.triad} · ${x.zone}</small></button>`).join("");
+  stack.querySelectorAll("[data-yao0718]").forEach(button=>button.addEventListener("click",()=>render0718Yao(Number(button.dataset.yao0718))));
+  const x=course0718.yao.find(item=>item.n===active);
+  const note=x.n===1?"第一次投掷放在最下方，六次投掷依次向上。":x.n===2?"二爻为贱位，与五爻尊位相对照。":x.n===5?"五爻为尊位，可取君位、中央、大环境或政策层。":"位置之象要随所问事项转换太极点。";
+  inspector.innerHTML=`<span>${x.zone} · ${x.triad}</span><h3>${x.name}</h3><strong>${x.cue}</strong><p>${note}</p>`;
+}
+
+function render0718Palace(palaceKey="乾",activeIndex=0){
+  const tabs=document.querySelector("#scroll0718PalaceTabs");
+  const meta=document.querySelector("#scroll0718PalaceMeta");
+  const grid=document.querySelector("#scroll0718GuaGrid");
+  const content=document.querySelector("#lecture0718 .scroll-atlas-content");
+  if(!tabs||!meta||!grid)return;
+  atlas0718State.palace=palaceKey;atlas0718State.hexagram=activeIndex;
+  const palace=course0718.palaces[palaceKey];
+  tabs.innerHTML=course0718.palaceOrder.map((key,index)=>{const p=course0718.palaces[key];return `<button type="button" data-palace0718="${key}" class="${key===palaceKey?"active":""} ${p.status==="pending-meaning"?"pending":""}"><b>${key}</b><small>${String(index+1).padStart(2,"0")} · ${p.element}${p.status==="pending-meaning"?" · 待补释义":""}</small></button>`}).join("");
+  tabs.querySelectorAll("[data-palace0718]").forEach(button=>button.addEventListener("click",()=>{
+    const next=button.dataset.palace0718;
+    if(next===atlas0718State.palace)return;
+    content?.classList.add("is-switching");
+    setTimeout(()=>{render0718Palace(next,0);requestAnimationFrame(()=>content?.classList.remove("is-switching"));},120);
+  }));
+  meta.innerHTML=`<span>先天序 ${String(course0718.palaceOrder.indexOf(palaceKey)+1).padStart(2,"0")} · 宫五行${palace.element}</span><h3>${palaceKey}宫</h3><strong>${palace.theme}</strong><p>${palace.status==="pending-meaning"?"本宫八卦的卦名、卦象与宫内序位已列入；课堂取象等待陈师下节课补充。":"本宫八卦按固定序位排列。先辨卦象，再记宫位与核心取象。"}</p><em>${course0718.palaceStages.join(" → ")}</em>`;
+  grid.innerHTML=palace.hexagrams.map((h,index)=>`<button type="button" data-gua0718="${index}" class="scroll-gua-card ${index===activeIndex?"active":""} ${palace.status==="pending-meaning"?"pending":""}"><small>${String(index+1).padStart(2,"0")} · ${course0718.palaceStages[index]}</small><span class="scroll-gua-glyph">${h[1]}</span><b>${h[0]}</b><p>${h[2]}</p><i>${palaceKey}宫 · ${palace.element}</i></button>`).join("");
+  grid.querySelectorAll("[data-gua0718]").forEach(button=>button.addEventListener("click",()=>render0718Palace(palaceKey,Number(button.dataset.gua0718))));
+}
+
+function render0718Contrasts(activePair=0,activeSide=null){
+  const tabs=document.querySelector("#scroll0718ContrastTabs");
+  const book=document.querySelector("#scroll0718ContrastBook");
+  if(!tabs||!book)return;
+  atlas0718State.contrast=activePair;atlas0718State.contrastSide=activeSide;
+  tabs.innerHTML=contrast0718Pairs.map((pair,index)=>`<button type="button" data-contrast0718="${index}" class="${index===activePair?"active":""}"><b>${String(index+1).padStart(2,"0")}</b><span>${pair[0]} / ${pair[1]}</span></button>`).join("");
+  tabs.querySelectorAll("[data-contrast0718]").forEach(button=>button.addEventListener("click",()=>render0718Contrasts(Number(button.dataset.contrast0718),null)));
+  const pair=contrast0718Pairs[activePair];
+  const left=find0718Hexagram(pair[0]),right=find0718Hexagram(pair[1]);
+  const page=(info,side,cue)=>`<button type="button" data-contrast-side="${side}" class="scroll-contrast-page ${activeSide===side?"active":""} ${activeSide&&activeSide!==side?"dim":""}"><span class="scroll-contrast-glyph">${info.item[1]}</span><div><small>${info.palaceKey}宫 · 第${String(info.index+1).padStart(2,"0")}卦</small><h3>${info.item[0]}</h3><strong>${cue}</strong><p>${info.item[2]}</p></div></button>`;
+  book.innerHTML=`${page(left,"left",pair[2])}<i>⇄</i>${page(right,"right",pair[3])}`;
+  book.querySelectorAll("[data-contrast-side]").forEach(button=>button.addEventListener("click",event=>{event.stopPropagation();const side=button.dataset.contrastSide;render0718Contrasts(activePair,activeSide===side?null:side)}));
+  book.addEventListener("click",()=>render0718Contrasts(activePair,null),{once:true});
+}
+
+function replay0718Scroll(){
+  const shell=document.querySelector("#scroll0718Shell");
+  if(!shell)return;
+  shell.classList.remove("is-unrolling");
+  void shell.offsetWidth;
+  shell.classList.add("is-unrolling");
+}
+
+function render0718Atlas(){
+  render0718Yao(5);
+  render0718Palace(atlas0718State.palace,atlas0718State.hexagram);
+  render0718Contrasts(atlas0718State.contrast,atlas0718State.contrastSide);
+}
+
+document.querySelectorAll(".nav-item").forEach(el => el.classList.toggle("active", el.dataset.view === view));
   window.scrollTo({ top:0, behavior:"smooth" });
   if (view === "training" && !state.quiz) createQuiz();
   requestAnimationFrame(()=>{
     revealVisibleSections();
     window.activateWaterSurface?.();
+    if(view==="lecture0718") replay0718Scroll();
   });
 }
 
@@ -886,6 +967,86 @@ function initImmersiveMotion(){
   });
 }
 
+
+
+const atlas0718State={palace:"乾",hexagram:0,contrast:0,contrastSide:null};
+const contrast0718Pairs=[
+  ["天地否","地天泰","阴阳不交 · 闭塞阻滞","阴阳交通 · 顺通和合"],
+  ["水火既济","火水未济","当下已成 · 防物极必反","当下未成 · 变化仍在酝酿"],
+  ["山天大畜","风天小畜","长周期积蓄与停留","短暂收敛与蓄力"],
+  ["山地剥","山泽损","从高处剥落下跌","内空、减少与亏损"],
+  ["坎为水","艮为山","险阻、深陷、坑坎","山重、难越、止步"],
+  ["火地晋","地风升","向前晋升，疾病问事防反取","向上晋升，疾病问事防反取"]
+];
+
+function find0718Hexagram(name){
+  for(const palaceKey of course0718.palaceOrder){
+    const index=course0718.palaces[palaceKey].hexagrams.findIndex(item=>item[0]===name);
+    if(index>=0)return {palaceKey,index,item:course0718.palaces[palaceKey].hexagrams[index]};
+  }
+  return null;
+}
+
+function render0718Yao(active=5){
+  const stack=document.querySelector("#yao0718Stack");
+  const inspector=document.querySelector("#yao0718Inspector");
+  if(!stack||!inspector)return;
+  stack.innerHTML=course0718.yao.map(x=>`<button type="button" data-yao0718="${x.n}" class="${x.n===active?"active":""}" style="--yao-delay:${(x.n-1)*.07}s"><i></i><b>${x.n}</b><span>${x.name}</span><small>${x.triad} · ${x.zone}</small></button>`).join("");
+  stack.querySelectorAll("[data-yao0718]").forEach(button=>button.addEventListener("click",()=>render0718Yao(Number(button.dataset.yao0718))));
+  const x=course0718.yao.find(item=>item.n===active);
+  const note=x.n===1?"第一次投掷放在最下方，六次投掷依次向上。":x.n===2?"二爻为贱位，与五爻尊位相对照。":x.n===5?"五爻为尊位，可取君位、中央、大环境或政策层。":"位置之象要随所问事项转换太极点。";
+  inspector.innerHTML=`<span>${x.zone} · ${x.triad}</span><h3>${x.name}</h3><strong>${x.cue}</strong><p>${note}</p>`;
+}
+
+function render0718Palace(palaceKey="乾",activeIndex=0){
+  const tabs=document.querySelector("#scroll0718PalaceTabs");
+  const meta=document.querySelector("#scroll0718PalaceMeta");
+  const grid=document.querySelector("#scroll0718GuaGrid");
+  const content=document.querySelector("#lecture0718 .scroll-atlas-content");
+  if(!tabs||!meta||!grid)return;
+  atlas0718State.palace=palaceKey;atlas0718State.hexagram=activeIndex;
+  const palace=course0718.palaces[palaceKey];
+  tabs.innerHTML=course0718.palaceOrder.map((key,index)=>{const p=course0718.palaces[key];return `<button type="button" data-palace0718="${key}" class="${key===palaceKey?"active":""} ${p.status==="pending-meaning"?"pending":""}"><b>${key}</b><small>${String(index+1).padStart(2,"0")} · ${p.element}${p.status==="pending-meaning"?" · 待补释义":""}</small></button>`}).join("");
+  tabs.querySelectorAll("[data-palace0718]").forEach(button=>button.addEventListener("click",()=>{
+    const next=button.dataset.palace0718;
+    if(next===atlas0718State.palace)return;
+    content?.classList.add("is-switching");
+    setTimeout(()=>{render0718Palace(next,0);requestAnimationFrame(()=>content?.classList.remove("is-switching"));},120);
+  }));
+  meta.innerHTML=`<span>先天序 ${String(course0718.palaceOrder.indexOf(palaceKey)+1).padStart(2,"0")} · 宫五行${palace.element}</span><h3>${palaceKey}宫</h3><strong>${palace.theme}</strong><p>${palace.status==="pending-meaning"?"本宫八卦的卦名、卦象与宫内序位已列入；课堂取象等待陈师下节课补充。":"本宫八卦按固定序位排列。先辨卦象，再记宫位与核心取象。"}</p><em>${course0718.palaceStages.join(" → ")}</em>`;
+  grid.innerHTML=palace.hexagrams.map((h,index)=>`<button type="button" data-gua0718="${index}" class="scroll-gua-card ${index===activeIndex?"active":""} ${palace.status==="pending-meaning"?"pending":""}"><small>${String(index+1).padStart(2,"0")} · ${course0718.palaceStages[index]}</small><span class="scroll-gua-glyph">${h[1]}</span><b>${h[0]}</b><p>${h[2]}</p><i>${palaceKey}宫 · ${palace.element}</i></button>`).join("");
+  grid.querySelectorAll("[data-gua0718]").forEach(button=>button.addEventListener("click",()=>render0718Palace(palaceKey,Number(button.dataset.gua0718))));
+}
+
+function render0718Contrasts(activePair=0,activeSide=null){
+  const tabs=document.querySelector("#scroll0718ContrastTabs");
+  const book=document.querySelector("#scroll0718ContrastBook");
+  if(!tabs||!book)return;
+  atlas0718State.contrast=activePair;atlas0718State.contrastSide=activeSide;
+  tabs.innerHTML=contrast0718Pairs.map((pair,index)=>`<button type="button" data-contrast0718="${index}" class="${index===activePair?"active":""}"><b>${String(index+1).padStart(2,"0")}</b><span>${pair[0]} / ${pair[1]}</span></button>`).join("");
+  tabs.querySelectorAll("[data-contrast0718]").forEach(button=>button.addEventListener("click",()=>render0718Contrasts(Number(button.dataset.contrast0718),null)));
+  const pair=contrast0718Pairs[activePair];
+  const left=find0718Hexagram(pair[0]),right=find0718Hexagram(pair[1]);
+  const page=(info,side,cue)=>`<button type="button" data-contrast-side="${side}" class="scroll-contrast-page ${activeSide===side?"active":""} ${activeSide&&activeSide!==side?"dim":""}"><span class="scroll-contrast-glyph">${info.item[1]}</span><div><small>${info.palaceKey}宫 · 第${String(info.index+1).padStart(2,"0")}卦</small><h3>${info.item[0]}</h3><strong>${cue}</strong><p>${info.item[2]}</p></div></button>`;
+  book.innerHTML=`${page(left,"left",pair[2])}<i>⇄</i>${page(right,"right",pair[3])}`;
+  book.querySelectorAll("[data-contrast-side]").forEach(button=>button.addEventListener("click",event=>{event.stopPropagation();const side=button.dataset.contrastSide;render0718Contrasts(activePair,activeSide===side?null:side)}));
+  book.addEventListener("click",()=>render0718Contrasts(activePair,null),{once:true});
+}
+
+function replay0718Scroll(){
+  const shell=document.querySelector("#scroll0718Shell");
+  if(!shell)return;
+  shell.classList.remove("is-unrolling");
+  void shell.offsetWidth;
+  shell.classList.add("is-unrolling");
+}
+
+function render0718Atlas(){
+  render0718Yao(5);
+  render0718Palace(atlas0718State.palace,atlas0718State.hexagram);
+  render0718Contrasts(atlas0718State.contrast,atlas0718State.contrastSide);
+}
+
 document.querySelectorAll(".nav-item").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
 document.querySelectorAll("[data-jump]").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.jump)));
 document.querySelector("[data-view-link]").addEventListener("click",()=>setView("path"));
@@ -907,7 +1068,7 @@ document.querySelectorAll("[data-cast-mode]").forEach(button=>button.addEventLis
 document.querySelector("#resetCast").addEventListener("click",()=>{state.cast=[];state.manualCoins=["字","背","字"];renderCoins();renderCast();});
 
 document.querySelectorAll("[data-map]").forEach(b=>b.addEventListener("click",()=>renderMap(b.dataset.map)));
-renderPath();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderLearningTracking();initProgressDetail();updateProgress();
+renderPath();render0718Atlas();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderLearningTracking();initProgressDetail();updateProgress();
 initImmersiveMotion();
 const initialView=new URLSearchParams(location.search).get("view");
-if(["path","foundation","lecture0704","casting","branches","training"].includes(initialView))setView(initialView);
+if(["path","foundation","lecture0704","lecture0718","casting","branches","training"].includes(initialView))setView(initialView);
