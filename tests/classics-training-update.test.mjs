@@ -39,3 +39,10 @@ test("training panels may shrink inside the mobile viewport without forcing page
   assert.match(css,/\.training-panel\{[^}]*min-width:0/);
   assert.match(css,/\.quiz-panel\{[^}]*overflow:hidden/);
 });
+
+test("training module filters lay out every category without a clipped horizontal strip",()=>{
+  assert.match(css,/\.training-module-filters\{[^}]*display:grid/);
+  assert.match(css,/\.training-module-filters\{[^}]*grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(css,/\.training-module-filters button:first-child\{[^}]*grid-column:1\/-1/);
+  assert.match(css,/@media\(max-width:520px\)\{[^}]*\.training-module-filters\{[^}]*grid-template-columns:1fr/);
+});
