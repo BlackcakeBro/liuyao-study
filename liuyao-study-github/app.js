@@ -2,6 +2,15 @@ const {
   elements, elementImages, hetu, luoshu, stems, correspondences, solarTerms, seasonalElementNotes,
   seasons, branches, trigrams, sixRelatives, yongshenTopics, learningSteps
 } = window.LIUYAO_DATA;
+const siteParams=new URLSearchParams(location.search);
+const requestedInitialView=siteParams.get("view");
+const extendedEdition=siteParams.get("v")==="changsheng-ring-v3"||["lecture0704","lecture0718"].includes(requestedInitialView);
+document.documentElement.dataset.siteEdition=extendedEdition?"extended":"classic";
+if(!extendedEdition){
+  document.querySelectorAll('[data-view="lecture0704"],[data-view="lecture0718"],#lecture0704,#lecture0718').forEach(element=>element.remove());
+  document.title="爻象研习 · 六爻学习系统";
+  document.querySelector(".brand small").textContent="从基础关系到断卦实证";
+}
 const categoryNames = { people:"人物", places:"场所", objects:"器物", animals:"动物", body:"身体", events:"人事情境", symbols:"神将组合" };
 const cycle = ["木","火","土","金","水"];
 const generating = { 木:"火", 火:"土", 土:"金", 金:"水", 水:"木" };
@@ -69,7 +78,7 @@ const state = {
   castMode:"random", manualCoins:["字","背","字"]
 };
 const learningModules = [
-  ["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],
+  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"]]:[]),
   ["foundation-01","术数定位"],["foundation-02","五行能量与万物象"],["foundation-03","五行生克与六亲"],
   ["foundation-04","河图洛书与先后天八卦"],["foundation-05","四时旺衰"],["foundation-06","地支时空"],
   ["foundation-07","八卦体系"],["foundation-08","十天干"],["foundation-09","五味五脏五常"],
@@ -667,7 +676,7 @@ function initProgressDetail(){
       </div>
       <div class="progress-formula">
         <b>计算逻辑</b>
-        <span>内容：16个知识模块，手动“标记已学”</span>
+        <span>内容：${learningModules.length}个知识模块，手动“标记已学”</span>
         <span>闪卡：模糊 0%、基本想起 50%、掌握 100%，每支以最新评价覆盖</span>
         <span>训练：正确率占70%、完成题量占30%；正确率得分随题量逐步释放，20题达到完整权重</span>
       </div>
@@ -997,5 +1006,4 @@ document.querySelector("#resetCast").addEventListener("click",()=>{state.cast=[]
 document.querySelectorAll("[data-map]").forEach(b=>b.addEventListener("click",()=>renderMap(b.dataset.map)));
 renderPath();render0718Atlas();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderLearningTracking();initProgressDetail();updateProgress();
 initImmersiveMotion();
-const initialView=new URLSearchParams(location.search).get("view");
-if(["path","foundation","lecture0704","lecture0718","casting","branches","training"].includes(initialView))setView(initialView);
+if(["path","foundation","lecture0704","lecture0718","casting","branches","training"].includes(requestedInitialView))setView(requestedInitialView);
