@@ -6,7 +6,7 @@
   <meta name="description" content="以陈师讲义为主线，结合古籍校注、万物类象与主动回忆训练的六爻学习网站。">
   <title>爻象研习 · 六爻学习系统｜旺衰、地支关系与八宫卦谱</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./styles.css?v=20260722-scroll-v5">
+  <link rel="stylesheet" href="./styles.css?v=20260722-classics-training-v6">
 </head>
 <body>
   <div class="paper-noise"></div>
@@ -384,17 +384,38 @@
 
 
     <section class="view" id="casting">
-      <div class="page-intro">
+      <div class="page-intro" data-edition-only="classic">
         <span class="eyebrow">CLASSICS SUPPLEMENT · NOT YET THE LECTURE MAINLINE</span>
         <h1>古籍预习 · 装卦入门</h1>
         <p>此区内容主要依据《增删卜易》入门章节补充，作为后续课程预习；陈师讲义更新后将按课堂口径修订。</p>
       </div>
 
-      <div class="casting-roadmap">
+      <div class="page-intro classics-current-intro" data-edition-only="extended">
+        <span class="eyebrow">LECTURE FIRST · CLASSICS SECOND</span>
+        <h1>古籍预习 · 从八宫进入装卦</h1>
+        <p>起卦、爻位与八宫卦谱已经进入课堂主线；古籍预习继续向“纳甲装支—六亲—世应—动变—取用”推进。已讲与预习分层展示，不混作陈师课堂结论。</p>
+      </div>
+
+      <div class="casting-roadmap" data-edition-only="classic">
         <article><b>1</b><h3>起六次</h3><p>每次得到少阴、少阳、老阴或老阳。</p></article>
         <i>→</i><article><b>2</b><h3>由下向上</h3><p>第一次是初爻，第六次是上爻。</p></article>
         <i>→</i><article><b>3</b><h3>分上下卦</h3><p>初二三为下卦，四五上为上卦。</p></article>
         <i>→</i><article><b>4</b><h3>动则有变</h3><p>老阳变阴，老阴变阳，形成变卦。</p></article>
+      </div>
+
+      <section class="classics-learning-map" data-edition-only="extended">
+        <header><span>当前学习界线</span><h2>陈师已讲在前，古籍预习在后</h2><p>《增删卜易》卷一的章节顺序与课程进度对齐，下一步只预习结构，不提前代替课堂断法。</p></header>
+        <div class="classics-roadmap" id="classicsRoadmap"></div>
+        <div class="classics-source-boundary">
+          <article><b>陈师已讲</b><strong>起卦 · 爻位 · 八宫卦谱</strong><p>七宫核心取象已讲；兑宫只训练卦名、宫位与宫内序位，取象等待后续课堂。</p></article>
+          <i></i>
+          <article><b>古籍预习</b><strong>浑天甲子 · 六亲 · 世应 · 用神</strong><p>依据《增删卜易》卷一建立下一步骨架；陈师讲授后再校正术语、细节与使用边界。</p></article>
+        </div>
+      </section>
+
+      <div class="section-heading classics-step-heading" data-edition-only="extended">
+        <div><span class="section-index">01</span><h2>课堂复习：起卦、爻位与动变</h2></div>
+        <p>模拟器只用于巩固三钱定爻与由下向上的爻序；八宫归属请回到“八宫卦谱”学习。</p>
       </div>
 
       <section class="casting-workbench">
@@ -426,28 +447,55 @@
         </article>
       </section>
 
+      <section class="section-block classics-najia-section" id="classicsNajia" data-edition-only="extended">
+        <div class="section-heading">
+          <div><span class="section-index">02</span><h2>浑天甲子：纳甲装支</h2></div>
+          <p>先分内卦、外卦，再由下向上把三支装入三个爻位。此处依据《增删卜易》卷一“浑天甲子章”预习。</p>
+        </div>
+        <div class="najia-lab">
+          <div class="najia-trigram-picker" id="najiaTrigramPicker"></div>
+          <div class="najia-detail" id="najiaDetail"></div>
+        </div>
+      </section>
+
       <section class="section-block">
         <div class="section-heading">
-          <div><span class="section-index">05</span><h2>六亲：把五行关系翻译成人事</h2></div>
+          <div><span class="section-index" data-edition-only="classic">05</span><span class="section-index" data-edition-only="extended">03</span><h2>六亲：把五行关系翻译成人事</h2></div>
           <p>六亲不是固定好坏，而是根据占问承担不同角色。</p>
         </div>
         <div class="relative-cards" id="relativeCards"></div>
       </section>
 
+      <section class="section-block shiying-section" id="classicsShiYing" data-edition-only="extended">
+        <div class="section-heading">
+          <div><span class="section-index">04</span><h2>世应定位：宫内序位决定落爻</h2></div>
+          <p>先记“本宫六、一二三四五、游魂四、归魂三”；应爻与世爻相隔两位。</p>
+        </div>
+        <div class="shiying-lab">
+          <div class="shiying-stages" id="shiYingStages"></div>
+          <div class="shiying-detail" id="shiYingDetail"></div>
+        </div>
+      </section>
+
       <section class="section-block yongshen-section">
         <div class="section-heading">
-          <div><span class="section-index">06</span><h2>取用神：先问什么，再看什么</h2></div>
+          <div><span class="section-index" data-edition-only="classic">06</span><span class="section-index" data-edition-only="extended">05</span><h2>取用神：先问什么，再看什么</h2></div>
           <p>选择占问主题，系统给出初步观察对象；真正断卦仍要检查旺衰、空破、动变和组合。</p>
         </div>
         <div class="yongshen-picker">
           <div id="topicButtons"></div>
           <div id="topicResult" class="topic-result"></div>
         </div>
+        <div class="classics-role-chain" id="classicsRoleChain" data-edition-only="extended"></div>
       </section>
 
-      <section class="classic-note">
+      <section class="classic-note" data-edition-only="classic">
         <span>古籍学习提示</span>
         <p>《增删卜易》把入门顺序明确落在：八卦爻画、起卦、六十四卦宫、浑天甲子、六亲、世应、动变、用神及元忌仇神。网站后续将按这条顺序逐项建立古籍原文对照。</p>
+      </section>
+      <section class="classic-note" data-edition-only="extended">
+        <span>古籍预习边界</span>
+        <p>本页“纳甲、世应、用神与元忌仇”依据《增删卜易》卷一相关章节整理，只帮助建立下一步知识骨架。遇到古籍版本差异或与课堂口径不一致时，以陈师后续讲授为主，并同步修订训练题。</p>
       </section>
     </section>
 
@@ -472,10 +520,16 @@
     </section>
 
     <section class="view" id="training">
-      <div class="page-intro">
+      <div class="page-intro" data-edition-only="classic">
         <span class="eyebrow">ACTIVE RECALL</span>
         <h1>记忆训练场</h1>
         <p>先主动回忆，再揭示答案。训练题会覆盖地支类象、五行关系和下一阶段基础。</p>
+      </div>
+      <div class="page-intro" data-edition-only="extended">
+        <span class="eyebrow">AUDITED ACTIVE RECALL</span>
+        <h1>课程训练场</h1>
+        <p>题目按知识来源分组：基础讲义、旺衰与地支关系、起卦与八宫卦谱、古籍装卦预习。兑宫取象尚未开课，因此只训练卦名、宫位和序位。</p>
+        <div class="training-bank-summary" id="trainingBankSummary"></div>
       </div>
       <div class="training-layout">
         <section class="training-panel">
@@ -489,7 +543,8 @@
           <div class="mastery-actions"><button data-mastery="again">仍然模糊</button><button data-mastery="hard">基本想起</button><button data-mastery="known">已经掌握</button></div>
         </section>
         <section class="training-panel quiz-panel">
-          <div class="panel-heading"><div><span>模式二</span><h2>随机辨识</h2></div><div class="score"><small>答对</small><b id="quizCorrect">0</b><i>·</i><small>已答</small><strong id="quizTotal">0</strong></div></div>
+          <div class="panel-heading"><div><span>模式二</span><h2 data-edition-only="classic">随机辨识</h2><h2 data-edition-only="extended">分层题库</h2></div><div class="score"><small>答对</small><b id="quizCorrect">0</b><i>·</i><small>已答</small><strong id="quizTotal">0</strong></div></div>
+          <div class="training-module-filters" id="trainingModuleFilters" data-edition-only="extended"></div>
           <div class="quiz-content" id="quizContent"></div>
           <button class="primary-button full" id="nextQuiz" disabled>下一题</button>
         </section>
@@ -504,9 +559,10 @@
   <footer><span>爻象研习 · 六爻知识体系</span><p>关系 → 结构 → 力量 → 类象 → 验证</p></footer>
   <script src="./data.js?v=20260722-scroll-v5"></script>
   <script src="./course-0718.js?v=20260722-scroll-v5"></script>
+  <script src="./training-bank.js?v=20260722-classics-training-v6"></script>
   <script src="./vendor/jquery-3.7.1.min.js"></script>
   <script src="./vendor/jquery.ripples-min.js"></script>
-  <script src="./app.js?v=20260722-scroll-v5"></script>
+  <script src="./app.js?v=20260722-classics-training-v6"></script>
   <script>
     window.addEventListener('load', function(){
       setTimeout(function(){

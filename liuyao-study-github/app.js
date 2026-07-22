@@ -2,10 +2,13 @@ const {
   elements, elementImages, hetu, luoshu, stems, correspondences, solarTerms, seasonalElementNotes,
   seasons, branches, trigrams, sixRelatives, yongshenTopics, learningSteps
 } = window.LIUYAO_DATA;
+const courseTraining=window.LIUYAO_TRAINING;
 const siteParams=new URLSearchParams(location.search);
 const requestedInitialView=siteParams.get("view");
 const extendedEdition=siteParams.get("v")==="changsheng-ring-v3"||["lecture0704","lecture0718"].includes(requestedInitialView);
 document.documentElement.dataset.siteEdition=extendedEdition?"extended":"classic";
+if(extendedEdition)document.querySelectorAll('[data-edition-only="classic"]').forEach(element=>element.remove());
+else document.querySelectorAll('[data-edition-only="extended"]').forEach(element=>element.remove());
 if(!extendedEdition){
   document.querySelectorAll('[data-view="lecture0704"],[data-view="lecture0718"],#lecture0704,#lecture0718').forEach(element=>element.remove());
   document.title="爻象研习 · 六爻学习系统";
@@ -75,10 +78,10 @@ const state = {
   selfElement:"木", cast:[], mastery:JSON.parse(localStorage.getItem("liuyao-mastery") || "{}"),
   viewed:new Set(JSON.parse(localStorage.getItem("liuyao-viewed") || "[]")),
   learnedModules:new Set(JSON.parse(localStorage.getItem("liuyao-learned-modules") || "[]")),
-  castMode:"random", manualCoins:["字","背","字"]
+  castMode:"random", manualCoins:["字","背","字"],quizModule:extendedEdition?"lecture0718":"classic"
 };
 const learningModules = [
-  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"]]:[]),
+  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["classics-najia","纳甲装支预习"],["classics-shiying","世应定位预习"]]:[]),
   ["foundation-01","术数定位"],["foundation-02","五行能量与万物象"],["foundation-03","五行生克与六亲"],
   ["foundation-04","河图洛书与先后天八卦"],["foundation-05","四时旺衰"],["foundation-06","地支时空"],
   ["foundation-07","八卦体系"],["foundation-08","十天干"],["foundation-09","五味五脏五常"],
@@ -520,6 +523,46 @@ function openDrawer(key){
 }
 function closeDrawer(){document.querySelector("#branchDrawer").classList.remove("open");document.querySelector("#branchDrawer").setAttribute("aria-hidden","true");}
 
+function renderClassicsPreview(){
+  if(!extendedEdition||!courseTraining?.classics)return;
+  const classics=courseTraining.classics;
+  const roadmap=document.querySelector("#classicsRoadmap");
+  if(roadmap)roadmap.innerHTML=classics.roadmap.map((step,index)=>`<article class="${step.state==="陈师已讲"?"taught":"preview"}" style="--roadmap-index:${index}"><small>${step.n}</small><span>${step.state}</span><h3>${step.title}</h3><p>${step.detail}</p></article>`).join("");
+
+  const picker=document.querySelector("#najiaTrigramPicker");
+  const detail=document.querySelector("#najiaDetail");
+  const showNajia=trigram=>{
+    const item=classics.najia.find(entry=>entry.trigram===trigram);
+    picker.querySelectorAll("button").forEach(button=>button.classList.toggle("active",button.dataset.najia===trigram));
+    const branchCard=(branch,index,zone)=>{
+      const element=branch.slice(-1),number=zone==="inner"?index+1:index+4;
+      return `<article style="--branch-color:${colorOf(element)}"><small>${number===6?"上爻":`${number}爻`}</small><strong>${branch[0]}</strong><span>${element}</span></article>`;
+    };
+    detail.innerHTML=`<header><span>当前经卦</span><h3>${trigram}卦</h3><p>装支一律由下向上读；内卦对应初、二、三爻，外卦对应四、五、上爻。</p></header><div class="najia-zones"><section><b>内卦 · 初至三爻</b><div>${item.inner.map((branch,index)=>branchCard(branch,index,"inner")).join("")}</div><p>${item.inner.join(" → ")}</p></section><i>由下向上</i><section><b>外卦 · 四至上爻</b><div>${item.outer.map((branch,index)=>branchCard(branch,index,"outer")).join("")}</div><p>${item.outer.join(" → ")}</p></section></div>`;
+  };
+  if(picker){
+    picker.innerHTML=classics.najia.map((item,index)=>`<button type="button" data-najia="${item.trigram}" class="${index===0?"active":""}"><b>${item.trigram}</b><span>${item.inner.map(branch=>branch[0]).join("")} · ${item.outer.map(branch=>branch[0]).join("")}</span></button>`).join("");
+    picker.querySelectorAll("button").forEach(button=>button.addEventListener("click",()=>showNajia(button.dataset.najia)));
+    showNajia(classics.najia[0].trigram);
+  }
+
+  const stagePicker=document.querySelector("#shiYingStages");
+  const stageDetail=document.querySelector("#shiYingDetail");
+  const showStage=stage=>{
+    const item=classics.shiYing.find(entry=>entry.stage===stage),ying=((item.shi+2)%6)+1;
+    stagePicker.querySelectorAll("button").forEach(button=>button.classList.toggle("active",button.dataset.shiying===stage));
+    stageDetail.innerHTML=`<div class="shiying-glyph"><span>世</span><strong>${item.shi===6?"上":item.shi}</strong><i>隔两位</i><span>应</span><strong>${ying===6?"上":ying}</strong></div><div class="shiying-lines">${[6,5,4,3,2,1].map(n=>`<i class="${n===item.shi?"shi":n===ying?"ying":""}"><b>${n===6?"上":n}</b><span></span><em>${n===item.shi?"世":n===ying?"应":""}</em></i>`).join("")}</div><p><b>${stage}</b>：世在第${item.shi}爻，应在第${ying}爻。先记定位，不在此处提前展开断法。</p>`;
+  };
+  if(stagePicker){
+    stagePicker.innerHTML=classics.shiYing.map((item,index)=>`<button type="button" data-shiying="${item.stage}" class="${index===0?"active":""}"><small>${String(index+1).padStart(2,"0")}</small><b>${item.stage}</b><span>世${item.shi===6?"上":item.shi}</span></button>`).join("");
+    stagePicker.querySelectorAll("button").forEach(button=>button.addEventListener("click",()=>showStage(button.dataset.shiying)));
+    showStage(classics.shiYing[0].stage);
+  }
+
+  const roleChain=document.querySelector("#classicsRoleChain");
+  if(roleChain)roleChain.innerHTML=`<header><span>《增删卜易》关系骨架</span><h3>取准用神后，再看谁生、谁克</h3></header><div>${classics.roles.map((role,index)=>`<article><small>${String(index+1).padStart(2,"0")}</small><b>${role.name}</b><p>${role.definition}</p></article>`).join("")}</div><p>${classics.boundary}</p>`;
+}
+
 function renderFlashcard(){
   const b=branches[state.flashIndex],card=document.querySelector("#flashcard");card.classList.remove("flipped");card.style.setProperty("--element",colorOf(b.element));
   document.querySelector("#flashBranch").textContent=b.key;
@@ -533,7 +576,7 @@ function uniqueQuizOptions(answer,candidates){
   shuffle(candidates).forEach(value=>{if(value&&value!==answer&&!options.includes(value)&&options.length<4)options.push(value);});
   return shuffle(options);
 }
-function createQuiz(){
+function createClassicQuiz(){
   const mode=Math.floor(Math.random()*3);let question,answer,options,feedback;
   if(mode===0){
     const b=branches[Math.floor(Math.random()*branches.length)],types=["direction","action","body","objects"],type=types[Math.floor(Math.random()*types.length)];
@@ -570,15 +613,45 @@ function createQuiz(){
   }
   state.quiz={question,answer,options,feedback,answered:false};renderQuiz();
 }
+function createCourseQuiz(){
+  const pool=courseTraining.bank.filter(question=>state.quizModule==="all"||question.module===state.quizModule);
+  const candidates=state.quiz?.id?pool.filter(question=>question.id!==state.quiz.id):pool;
+  const question=(candidates.length?candidates:pool)[Math.floor(Math.random()*(candidates.length||pool.length))];
+  state.quiz={...question,options:uniqueQuizOptions(question.answer,question.candidates),answered:false};
+  renderQuiz();
+  renderTrainingFilters();
+}
+function createQuiz(){return extendedEdition ? createCourseQuiz() : createClassicQuiz();}
+
+function renderTrainingFilters(){
+  if(!extendedEdition||!courseTraining)return;
+  const filters=document.querySelector("#trainingModuleFilters");
+  const summary=document.querySelector("#trainingBankSummary");
+  const all={id:"all",label:"全部题库"};
+  const items=[all,...courseTraining.modules];
+  if(filters){
+    filters.innerHTML=items.map(module=>{const count=module.id==="all"?courseTraining.bank.length:courseTraining.bank.filter(question=>question.module===module.id).length;return `<button type="button" data-training-module="${module.id}" class="${state.quizModule===module.id?"active":""}"><span>${module.label}</span><b>${count}</b></button>`}).join("");
+    filters.querySelectorAll("button").forEach(button=>button.addEventListener("click",()=>{
+      state.quizModule=button.dataset.trainingModule;
+      state.quiz=null;
+      createCourseQuiz();
+    }));
+  }
+  if(summary){
+    const active=state.quizModule==="all"?all:courseTraining.modules.find(module=>module.id===state.quizModule);
+    const count=state.quizModule==="all"?courseTraining.bank.length:courseTraining.bank.filter(question=>question.module===state.quizModule).length;
+    summary.innerHTML=`<span>已核查题库</span><strong>${courseTraining.bank.length} 道</strong><i></i><span>当前模块</span><b>${active.label} · ${count} 道</b>`;
+  }
+}
 function renderQuiz(){
-  const q=state.quiz;document.querySelector("#quizContent").innerHTML=`<div class="quiz-question"><small>第 ${state.quizTotal+1} 题 · 单项选择</small><h3>${q.question}</h3></div><div class="quiz-options">${q.options.map(o=>`<button class="quiz-option" data-answer="${o}">${o}</button>`).join("")}</div><div class="quiz-feedback" id="quizFeedback">先判断题目属于哪套知识体系，再选择答案。</div>`;
+  const q=state.quiz,source=q.source?` · ${q.source}`:"";document.querySelector("#quizContent").innerHTML=`<div class="quiz-question"><small>第 ${state.quizTotal+1} 题 · 单项选择${source}</small><h3>${q.question}</h3></div><div class="quiz-options">${q.options.map(o=>`<button class="quiz-option" data-answer="${o}">${o}</button>`).join("")}</div><div class="quiz-feedback" id="quizFeedback">先判断题目属于哪套知识体系，再选择答案。</div>`;
   document.querySelector("#nextQuiz").disabled=true;document.querySelectorAll(".quiz-option").forEach(b=>b.addEventListener("click",()=>answerQuiz(b)));
 }
 function answerQuiz(button){
   if(state.quiz.answered)return;state.quiz.answered=true;state.quizTotal++;const ok=button.dataset.answer===state.quiz.answer;if(ok)state.quizCorrect++;
   localStorage.setItem("liuyao-quiz-stats",JSON.stringify({correct:state.quizCorrect,total:state.quizTotal}));
   document.querySelectorAll(".quiz-option").forEach(b=>{b.disabled=true;if(b.dataset.answer===state.quiz.answer)b.classList.add("correct");});if(!ok)button.classList.add("wrong");
-  document.querySelector("#quizFeedback").innerHTML=`${ok?"回答正确。":"这次没有选对。"}<br>${state.quiz.feedback}`;document.querySelector("#quizCorrect").textContent=state.quizCorrect;document.querySelector("#quizTotal").textContent=state.quizTotal;document.querySelector("#nextQuiz").disabled=false;
+  document.querySelector("#quizFeedback").innerHTML=`${ok?"回答正确。":"这次没有选对。"}<br>${state.quiz.source?`<b>来源：${state.quiz.source}</b><br>`:""}${state.quiz.feedback}`;document.querySelector("#quizCorrect").textContent=state.quizCorrect;document.querySelector("#quizTotal").textContent=state.quizTotal;document.querySelector("#nextQuiz").disabled=false;
   updateProgress();
 }
 
@@ -623,11 +696,13 @@ function renderLearningTracking(){
     if(index) targets.set(`foundation-${index}`,heading);
   });
   targets.set("casting-workbench",document.querySelector("#casting .casting-workbench .panel-heading"));
-  const castingSections=document.querySelectorAll("#casting .section-block .section-heading");
-  targets.set("casting-relatives",castingSections[0]);
-  targets.set("casting-yongshen",castingSections[1]);
+  targets.set("casting-relatives",document.querySelector("#relativeCards")?.closest(".section-block")?.querySelector(".section-heading"));
+  targets.set("casting-yongshen",document.querySelector("#casting .yongshen-section .section-heading"));
+  targets.set("classics-najia",document.querySelector("#classicsNajia .section-heading"));
+  targets.set("classics-shiying",document.querySelector("#classicsShiYing .section-heading"));
   targets.set("branches-images",document.querySelector("#branches .page-intro"));
   targets.set("lecture0704-main",document.querySelector("#lecture0704 .page-intro"));
+  targets.set("lecture0718-main",document.querySelector("#lecture0718 .page-intro"));
 
   learningModules.forEach(([key,label])=>{
     const target=targets.get(key);
@@ -1008,6 +1083,6 @@ document.querySelector("#resetCast").addEventListener("click",()=>{state.cast=[]
 
 document.querySelectorAll("[data-map]").forEach(b=>b.addEventListener("click",()=>renderMap(b.dataset.map)));
 document.querySelectorAll("#scroll0718Shell .scroll-roller").forEach(button=>button.addEventListener("click",replay0718Scroll));
-renderPath();render0718Atlas();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderLearningTracking();initProgressDetail();updateProgress();
+renderPath();render0718Atlas();renderClassicsPreview();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
 initImmersiveMotion();
 if(["path","foundation","lecture0704","lecture0718","casting","branches","training"].includes(requestedInitialView))setView(requestedInitialView);
