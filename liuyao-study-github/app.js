@@ -899,6 +899,7 @@ function initImmersiveMotion(){
 
 
 const atlas0718State={palace:"乾",hexagram:null,contrast:0,contrastSide:null};
+let palace0718SwitchTimer=0;
 const contrast0718Pairs=[
   ["天地否","地天泰","阴阳不交 · 闭塞阻滞","阴阳交通 · 顺通和合"],
   ["水火既济","火水未济","当下已成 · 防物极必反","当下未成 · 变化仍在酝酿"],
@@ -938,8 +939,10 @@ function render0718Palace(palaceKey="乾",activeIndex=null){
   tabs.innerHTML=course0718.palaceOrder.map((key,index)=>{const p=course0718.palaces[key];return `<button type="button" data-palace0718="${key}" class="${key===palaceKey?"active":""} ${p.status==="pending-meaning"?"pending":""}"><b>${key}</b><small>${String(index+1).padStart(2,"0")} · ${p.element}${p.status==="pending-meaning"?" · 待补释义":""}</small></button>`}).join("");
   tabs.querySelectorAll("[data-palace0718]").forEach(button=>button.addEventListener("click",()=>{
     const next=button.dataset.palace0718;
+    clearTimeout(palace0718SwitchTimer);
+    tabs.querySelectorAll("[data-palace0718]").forEach(button=>button.classList.toggle("active",button.dataset.palace0718===next));
     content?.classList.add("is-switching");
-    setTimeout(()=>{render0718Palace(next,null);requestAnimationFrame(()=>content?.classList.remove("is-switching"));},120);
+    palace0718SwitchTimer=setTimeout(()=>{render0718Palace(next,null);requestAnimationFrame(()=>requestAnimationFrame(()=>content?.classList.remove("is-switching")));},180);
   }));
   if(Number.isInteger(activeIndex)){
     const h=palace.hexagrams[activeIndex];
