@@ -367,3 +367,79 @@ button,.branch-card,.map-switcher,.relationship-lab{position:relative;overflow:h
 @media(max-width:760px){.classics-learning-map{padding:24px 18px}.classics-learning-map>header{grid-template-columns:1fr}.classics-roadmap{grid-template-columns:1fr}.classics-roadmap article{min-height:auto;border-right:0;border-bottom:1px solid rgba(255,255,255,.12)}.classics-source-boundary{grid-template-columns:1fr}.classics-source-boundary i{height:38px}.classics-source-boundary i::before{content:"↓"}.najia-trigram-picker{grid-template-columns:repeat(2,1fr)}.najia-detail{padding:22px 16px}.najia-detail header{display:block}.najia-detail header p{margin-top:12px}.najia-zones{grid-template-columns:1fr}.najia-zones>i{writing-mode:initial;margin:18px 0}.najia-zones section>div{gap:5px}.najia-zones article{min-height:112px;padding:12px 6px}.najia-zones article strong{font-size:34px}.shiying-stages{grid-template-columns:repeat(2,1fr)}.shiying-detail{grid-template-columns:1fr 115px}.classics-role-chain header{display:block}.classics-role-chain header h3{margin-top:8px}.classics-role-chain>div{grid-template-columns:1fr}.classics-role-chain article{border-right:0;border-bottom:1px solid rgba(255,255,255,.13)}.training-panel{padding:20px}.quiz-panel .panel-heading{align-items:flex-start}.training-bank-summary{width:100%;flex-wrap:wrap}.training-bank-summary i{display:none}.training-module-filters{margin-inline:-4px}.quiz-panel .training-module-filters+.quiz-content{padding-top:18px}}
 @media(max-width:520px){.training-module-filters{grid-template-columns:1fr}.training-module-filters button:first-child{grid-column:auto}}
 @media(prefers-reduced-motion:reduce){.classics-roadmap article,.najia-trigram-picker button,.najia-zones article,.shiying-stages button{animation:none!important;transition:none!important}}
+
+/* 2026-07-23 · 单卦详情：六条爻线按上下文字边界紧凑居中 */
+.scroll-detail-glyph-stage{
+  height:167px;
+  margin:10px 0 9px;
+  display:grid;
+  place-items:center;
+}
+.scroll-detail-hexagram{
+  width:176px;
+  display:grid;
+  gap:16px;
+  filter:drop-shadow(0 8px 13px rgba(45,37,28,.12));
+  animation:gua-glyph-breathe 3.4s ease-in-out infinite;
+}
+.scroll-detail-yao{
+  display:block;
+  height:10px;
+  background:var(--scroll-ink);
+}
+.scroll-detail-yao.broken{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  background:transparent;
+}
+.scroll-detail-yao.broken b{
+  display:block;
+  background:var(--scroll-ink);
+}
+.scroll-palace-meta.is-hexagram-detail h3{
+  margin:0 0 8px;
+}
+.scroll-palace-meta.is-hexagram-detail .scroll-detail-block{
+  margin:10px 0;
+  padding:10px 0;
+}
+.scroll-palace-meta.is-hexagram-detail em{
+  padding-top:12px;
+}
+
+@media(max-width:1080px){
+  .scroll-detail-glyph-stage{
+    grid-row:2/5;
+    height:154px;
+  }
+  .scroll-detail-hexagram{
+    width:164px;
+    gap:14px;
+  }
+  .scroll-detail-yao{
+    height:9px;
+  }
+}
+
+@media(max-width:760px){
+  .scroll-detail-glyph-stage{
+    height:148px;
+    margin:9px 0 8px;
+  }
+  .scroll-detail-hexagram{
+    width:158px;
+    gap:13px;
+  }
+  .scroll-detail-yao{
+    height:9px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .scroll-detail-hexagram,
+  .scroll-detail-yao{
+    animation:none!important;
+    transition:none!important;
+  }
+}
