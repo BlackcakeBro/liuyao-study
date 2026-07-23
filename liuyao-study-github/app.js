@@ -4,8 +4,11 @@ const {
 } = window.LIUYAO_DATA;
 const courseTraining=window.LIUYAO_TRAINING;
 const siteParams=new URLSearchParams(location.search);
-const requestedInitialView=siteParams.get("view");
-const extendedEdition=siteParams.get("v")==="changsheng-ring-v3"||["lecture0704","lecture0718"].includes(requestedInitialView);
+const rawHash=decodeURIComponent(location.hash.slice(1));
+const hashParams=new URLSearchParams(location.hash.slice(1));
+const requestedInitialView=hashParams.get("view")||siteParams.get("view");
+const requestedAnchor=hashParams.get("anchor")||(!rawHash.includes("=")?rawHash:null);
+const extendedEdition=hashParams.get("edition")==="extended"||siteParams.get("v")==="changsheng-ring-v3"||["lecture0704","lecture0718"].includes(requestedInitialView);
 document.documentElement.dataset.siteEdition=extendedEdition?"extended":"classic";
 if(extendedEdition)document.querySelectorAll('[data-edition-only="classic"]').forEach(element=>element.remove());
 else document.querySelectorAll('[data-edition-only="extended"]').forEach(element=>element.remove());
@@ -443,7 +446,7 @@ function renderCast() {
   document.querySelector("#castMessage").textContent=state.cast.length<6?`下一次记录为第 ${state.cast.length+1} 爻（由下向上）`:`本卦已完成：${identifyHex(base)}。${state.cast.some(x=>x.moving)?"动爻已生成变卦。":"本次六爻皆静，无变卦。"}`;
 }
 function coinMarkup(face,flipDirection="",index=0){
-  return `<button class="coin ${face==="字"?"front":"back"} ${flipDirection}" data-coin-index="${index}" aria-label="铜钱${index+1}，当前${face}面"><span class="coin-face coin-front"></span><span class="coin-face coin-back"></span><b>${face}</b></button>`;
+  return `<button class="coin ${face==="字"?"front":"back"} ${flipDirection}" data-coin-index="${index}" aria-label="乾隆通宝铜钱${index+1}，当前${face}面"><span class="coin-face coin-front"></span><span class="coin-face coin-back"></span><b>${face}</b></button>`;
 }
 function renderCoins(flippingIndex=-1,previousFace=""){
   const coins=state.castMode==="manual"?state.manualCoins:["字","背","字"];
@@ -1086,3 +1089,4 @@ document.querySelectorAll("#scroll0718Shell .scroll-roller").forEach(button=>but
 renderPath();render0718Atlas();renderClassicsPreview();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
 initImmersiveMotion();
 if(["path","foundation","lecture0704","lecture0718","casting","branches","training"].includes(requestedInitialView))setView(requestedInitialView);
+if(requestedAnchor)requestAnimationFrame(()=>requestAnimationFrame(()=>document.getElementById(requestedAnchor)?.scrollIntoView({block:"start"})));

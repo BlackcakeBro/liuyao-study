@@ -19,6 +19,13 @@ tags: [六爻, 网站, 可视化学习]
 
 第一版采用原生 HTML、CSS、JavaScript，无需安装依赖。
 
+## 线上版本
+
+- 旧版：`https://blackcakebro.github.io/liuyao-study/liuyao-study-github/`
+- 新版直连：`https://blackcakebro.github.io/liuyao-study/liuyao-study-github/#edition=extended&view=lecture0704&anchor=changshengOrbit`
+
+新版参数放在 URL 片段中，片段不会发送给服务器，因此新旧版请求同一份入口文档，避免查询字符串形成单独的 GitHub Pages 缓存请求。
+
 ## 运行
 
 在仓库根目录执行：
@@ -58,6 +65,14 @@ python3 -m http.server 4173 --directory "认知硬核库/六爻学习网站"
 - 每版讲义必须先完成逐页覆盖审计：[[讲义覆盖审计-2026-06-06|2026-06-06 讲义覆盖审计]]。
 - 后续古籍内容必须标记书名、章节、原文与现代解释。
 - 陈师讲义、古籍、整理推导、个人案例四类来源分开显示。
+
+## 铜钱图像
+
+- 图像：`Coin. Qing Dynasty. Qianlong Tongbao. Bao Quan. obv/rev`
+- 来源：Murberget Länsmuseet Västernorrland，经 Wikimedia Commons 获取。
+- 正面：https://commons.wikimedia.org/wiki/File:Coin._Qing_Dynasty._Qianlong_Tongbao._Bao_Quan._obv.jpg
+- 背面：https://commons.wikimedia.org/wiki/File:Coin._Qing_Dynasty._Qianlong_Tongbao._Bao_Quan._rev.jpg
+- 授权状态：Public domain。网站内使用的是缩小并内嵌的乾隆通宝宝泉局正反面图像。
 
 ## 本地掌握度
 
