@@ -1138,12 +1138,14 @@ function render0725Course(){
   document.querySelector("#relative0725Focus").innerHTML=course0725.focusRelatives.map(item=>`
     <article>
       <header><span>${item.relation}</span><h3>${item.name}爻</h3><strong>${item.tone}</strong></header>
-      <div class="relative-layers">
-        <section><b>人物</b><p>${item.people.join(" · ")}</p></section>
-        <section><b>事物</b><p>${item.things.join(" · ")}</p></section>
-        <section><b>状态</b><p>${item.states.join(" · ")}</p></section>
+      <div class="relative-card-body">
+        <div class="relative-layers">
+          <section><b>人物</b><p>${item.people.join(" · ")}</p></section>
+          <section><b>事物</b><p>${item.things.join(" · ")}</p></section>
+          <section><b>状态</b><p>${item.states.join(" · ")}</p></section>
+        </div>
       </div>
-      <footer><b>使用边界</b><p>${item.boundary}</p></footer>
+      <footer class="relative-card-boundary"><b>使用边界</b><p>${item.boundary}</p></footer>
     </article>`).join("");
   document.querySelector("#judgment0725Rules").innerHTML=course0725.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
   document.querySelector("#next0725Lesson").innerHTML=`<b>后续课堂：</b>${course0725.nextLesson}`;
