@@ -332,18 +332,51 @@ test("relative cards and judgment boundary expose stable aligned regions",()=>{
       1,
       `${name}卡片需要且只能有一个 relative-card-boundary 区域`
     );
+    assert.equal(
+      tagsWithClass(card,"relative-layers").filter(tag=>/^<dl\b/.test(tag)).length,
+      1,
+      `${name}卡片的三层取象必须使用一个语义化定义列表`
+    );
+    assert.equal((card.match(/<dt\b/g)??[]).length,3,`${name}卡片必须包含三项取象名称`);
+    assert.equal((card.match(/<dd\b/g)??[]).length,3,`${name}卡片必须包含三项取象内容`);
   }
   assert.deepEqual(cardNames,new Set(["父母","官鬼"]));
-  baseRuleMatching(
+  const cardRule=baseRuleMatching(
     ".relative-focus-grid>article",
     body=>{
       const rule=declarations(body);
-      return rule.get("display")==="grid"&&/\b1fr\b/.test(rule.get("grid-template-rows")??"");
+      return rule.get("display")==="grid"
+        &&/^auto\s+minmax\([^)]*1fr\)\s+auto$/.test(rule.get("grid-template-rows")??"");
     },
-    "display and stable header/body/boundary rows must coexist in the base card rule"
+    "fallback card rows must let the header and boundary grow"
   );
-  baseRuleMatching(".relative-card-body",body=>/min-(?:block-size|height)\s*:/.test(body));
-  baseRuleMatching(".relative-card-boundary",body=>/min-(?:block-size|height)\s*:/.test(body));
+  assert.doesNotMatch(cardRule,/overflow\s*:\s*hidden/,"relative cards must not clip enlarged copy");
+  assert.ok(
+    parsedCss.some(rule=>
+      rule.selectors.includes(normalizedSelector(".relative-focus-grid"))
+      &&rule.contexts.some(context=>/^@supports\b/.test(context)&&/subgrid/.test(context))
+      &&/grid-template-rows\s*:\s*auto\s+minmax\([^)]*1fr\)\s+auto/.test(rule.body)
+    ),
+    "desktop focus grid must own three growth-capable shared tracks"
+  );
+  assert.ok(
+    parsedCss.some(rule=>
+      rule.selectors.includes(normalizedSelector(".relative-focus-grid>article"))
+      &&rule.contexts.some(context=>/^@supports\b/.test(context)&&/subgrid/.test(context))
+      &&/grid-row\s*:\s*span\s+3/.test(rule.body)
+      &&/grid-template-rows\s*:\s*subgrid/.test(rule.body)
+    ),
+    "desktop cards must span and subgrid the shared header/body/boundary tracks"
+  );
+  assert.ok(
+    parsedCss.some(rule=>
+      rule.selectors.includes(normalizedSelector(".relative-focus-grid>article"))
+      &&rule.contexts.some(context=>/^@media\b/.test(context)&&/max-width\s*:\s*1000px/.test(context))
+      &&/grid-row\s*:\s*auto/.test(rule.body)
+      &&/grid-template-rows\s*:\s*auto\s+minmax\([^)]*1fr\)\s+auto/.test(rule.body)
+    ),
+    "single-column cards must reset to independent growth-capable rows"
+  );
 
   const judgmentSections=[...html.matchAll(/<section\b[^>]*class="[^"]*\bjudgment-boundary\b[^"]*"[^>]*>[\s\S]*?<\/section>/g)]
     .map(match=>match[0]);

@@ -1139,11 +1139,11 @@ function render0725Course(){
     <article>
       <header><span>${item.relation}</span><h3>${item.name}爻</h3><strong>${item.tone}</strong></header>
       <div class="relative-card-body">
-        <div class="relative-layers">
-          <section><b>人物</b><p>${item.people.join(" · ")}</p></section>
-          <section><b>事物</b><p>${item.things.join(" · ")}</p></section>
-          <section><b>状态</b><p>${item.states.join(" · ")}</p></section>
-        </div>
+        <dl class="relative-layers">
+          <div><dt>人物</dt><dd>${item.people.join(" · ")}</dd></div>
+          <div><dt>事物</dt><dd>${item.things.join(" · ")}</dd></div>
+          <div><dt>状态</dt><dd>${item.states.join(" · ")}</dd></div>
+        </dl>
       </div>
       <footer class="relative-card-boundary"><b>使用边界</b><p>${item.boundary}</p></footer>
     </article>`).join("");
