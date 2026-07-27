@@ -462,4 +462,13 @@ test("classics roadmap progress is semantic and independent of display wording",
   );
   baseRuleMatching(".classics-roadmap .learned small",body=>/background\s*:/.test(body)&&/color\s*:/.test(body));
   baseRuleMatching(".classics-roadmap .preview small",body=>/background\s*:/.test(body)&&/color\s*:/.test(body));
+
+  const coupledAssetVersions=[
+    ...html.matchAll(/(?:href|src)="\.\/(?:styles\.css|training-bank\.js|app\.js)\?v=([^"]+)"/g)
+  ].map(match=>match[1]);
+  assert.deepEqual(
+    coupledAssetVersions,
+    Array(3).fill("20260727-roadmap-progress-v2"),
+    "roadmap data, renderer, and styling must ship with one fresh cache version"
+  );
 });
