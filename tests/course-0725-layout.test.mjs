@@ -271,6 +271,41 @@ test("single-hexagram detail moves as one consistently sized content group",()=>
     /grid-template-columns\s*:\s*1fr\s+auto/,
     "mobile header must retain its established brand layout"
   );
+  const mobileHeader=declarations(responsiveRule(".site-header",760));
+  assert.equal(
+    mobileHeader.get("backdrop-filter"),
+    "none",
+    "mobile header must not establish a containing block that traps its fixed navigation"
+  );
+  assert.equal(
+    mobileHeader.get("-webkit-backdrop-filter"),
+    "none",
+    "mobile Safari must not trap fixed navigation inside the sticky header"
+  );
+  assert.match(
+    mobileHeader.get("background")??"",
+    /rgba?\(/,
+    "mobile header must retain an opaque or near-opaque reading surface without blur"
+  );
+  const mobileNav=declarations(responsiveRule(".main-nav",760));
+  assert.equal(mobileNav.get("position"),"fixed","mobile navigation must remain viewport-fixed");
+  assert.equal(mobileNav.get("left"),"12px","mobile navigation must stay inside the left viewport edge");
+  assert.equal(mobileNav.get("right"),"12px","mobile navigation must stay inside the right viewport edge");
+  assert.match(
+    mobileNav.get("bottom")??"",
+    /env\(safe-area-inset-bottom/,
+    "mobile navigation must clear the viewport safe area"
+  );
+  assert.equal(
+    mobileNav.get("overflow-x"),
+    "auto",
+    "mobile navigation must scroll internally instead of widening the page"
+  );
+  assert.match(
+    responsiveRule(".nav-item",760),
+    /flex\s*:\s*0\s+0\s+auto/,
+    "mobile navigation labels must remain readable rather than shrink and clip"
+  );
 });
 
 test("07-25 six-relative relationships use one accessible SVG with distinct sheng and ke edges",()=>{
@@ -491,7 +526,7 @@ test("classics roadmap progress is semantic and independent of display wording",
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(3).fill("20260727-tablet-layout-v3"),
+    Array(3).fill("20260727-mobile-nav-v4"),
     "roadmap data, renderer, and styling must ship with one fresh cache version"
   );
 });
