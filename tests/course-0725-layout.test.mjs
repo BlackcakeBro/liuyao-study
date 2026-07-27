@@ -222,6 +222,25 @@ test("single-hexagram detail moves as one consistently sized content group",()=>
   assert.equal(fixedSize.get("min-height"),fixedSize.get("height"));
   assert.equal(fixedSize.get("height"),fixedSize.get("max-height"));
   assert.ok(contentRule);
+
+  const responsiveRule=(selector,width)=>parsedCss.find(rule=>
+    rule.selectors.includes(normalizedSelector(selector))&&
+    rule.contexts.some(context=>context.includes(`max-width:${width}px`))
+  )?.body??"";
+  const tabletOverview=declarations(responsiveRule(".scroll-palace-meta",1080));
+  assert.equal(tabletOverview.get("min-height"),"auto","responsive palace overviews must remain content-sized");
+  assert.equal(tabletOverview.get("height"),"auto","responsive palace overviews must not inherit the fixed detail height");
+  assert.equal(tabletOverview.get("max-height"),"none","responsive palace overviews must not leave fixed-height blank gaps");
+  assert.match(
+    responsiveRule(".scroll-detail-content",1080),
+    /grid-column\s*:\s*1\s*\/\s*-1/,
+    "tablet detail content must span the complete parent width"
+  );
+  assert.match(
+    responsiveRule(".scroll-palace-meta.is-hexagram-detail",760),
+    /grid-template-columns\s*:\s*1fr/,
+    "mobile detail mode must reset inherited parent columns"
+  );
 });
 
 test("07-25 six-relative relationships use one accessible SVG with distinct sheng and ke edges",()=>{
