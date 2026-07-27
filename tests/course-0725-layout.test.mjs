@@ -214,13 +214,14 @@ test("single-hexagram detail moves as one consistently sized content group",()=>
     "the base content-group rule must consume the shared vertical offset"
   );
 
-  const fixedSize=declarations(containerRule);
-  assert.ok(
-    fixedSize.has("min-height")&&fixedSize.has("height")&&fixedSize.has("max-height"),
-    "the same base detail-container rule must retain its min/height/max sizing contract"
-  );
-  assert.equal(fixedSize.get("min-height"),fixedSize.get("height"));
-  assert.equal(fixedSize.get("height"),fixedSize.get("max-height"));
+  const detailSize=declarations(baseRuleMatching(
+    ".scroll-palace-meta.is-hexagram-detail",
+    body=>/min-height\s*:/.test(body)&&/height\s*:\s*auto/.test(body)&&/max-height\s*:\s*none/.test(body),
+    "detail mode must co-locate a consistent minimum with growth-safe height declarations"
+  ));
+  assert.ok(detailSize.has("min-height"),"detail mode needs a stable visual minimum");
+  assert.equal(detailSize.get("height"),"auto");
+  assert.equal(detailSize.get("max-height"),"none");
   assert.ok(contentRule);
 
   const responsiveRule=(selector,width)=>parsedCss.find(rule=>
@@ -231,6 +232,12 @@ test("single-hexagram detail moves as one consistently sized content group",()=>
   assert.equal(tabletOverview.get("min-height"),"auto","responsive palace overviews must remain content-sized");
   assert.equal(tabletOverview.get("height"),"auto","responsive palace overviews must not inherit the fixed detail height");
   assert.equal(tabletOverview.get("max-height"),"none","responsive palace overviews must not leave fixed-height blank gaps");
+  for(const width of [1080,760]){
+    const detail=declarations(responsiveRule(".scroll-palace-meta.is-hexagram-detail",width));
+    assert.ok(detail.has("min-height"),`${width}px detail mode needs a stable visual minimum`);
+    assert.equal(detail.get("height"),"auto",`${width}px detail mode must grow with wrapped content`);
+    assert.equal(detail.get("max-height"),"none",`${width}px detail mode must not clip longer content`);
+  }
   assert.match(
     responsiveRule(".scroll-detail-content",1080),
     /grid-column\s*:\s*1\s*\/\s*-1/,
