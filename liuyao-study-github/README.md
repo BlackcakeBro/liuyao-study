@@ -1,11 +1,12 @@
-# 六爻学习网站副本：2026-07-04 课堂核查版
+# 六爻学习网站新版：课堂核查版
 
-这是从原 `六爻学习网站` 复制出的独立副本，用于预览 2026-07-04 陈师课堂录制整理内容。
+这是与经典版隔离展示的课程新版，已同步核查至 2026-07-25 陈师课堂。
 
-- 原网站目录未改动。
-- 新增导航：`07/04新课`。
+- 默认 URL 继续显示经典版，不展示新版课程页。
+- 新版新增：旺衰关系、八宫卦谱、装卦六亲。
+- 7 月 25 日补完兑宫八卦取象，并整理装支原理、世应、六亲生克、父母爻与官鬼爻。
+- 子孙、妻财、兄弟仍明确标为待后续课堂。
 - 疾病、孕育、婚恋案例只作为象意提示，不作为固定结论。
-- 确认无误后再考虑同步原网站或发布。
 
 ---
 type: website-project
@@ -22,7 +23,7 @@ tags: [六爻, 网站, 可视化学习]
 ## 线上版本
 
 - 旧版：`https://blackcakebro.github.io/liuyao-study/liuyao-study-github/`
-- 新版直连：`https://blackcakebro.github.io/liuyao-study/liuyao-study-github/#edition=extended&view=lecture0704&anchor=changshengOrbit`
+- 新版直连：`https://blackcakebro.github.io/liuyao-study/liuyao-study-github/#edition=extended&view=lecture0725`
 
 新版参数放在 URL 片段中，片段不会发送给服务器，因此新旧版请求同一份入口文档，避免查询字符串形成单独的 GitHub Pages 缓存请求。
 

@@ -3,14 +3,14 @@ import assert from "node:assert/strict";
 import vm from "node:vm";
 import fs from "node:fs";
 
-const source=["data.js","course-0718.js","training-bank.js"]
+const source=["data.js","course-0718.js","course-0725.js","training-bank.js"]
   .map(file=>fs.readFileSync(`liuyao-study-github/${file}`,"utf8"))
   .join("\n")+"\n;globalThis.__training=window.LIUYAO_TRAINING;";
 const sandbox={window:{}};
 vm.runInNewContext(source,sandbox);
 const training=sandbox.__training;
 
-test("audited question bank covers foundation, both taught courses, and ancient preview",()=>{
+test("audited question bank covers foundation, all taught courses, and ancient annotations",()=>{
   assert.ok(training);
   const counts=Object.fromEntries(training.modules.map(module=>[
     module.id,
@@ -19,10 +19,11 @@ test("audited question bank covers foundation, both taught courses, and ancient 
   assert.deepEqual(counts,{
     foundation:73,
     lecture0704:54,
-    lecture0718:140,
+    lecture0718:148,
+    lecture0725:26,
     classics:40
   });
-  assert.equal(training.bank.length,307);
+  assert.equal(training.bank.length,341);
   assert.equal(new Set(training.bank.map(question=>question.id)).size,training.bank.length);
 });
 
@@ -39,11 +40,12 @@ test("every question has a source, one answer and enough distinct distractors",(
   });
 });
 
-test("Dui palace is tested only for name, palace, order and element while its meanings remain pending",()=>{
+test("Dui palace includes eight classroom-sourced image questions after 07-25",()=>{
   const duiMeaningQuestions=training.bank.filter(question=>
     question.module==="lecture0718" && question.kind==="hexagram-cue" && question.palace==="兑"
   );
-  assert.equal(duiMeaningQuestions.length,0);
+  assert.equal(duiMeaningQuestions.length,8);
+  assert.ok(duiMeaningQuestions.every(question=>question.source==="陈师 2026-07-25"));
   const duiMembership=training.bank.filter(question=>
     question.module==="lecture0718" && question.kind==="palace-membership" && question.palace==="兑"
   );
@@ -52,7 +54,7 @@ test("Dui palace is tested only for name, palace, order and element while its me
 
 test("all course-image questions carry the non-deterministic interpretation boundary",()=>{
   const cueQuestions=training.bank.filter(question=>question.kind==="hexagram-cue");
-  assert.equal(cueQuestions.length,56);
+  assert.equal(cueQuestions.length,64);
   cueQuestions.forEach(question=>assert.match(question.feedback,/不可脱离用神、旺衰与全卦/));
 });
 

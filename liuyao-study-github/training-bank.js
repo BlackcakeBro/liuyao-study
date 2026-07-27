@@ -4,19 +4,20 @@
     {id:"foundation",label:"基础关系",short:"基础"},
     {id:"lecture0704",label:"旺衰与地支关系",short:"07·04"},
     {id:"lecture0718",label:"起卦与八宫卦谱",short:"07·18"},
-    {id:"classics",label:"古籍装卦预习",short:"古籍"}
+    {id:"lecture0725",label:"装卦与六亲取象",short:"07·25"},
+    {id:"classics",label:"古籍装卦校注",short:"古籍"}
   ];
   const classics={
     source:"《增删卜易》卷一",
-    boundary:"古籍只用于预习下一步结构；陈师讲授后，以课堂口径修订。",
+    boundary:"已进入课堂的结构以陈师口径为主；完整纳甲表等细节继续标为古籍校注，不冒充课堂逐项讲授。",
     chapterOrder:["八卦与占卦法","八宫六十四卦","浑天甲子","六亲","世应","动变","用神与元忌仇"],
     roadmap:[
       {n:"01",title:"起卦与爻位",state:"陈师已讲",detail:"三钱定爻、初爻至上爻、内外卦与动变。"},
-      {n:"02",title:"八宫六十四卦",state:"陈师已讲",detail:"七宫取象已讲，兑宫卦名与宫位已列，取象待续。"},
-      {n:"03",title:"浑天甲子",state:"古籍预习",detail:"把内外经卦逐爻装入地支与五行。"},
-      {n:"04",title:"六亲",state:"古籍预习",detail:"以宫五行为“我”，把各爻五行翻译为六亲。"},
-      {n:"05",title:"世应",state:"古籍预习",detail:"按本宫、一世至归魂的序位定位世爻，应爻与世爻相隔两位。"},
-      {n:"06",title:"动变与取用",state:"古籍预习",detail:"先识动变，再按占问取用神，继续看元神、忌神、仇神。"}
+      {n:"02",title:"八宫六十四卦",state:"陈师已讲",detail:"八宫归属、宫内序位及八宫核心取象已经讲完。"},
+      {n:"03",title:"浑天甲子",state:"课堂原理 + 古籍校注",detail:"课堂已讲内外卦固定装支原理；完整逐爻表仍作古籍校注。"},
+      {n:"04",title:"六亲",state:"陈师讲至父母、官鬼",detail:"六亲生克链已讲；父母、官鬼已展开，子孙、妻财、兄弟待续。"},
+      {n:"05",title:"世应",state:"陈师已讲",detail:"世为求测者，应为所测或对方；应与世中间隔两爻。"},
+      {n:"06",title:"动变与取用",state:"古籍预习",detail:"动变基础已讲；按占问取用神及元忌仇关系仍待课程推进。"}
     ],
     najia:[
       {trigram:"乾",inner:["子水","寅木","辰土"],outer:["午火","申金","戌土"]},
@@ -114,18 +115,66 @@
     add({id:`0718-palace-element-${key}`,module:"lecture0718",kind:"palace-element",source:"陈师 2026-07-18",question:`${key}宫八卦的宫五行是什么？`,answer:palace.element,candidates:cycle,feedback:`${key}宫八卦俱属${palace.element}。`});
     palace.hexagrams.forEach((hexagram,index)=>{
       add({id:`0718-membership-${hexagram[0]}`,module:"lecture0718",kind:"palace-membership",palace:key,source:"陈师 2026-07-18",question:`“${hexagram[0]}”属于八宫中的哪一宫？`,answer:`${key}宫`,candidates:palaceChoices,feedback:`${hexagram[0]}属${key}宫，为宫内“${course0718.palaceStages[index]}”序位；宫五行${palace.element}。`});
-      if(palace.status==="verified")add({id:`0718-cue-${hexagram[0]}`,module:"lecture0718",kind:"hexagram-cue",palace:key,source:"陈师 2026-07-18",question:`按陈师课堂取象，哪组核心提示属于“${hexagram[0]}”？`,answer:hexagram[2],candidates:course0718.palaceOrder.filter(palaceKey=>course0718.palaces[palaceKey].status==="verified").flatMap(palaceKey=>course0718.palaces[palaceKey].hexagrams.map(item=>item[2])),feedback:`${hexagram[0]}：${hexagram[2]}。这只是课堂取象提示，不可脱离用神、旺衰与全卦直接下结论。`});
+      if(palace.status==="verified")add({id:`0718-cue-${hexagram[0]}`,module:"lecture0718",kind:"hexagram-cue",palace:key,source:palace.source||"陈师 2026-07-18",question:`按陈师课堂取象，哪组核心提示属于“${hexagram[0]}”？`,answer:hexagram[2],candidates:course0718.palaceOrder.filter(palaceKey=>course0718.palaces[palaceKey].status==="verified").flatMap(palaceKey=>course0718.palaces[palaceKey].hexagrams.map(item=>item[2])),feedback:`${hexagram[0]}：${hexagram[2]}。这只是课堂取象提示，不可脱离用神、旺衰与全卦直接下结论。`});
     });
   });
+
+  const source0725="陈师 2026-07-25";
+  const assemblyChoices=[...course0725.assemblyPrinciples.map(item=>item.cue),"先凭卦名直接定吉凶"];
+  course0725.assemblyPrinciples.forEach(item=>add({
+    id:`0725-assembly-${item.name}`,module:"lecture0725",kind:"assembly",source:source0725,
+    question:`装卦步骤“${item.name}”的课堂核心是什么？`,answer:item.cue,candidates:assemblyChoices,
+    feedback:`${item.name}：${item.detail}`
+  }));
+  const roleChoices0725=[...course0725.shiYingRoles.map(item=>item.role),"固定代表长辈","固定代表晚辈"];
+  course0725.shiYingRoles.forEach(item=>add({
+    id:`0725-shiying-${item.name}`,module:"lecture0725",kind:"shi-ying-role",source:source0725,
+    question:`本课中“${item.name}”首先代表什么？`,answer:item.role,candidates:roleChoices0725,
+    feedback:`${item.name}：${item.role}。${item.note}`
+  }));
+  const relativeNames=["父母","兄弟","子孙","妻财","官鬼"];
+  [...course0725.relativeCycles.generating,...course0725.relativeCycles.controlling].forEach((relation,index)=>{
+    const [from,to]=relation.split(index<5?"生":"克");
+    const verb=index<5?"生":"克";
+    add({
+      id:`0725-cycle-${verb}-${from}-${to}`,module:"lecture0725",kind:"relative-cycle",source:source0725,
+      question:`六亲生克链中，${from}${verb}什么？`,answer:to,candidates:relativeNames,
+      feedback:`完整关系为“${relation}”；必须放回两条闭环中记忆。`
+    });
+  });
+  const layerChoices=course0725.focusRelatives.flatMap(item=>[item.people.join("、"),item.things.join("、"),item.states.join("、")]);
+  course0725.focusRelatives.forEach(item=>{
+    [["人物",item.people],["事物",item.things],["状态",item.states]].forEach(([layer,values])=>add({
+      id:`0725-${item.name}-${layer}`,module:"lecture0725",kind:"relative-image",source:source0725,
+      question:`按本课三层取象，哪组属于${item.name}爻的“${layer}”层？`,answer:values.join("、"),candidates:layerChoices,
+      feedback:`${item.name}爻 · ${layer}：${values.join("、")}。${item.boundary}`
+    }));
+  });
+  const boundaryChoices=[
+    ...course0725.focusRelatives.map(item=>item.boundary),
+    "只看六亲名称即可直接判断吉凶。",
+    "任何感情占都一律以官鬼代表男性伴侣。"
+  ];
+  course0725.focusRelatives.forEach(item=>add({
+    id:`0725-boundary-${item.name}`,module:"lecture0725",kind:"judgment-boundary",source:source0725,
+    question:`关于${item.name}爻，哪一条符合本课使用边界？`,answer:item.boundary,candidates:boundaryChoices,
+    feedback:item.boundary
+  }));
+  const ruleChoices=[...course0725.judgmentRules,"六亲名称本身已经包含固定吉凶。"];
+  course0725.judgmentRules.forEach((rule,index)=>add({
+    id:`0725-rule-${index+1}`,module:"lecture0725",kind:"judgment-rule",source:source0725,
+    question:"哪一条符合本课的六亲判断原则？",answer:rule,candidates:ruleChoices,
+    feedback:`${rule} ${course0725.nextLesson}`
+  }));
 
   const innerChoices=classics.najia.map(item=>item.inner.join(" → "));
   const outerChoices=classics.najia.map(item=>item.outer.join(" → "));
   classics.najia.forEach(item=>{
-    add({id:`classics-najia-${item.trigram}-inner`,module:"classics",kind:"najia",source:"《增删卜易》卷一 · 浑天甲子章",question:`${item.trigram}卦作为内卦时，由下向上装哪三支？`,answer:item.inner.join(" → "),candidates:innerChoices,feedback:`${item.trigram}在内卦，由下向上装${item.inner.join("、")}。这是古籍预习，待陈师讲授后按课堂口径修订。`});
-    add({id:`classics-najia-${item.trigram}-outer`,module:"classics",kind:"najia",source:"《增删卜易》卷一 · 浑天甲子章",question:`${item.trigram}卦作为外卦时，由下向上装哪三支？`,answer:item.outer.join(" → "),candidates:outerChoices,feedback:`${item.trigram}在外卦，由下向上装${item.outer.join("、")}。这是古籍预习，待陈师讲授后按课堂口径修订。`});
+    add({id:`classics-najia-${item.trigram}-inner`,module:"classics",kind:"najia",source:"《增删卜易》卷一 · 浑天甲子章",question:`${item.trigram}卦作为内卦时，由下向上装哪三支？`,answer:item.inner.join(" → "),candidates:innerChoices,feedback:`${item.trigram}在内卦，由下向上装${item.inner.join("、")}。课堂已讲固定装支原理；此完整序列来自古籍校注。`});
+    add({id:`classics-najia-${item.trigram}-outer`,module:"classics",kind:"najia",source:"《增删卜易》卷一 · 浑天甲子章",question:`${item.trigram}卦作为外卦时，由下向上装哪三支？`,answer:item.outer.join(" → "),candidates:outerChoices,feedback:`${item.trigram}在外卦，由下向上装${item.outer.join("、")}。课堂已讲固定装支原理；此完整序列来自古籍校注。`});
   });
   const shiChoices=classics.shiYing.map(item=>`${item.shi===6?"上":item.shi}爻（第${item.shi}爻）`);
-  classics.shiYing.forEach(item=>add({id:`classics-shiying-${item.stage}`,module:"classics",kind:"shi-ying",source:"《增删卜易》卷一 · 世应章",question:`八宫序位为“${item.stage}”时，世爻落在哪一爻？`,answer:`${item.shi===6?"上":item.shi}爻（第${item.shi}爻）`,candidates:shiChoices,feedback:`${item.stage}卦世在第${item.shi}爻；应爻与世爻相隔两位。此处先记定位骨架。`}));
+  classics.shiYing.forEach(item=>add({id:`classics-shiying-${item.stage}`,module:"classics",kind:"shi-ying",source:"《增删卜易》卷一 · 世应章",question:`八宫序位为“${item.stage}”时，世爻落在哪一爻？`,answer:`${item.shi===6?"上":item.shi}爻（第${item.shi}爻）`,candidates:shiChoices,feedback:`${item.stage}卦世在第${item.shi}爻；应与世中间隔两爻，也就是爻位相差三。此处先记定位骨架。`}));
   data.sixRelatives.forEach(relative=>add({id:`classics-relative-${relative.key}`,module:"classics",kind:"six-relative",source:"《增删卜易》卷一 · 六亲歌章",question:`古籍六亲定法中，“${relative.relation}”称为什么？`,answer:relative.key,candidates:data.sixRelatives.map(item=>item.key),feedback:`${relative.relation}为${relative.key}。六亲须以卦宫五行为“我”来推。`}));
   const yongshenChoices=data.yongshenTopics.map(item=>item.use);
   data.yongshenTopics.forEach((item,index)=>add({id:`classics-yongshen-${index+1}`,module:"classics",kind:"yongshen",source:"《增删卜易》卷一 · 用神章",question:`占问“${item.topic}”时，首先取什么为用神或主要观察点？`,answer:item.use,candidates:yongshenChoices,feedback:`此类占问先取${item.use}。${item.note}取准用神后仍要继续看旺衰、生克、冲合与动变。`}));

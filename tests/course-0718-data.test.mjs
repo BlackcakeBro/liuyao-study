@@ -16,8 +16,10 @@ test("eight palaces contain 64 unique hexagrams",()=>{
   course.palaceOrder.forEach(key=>assert.equal(course.palaces[key].hexagrams.length,8));
 });
 
-test("Dui palace is complete but all interpretations remain pending",()=>{
+test("Dui palace interpretations are completed from the 07-25 class",()=>{
   const dui=course.palaces["兑"];
   assert.deepEqual(Array.from(dui.hexagrams,x=>x[0]),["兑为泽","泽水困","泽地萃","泽山咸","水山蹇","地山谦","雷山小过","雷泽归妹"]);
-  assert.ok(dui.hexagrams.every(x=>x[2]==="待陈师下节课补充"));
+  assert.equal(dui.status,"verified");
+  assert.equal(dui.source,"陈师 2026-07-25");
+  assert.ok(dui.hexagrams.every(x=>!x.join("").includes("待陈师")));
 });

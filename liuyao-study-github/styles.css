@@ -436,10 +436,23 @@ button,.branch-card,.map-switcher,.relationship-lab{position:relative;overflow:h
   }
 }
 
-@media(prefers-reduced-motion:reduce){
-  .scroll-detail-hexagram,
-  .scroll-detail-yao{
-    animation:none!important;
-    transition:none!important;
-  }
-}
+    @media(prefers-reduced-motion:reduce){
+      .scroll-detail-hexagram,
+      .scroll-detail-yao{
+        animation:none!important;
+        transition:none!important;
+      }
+    }
+
+    /* 2026-07-27 · 07/25 装卦与六亲课堂 */
+    .lecture0725-intro{position:relative;overflow:hidden}.lecture0725-intro::after{content:"世 · 应";position:absolute;right:5%;bottom:-18px;color:rgba(112,56,43,.07);font:900 clamp(76px,11vw,150px)/1 "Songti SC";letter-spacing:.08em;pointer-events:none}
+    .lecture0725-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.lecture0725-grid article{min-width:0;padding:28px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.62),rgba(117,132,119,.08));box-shadow:0 18px 42px rgba(49,39,28,.08);animation:course0725-in .5s both;animation-delay:calc(var(--course-step)*.08s)}.lecture0725-grid small{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--paper);font-weight:800}.lecture0725-grid h3{margin:18px 0 6px;font-size:28px}.lecture0725-grid strong{color:var(--red);font-size:12px}.lecture0725-grid p{margin:15px 0 0;color:var(--muted);line-height:1.8}
+    .shiying-role-board{display:grid;grid-template-columns:1fr 64px 1fr;align-items:stretch}.shiying-role-board::before{content:"相隔三位";grid-column:2;grid-row:1;display:grid;place-items:center;writing-mode:vertical-rl;color:var(--muted);font-size:11px;letter-spacing:.12em}.shiying-role-board article{grid-row:1;display:grid;grid-template-columns:100px 1fr;align-items:center;gap:22px;min-height:190px;padding:28px;border:1px solid var(--line);background:rgba(255,255,255,.45)}.shiying-role-board article.shi{grid-column:1}.shiying-role-board article.ying{grid-column:3}.shiying-role-board article>span{display:grid;place-items:center;width:88px;height:88px;border-radius:50%;background:var(--red);color:#fff;font:900 45px "Songti SC"}.shiying-role-board article.ying>span{background:var(--wood)}.shiying-role-board strong{font:800 24px "Songti SC"}.shiying-role-board p{color:var(--muted);line-height:1.7}
+    .relative-cycle-board{display:grid;grid-template-columns:1fr 1fr;gap:16px}.relative-cycle-board article{min-width:0;padding:26px;border:1px solid var(--line);background:#211e19;color:var(--paper)}.relative-cycle-board article.ke{background:#f4eee3;color:var(--ink)}.relative-cycle-board header{display:flex;justify-content:space-between;align-items:center;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.15)}.relative-cycle-board .ke header{border-color:var(--line)}.relative-cycle-board header span{font:800 24px "Songti SC"}.relative-cycle-board header small{color:#d7a28f}.relative-cycle-board .ke header small{color:var(--red)}.relative-cycle-board article>div{display:grid;gap:10px;margin-top:18px}.relative-cycle-board b{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px}.relative-cycle-board i{color:#d7a28f;font-style:normal}.relative-cycle-board .ke i{color:var(--red)}
+    .relative-focus-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.relative-focus-grid>article{min-width:0;border:1px solid var(--line);background:rgba(255,255,255,.5);box-shadow:var(--shadow)}.relative-focus-grid header{padding:28px;border-bottom:1px solid var(--line)}.relative-focus-grid header span{color:var(--red);font-size:11px;font-weight:800}.relative-focus-grid h3{margin:7px 0;font-size:38px}.relative-focus-grid header strong{color:var(--wood);font-size:13px}.relative-layers{display:grid;grid-template-columns:repeat(3,1fr)}.relative-layers section{min-width:0;padding:20px;border-right:1px solid var(--line)}.relative-layers section:last-child{border:0}.relative-layers b{color:var(--red);font-size:12px}.relative-layers p{color:var(--muted);font-size:13px;line-height:1.75;overflow-wrap:anywhere}.relative-focus-grid footer{padding:20px 28px;background:rgba(31,28,23,.05)}.relative-focus-grid footer b{font-size:11px}.relative-focus-grid footer p{margin:8px 0 0;color:var(--muted);line-height:1.7;font-size:13px}
+    .judgment-boundary{display:grid;grid-template-columns:minmax(220px,.8fr) 1.2fr;gap:22px 48px;background:linear-gradient(120deg,#29231c,#4c3b2b);color:var(--paper)}.judgment-boundary span{color:#d9a48f;font-size:11px;font-weight:800}.judgment-boundary h2{margin-top:8px;font-size:clamp(26px,3vw,42px)}.judgment-boundary ul{margin:0;padding-left:20px;color:#d6cbbb;line-height:2}.judgment-boundary>p{grid-column:1/-1;margin:0;padding-top:20px;border-top:1px solid rgba(255,255,255,.15);color:#d6cbbb}.judgment-boundary>p b{color:#d9a48f}
+    @keyframes course0725-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+    @media(max-width:1000px){.lecture0725-grid{grid-template-columns:1fr}.relative-focus-grid{grid-template-columns:1fr}}
+    @media(max-width:760px){.lecture0725-grid{grid-template-columns:1fr}.shiying-role-board{grid-template-columns:1fr}.shiying-role-board::before{grid-column:1;grid-row:2;height:44px;writing-mode:initial}.shiying-role-board article.shi,.shiying-role-board article.ying{grid-column:1}.shiying-role-board article.shi{grid-row:1}.shiying-role-board article.ying{grid-row:3}.relative-cycle-board{grid-template-columns:1fr}.relative-layers{grid-template-columns:1fr}.relative-layers section{border-right:0;border-bottom:1px solid var(--line)}.judgment-boundary{grid-template-columns:1fr}.judgment-boundary>p{grid-column:1}.lecture0725-grid article,.relative-focus-grid header{padding:22px}}
+    @media(max-width:520px){.shiying-role-board article{grid-template-columns:72px 1fr;padding:20px}.shiying-role-board article>span{width:68px;height:68px;font-size:36px}}
+    @media(prefers-reduced-motion:reduce){.lecture0725-grid article{animation:none!important}}

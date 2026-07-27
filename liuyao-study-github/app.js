@@ -8,12 +8,12 @@ const rawHash=decodeURIComponent(location.hash.slice(1));
 const hashParams=new URLSearchParams(location.hash.slice(1));
 const requestedInitialView=hashParams.get("view")||siteParams.get("view");
 const requestedAnchor=hashParams.get("anchor")||(!rawHash.includes("=")?rawHash:null);
-const extendedEdition=hashParams.get("edition")==="extended"||siteParams.get("v")==="changsheng-ring-v3"||["lecture0704","lecture0718"].includes(requestedInitialView);
+const extendedEdition=hashParams.get("edition")==="extended"||siteParams.get("v")==="changsheng-ring-v3"||["lecture0704","lecture0718","lecture0725"].includes(requestedInitialView);
 document.documentElement.dataset.siteEdition=extendedEdition?"extended":"classic";
 if(extendedEdition)document.querySelectorAll('[data-edition-only="classic"]').forEach(element=>element.remove());
 else document.querySelectorAll('[data-edition-only="extended"]').forEach(element=>element.remove());
 if(!extendedEdition){
-  document.querySelectorAll('[data-view="lecture0704"],[data-view="lecture0718"],#lecture0704,#lecture0718').forEach(element=>element.remove());
+  document.querySelectorAll('[data-view="lecture0704"],[data-view="lecture0718"],[data-view="lecture0725"],#lecture0704,#lecture0718,#lecture0725').forEach(element=>element.remove());
   document.title="爻象研习 · 六爻学习系统";
   document.querySelector(".brand small").textContent="从基础关系到断卦实证";
 }
@@ -84,7 +84,7 @@ const state = {
   castMode:"random", manualCoins:["字","背","字"],quizModule:extendedEdition?"lecture0718":"classic"
 };
 const learningModules = [
-  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["classics-najia","纳甲装支预习"],["classics-shiying","世应定位预习"]]:[]),
+  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦与六亲取象"],["classics-najia","纳甲装支校注"],["classics-shiying","世应定位校注"]]:[]),
   ["foundation-01","术数定位"],["foundation-02","五行能量与万物象"],["foundation-03","五行生克与六亲"],
   ["foundation-04","河图洛书与先后天八卦"],["foundation-05","四时旺衰"],["foundation-06","地支时空"],
   ["foundation-07","八卦体系"],["foundation-08","十天干"],["foundation-09","五味五脏五常"],
@@ -706,6 +706,7 @@ function renderLearningTracking(){
   targets.set("branches-images",document.querySelector("#branches .page-intro"));
   targets.set("lecture0704-main",document.querySelector("#lecture0704 .page-intro"));
   targets.set("lecture0718-main",document.querySelector("#lecture0718 .page-intro"));
+  targets.set("lecture0725-main",document.querySelector("#lecture0725 .page-intro"));
 
   learningModules.forEach(([key,label])=>{
     const target=targets.get(key);
@@ -1075,6 +1076,36 @@ function render0718Atlas(){
   render0718Contrasts(atlas0718State.contrast,atlas0718State.contrastSide);
 }
 
+function render0725Course(){
+  const assembly=document.querySelector("#assembly0725Grid");
+  if(!assembly||typeof course0725==="undefined")return;
+  assembly.innerHTML=course0725.assemblyPrinciples.map((item,index)=>`
+    <article style="--course-step:${index}">
+      <small>0${index+1}</small><h3>${item.name}</h3><strong>${item.cue}</strong><p>${item.detail}</p>
+    </article>`).join("");
+  document.querySelector("#shiying0725Roles").innerHTML=course0725.shiYingRoles.map((item,index)=>`
+    <article class="${index===0?"shi":"ying"}"><span>${item.name}</span><div><strong>${item.role}</strong><p>${item.note}</p></div></article>`).join("");
+  const cycleMarkup=(label,tone,items)=>`
+    <article class="${tone}"><header><span>${label}</span><small>${tone==="sheng"?"连续助益":"连续制约"}</small></header>
+      <div>${items.map((item,index)=>`<b>${item}${index<items.length-1?"<i>→</i>":""}</b>`).join("")}</div>
+    </article>`;
+  document.querySelector("#relative0725Cycles").innerHTML=
+    cycleMarkup("相生闭环","sheng",course0725.relativeCycles.generating)+
+    cycleMarkup("相克闭环","ke",course0725.relativeCycles.controlling);
+  document.querySelector("#relative0725Focus").innerHTML=course0725.focusRelatives.map(item=>`
+    <article>
+      <header><span>${item.relation}</span><h3>${item.name}爻</h3><strong>${item.tone}</strong></header>
+      <div class="relative-layers">
+        <section><b>人物</b><p>${item.people.join(" · ")}</p></section>
+        <section><b>事物</b><p>${item.things.join(" · ")}</p></section>
+        <section><b>状态</b><p>${item.states.join(" · ")}</p></section>
+      </div>
+      <footer><b>使用边界</b><p>${item.boundary}</p></footer>
+    </article>`).join("");
+  document.querySelector("#judgment0725Rules").innerHTML=course0725.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
+  document.querySelector("#next0725Lesson").innerHTML=`<b>后续课堂：</b>${course0725.nextLesson}`;
+}
+
 document.querySelectorAll(".nav-item").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
 document.querySelectorAll("[data-jump]").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.jump)));
 document.querySelector("[data-view-link]").addEventListener("click",()=>setView("path"));
@@ -1097,7 +1128,7 @@ document.querySelector("#resetCast").addEventListener("click",()=>{state.cast=[]
 
 document.querySelectorAll("[data-map]").forEach(b=>b.addEventListener("click",()=>renderMap(b.dataset.map)));
 document.querySelectorAll("#scroll0718Shell .scroll-roller").forEach(button=>button.addEventListener("click",replay0718Scroll));
-renderPath();render0718Atlas();renderClassicsPreview();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
+renderPath();render0718Atlas();render0725Course();renderClassicsPreview();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
 initImmersiveMotion();
-if(["path","foundation","lecture0704","lecture0718","casting","branches","training"].includes(requestedInitialView))setView(requestedInitialView);
+if(["path","foundation","lecture0704","lecture0718","lecture0725","casting","branches","training"].includes(requestedInitialView))setView(requestedInitialView);
 if(requestedAnchor)requestAnimationFrame(()=>requestAnimationFrame(()=>document.getElementById(requestedAnchor)?.scrollIntoView({block:"start"})));

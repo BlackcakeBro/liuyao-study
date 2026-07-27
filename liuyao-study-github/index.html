@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="以陈师讲义为主线，结合古籍校注、万物类象与主动回忆训练的六爻学习网站。">
-  <title>爻象研习 · 六爻学习系统｜旺衰、地支关系与八宫卦谱</title>
+  <title>爻象研习 · 六爻学习系统｜旺衰、八宫卦谱与装卦六亲</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./styles.css?v=20260723-hexagram-vector-v9">
+  <link rel="stylesheet" href="./styles.css?v=20260727-course-0725-v1">
 </head>
 <body>
   <div class="paper-noise"></div>
@@ -21,6 +21,7 @@
       <button class="nav-item" data-view="foundation">基础讲义</button>
       <button class="nav-item" data-view="lecture0704">旺衰关系</button>
       <button class="nav-item" data-view="lecture0718">八宫卦谱</button>
+      <button class="nav-item" data-view="lecture0725">装卦六亲</button>
       <button class="nav-item" data-view="casting">古籍预习</button>
       <button class="nav-item" data-view="branches">地支象意</button>
       <button class="nav-item" data-view="training">训练</button>
@@ -382,6 +383,53 @@
       </section>
     </section>
 
+    <section class="view" id="lecture0725">
+      <div class="page-intro lecture0725-intro" data-learning-module="lecture0725-main">
+        <span class="eyebrow">LECTURE 2026-07-25 · ASSEMBLY & SIX RELATIVES</span>
+        <h1>从装地支到六亲取象</h1>
+        <p>兑宫取象补完后，课程正式进入装卦：先理解内外卦装支、世应与六亲的结构，再以父母爻、官鬼爻学习人物—事物—状态三层取象。</p>
+        <div class="audit-status-strip"><b>课堂主线</b><span>兑宫已补完</span><span>装支原理已讲</span><span>父母 / 官鬼已讲</span><span>三类六亲待续</span></div>
+      </div>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div><span class="section-index">01</span><h2>装卦三步：装支、定世应、安六亲</h2></div>
+          <p>顺序固定，但本课强调理解而非死背：软件可以排盘，判断仍须知道每个字段从何而来。</p>
+        </div>
+        <div class="lecture0725-grid" id="assembly0725Grid"></div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div><span class="section-index">02</span><h2>世应：先分“我”与“所测”</h2></div>
+          <p>世应只确定观察角色，不直接判断吉凶；应爻与世爻相差三位，中间隔两爻。</p>
+        </div>
+        <div class="shiying-role-board" id="shiying0725Roles"></div>
+      </section>
+
+      <section class="section-block cycle-section">
+        <div class="section-heading">
+          <div><span class="section-index">03</span><h2>六亲生克：必须熟记的两条链</h2></div>
+          <p>六亲不是孤立标签。先记相生和相克的完整闭环，判断时再看谁在帮助谁、约束谁。</p>
+        </div>
+        <div class="relative-cycle-board" id="relative0725Cycles"></div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div><span class="section-index">04</span><h2>父母爻与官鬼爻：三层取象</h2></div>
+          <p>人物、事物、状态可以并存；同一六亲落到考试、经营、疾病或感情，占义会随问题变化。</p>
+        </div>
+        <div class="relative-focus-grid" id="relative0725Focus"></div>
+      </section>
+
+      <section class="section-block judgment-boundary">
+        <div><span>判断边界</span><h2>没有脱离占问的固定吉凶</h2></div>
+        <ul id="judgment0725Rules"></ul>
+        <p id="next0725Lesson"></p>
+      </section>
+    </section>
+
 
     <section class="view" id="casting">
       <div class="page-intro" data-edition-only="classic">
@@ -392,8 +440,8 @@
 
       <div class="page-intro classics-current-intro" data-edition-only="extended">
         <span class="eyebrow">LECTURE FIRST · CLASSICS SECOND</span>
-        <h1>古籍预习 · 从八宫进入装卦</h1>
-        <p>起卦、爻位与八宫卦谱已经进入课堂主线；古籍预习继续向“纳甲装支—六亲—世应—动变—取用”推进。已讲与预习分层展示，不混作陈师课堂结论。</p>
+        <h1>古籍校注 · 补全装卦表格</h1>
+        <p>八宫、装支原理、世应与六亲已进入课堂主线；本页用《增删卜易》补全固定纳甲表和后续取用骨架。课堂已讲与古籍细表分层展示，不互相冒充。</p>
       </div>
 
       <div class="casting-roadmap" data-edition-only="classic">
@@ -404,12 +452,12 @@
       </div>
 
       <section class="classics-learning-map" data-edition-only="extended">
-        <header><span>当前学习界线</span><h2>陈师已讲在前，古籍预习在后</h2><p>《增删卜易》卷一的章节顺序与课程进度对齐，下一步只预习结构，不提前代替课堂断法。</p></header>
+        <header><span>当前学习界线</span><h2>课堂定口径，古籍补细表</h2><p>《增删卜易》卷一的章节顺序继续与课程进度对齐；未逐项讲授的表格明确标为古籍校注。</p></header>
         <div class="classics-roadmap" id="classicsRoadmap"></div>
         <div class="classics-source-boundary">
-          <article><b>陈师已讲</b><strong>起卦 · 爻位 · 八宫卦谱</strong><p>七宫核心取象已讲；兑宫只训练卦名、宫位与宫内序位，取象等待后续课堂。</p></article>
+          <article><b>陈师已讲</b><strong>八宫 · 装支原理 · 世应 · 六亲</strong><p>八宫核心取象已讲完；装支原理、世应角色、六亲生克及父母官鬼已进入课堂主线。</p></article>
           <i></i>
-          <article><b>古籍预习</b><strong>浑天甲子 · 六亲 · 世应 · 用神</strong><p>依据《增删卜易》卷一建立下一步骨架；陈师讲授后再校正术语、细节与使用边界。</p></article>
+          <article><b>古籍校注</b><strong>完整纳甲表 · 动变 · 用神</strong><p>固定装支细表仍据古籍核对；子孙、妻财、兄弟及后续取用等待课堂推进。</p></article>
         </div>
       </section>
 
@@ -529,7 +577,7 @@
       <div class="page-intro" data-edition-only="extended">
         <span class="eyebrow">AUDITED ACTIVE RECALL</span>
         <h1>课程训练场</h1>
-        <p>题目按知识来源分组：基础讲义、旺衰与地支关系、起卦与八宫卦谱、古籍装卦预习。兑宫取象尚未开课，因此只训练卦名、宫位和序位。</p>
+        <p>题目按知识来源分组：基础讲义、旺衰与地支关系、八宫卦谱、装卦六亲、古籍校注。兑宫及父母、官鬼取象按 7 月 25 日课堂口径训练。</p>
         <div class="training-bank-summary" id="trainingBankSummary"></div>
       </div>
       <div class="training-layout">
@@ -558,12 +606,13 @@
     <aside><button class="drawer-close" aria-label="关闭">×</button><div id="drawerContent"></div></aside>
   </div>
   <footer><span>爻象研习 · 六爻知识体系</span><p>关系 → 结构 → 力量 → 类象 → 验证</p></footer>
-  <script src="./data.js?v=20260722-scroll-v5"></script>
-  <script src="./course-0718.js?v=20260722-scroll-v5"></script>
-  <script src="./training-bank.js?v=20260722-classics-training-v6"></script>
+  <script src="./data.js?v=20260727-course-0725-v1"></script>
+  <script src="./course-0718.js?v=20260727-course-0725-v1"></script>
+  <script src="./course-0725.js?v=20260727-course-0725-v1"></script>
+  <script src="./training-bank.js?v=20260727-course-0725-v1"></script>
   <script src="./vendor/jquery-3.7.1.min.js"></script>
   <script src="./vendor/jquery.ripples-min.js"></script>
-  <script src="./app.js?v=20260723-hexagram-vector-v9"></script>
+  <script src="./app.js?v=20260727-course-0725-v1"></script>
   <script>
     window.addEventListener('load', function(){
       setTimeout(function(){

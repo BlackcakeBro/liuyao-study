@@ -9,7 +9,7 @@ const css=fs.readFileSync("liuyao-study-github/styles.css","utf8");
 test("extended classics preview advances from the taught eight palaces into na-jia and shi-ying",()=>{
   assert.match(html,/data-edition-only="classic"/);
   assert.match(html,/data-edition-only="extended"/);
-  assert.match(html,/古籍预习 · 从八宫进入装卦/);
+  assert.match(html,/古籍校注 · 补全装卦表格/);
   assert.match(html,/浑天甲子/);
   assert.match(html,/纳甲装支/);
   assert.match(html,/世应定位/);
