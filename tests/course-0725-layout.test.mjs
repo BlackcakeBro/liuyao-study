@@ -306,6 +306,30 @@ test("single-hexagram detail moves as one consistently sized content group",()=>
     /flex\s*:\s*0\s+0\s+auto/,
     "mobile navigation labels must remain readable rather than shrink and clip"
   );
+  const mobilePathHero=declarations(responsiveRule(".path-hero",760));
+  assert.equal(
+    mobilePathHero.get("grid-template-columns"),
+    "minmax(0,1fr)",
+    "mobile path content must use a shrinkable grid track instead of inheriting a wide intrinsic minimum"
+  );
+  assert.notEqual(
+    mobilePathHero.get("overflow"),
+    "hidden",
+    "mobile path containment must resize its content rather than clip it"
+  );
+  const pathCompass=declarations(baseRuleMatching(".path-compass",body=>
+    /width\s*:\s*440px/.test(body)&&/max-width\s*:\s*100%/.test(body)
+  ));
+  assert.equal(pathCompass.get("width"),"440px","the path compass needs one stable logical coordinate system");
+  const mobileCompass=declarations(responsiveRule(".path-compass",760));
+  assert.equal(mobileCompass.get("max-width"),"none","mobile orbit coordinates must retain their 440px logical canvas");
+  assert.match(
+    mobileCompass.get("zoom")??"",
+    /min\(\.82\s*,\s*calc\(\(100vw\s*-\s*30px\)\s*\/\s*440px\)\)/,
+    "mobile compass layout and its fixed orbit coordinates must scale together to the available viewport"
+  );
+  assert.equal(mobileCompass.get("transform"),"none","mobile containment must not use paint-only scaling");
+  assert.notEqual(mobileCompass.get("overflow"),"hidden","mobile compass controls must be resized, not clipped");
 });
 
 test("07-25 six-relative relationships use one accessible SVG with distinct sheng and ke edges",()=>{
@@ -526,7 +550,7 @@ test("classics roadmap progress is semantic and independent of display wording",
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(3).fill("20260727-mobile-nav-v4"),
+    Array(3).fill("20260727-mobile-containment-v5"),
     "roadmap data, renderer, and styling must ship with one fresh cache version"
   );
 });
