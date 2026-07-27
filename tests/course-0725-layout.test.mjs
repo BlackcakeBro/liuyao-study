@@ -397,6 +397,10 @@ test("relative cards and judgment boundary expose stable aligned regions",()=>{
 
 test("classics roadmap progress is semantic and independent of display wording",()=>{
   const roadmap=loadTraining().classics.roadmap;
+  assert.ok(
+    roadmap.every(step=>["learned","preview"].includes(step.progress)),
+    "every roadmap record must carry a recognized semantic progress value"
+  );
   for(const title of ["浑天甲子","六亲"]){
     const entry=roadmap.find(step=>step.title===title);
     assert.ok(entry,`${title} roadmap record is missing`);
@@ -405,6 +409,11 @@ test("classics roadmap progress is semantic and independent of display wording",
 
   const renderRoadmapStates=progresses=>{
     const sharedStep={n:"01",title:"同一标题",state:"完全相同的显示文字",detail:"同一说明"};
+    const properties=new Map();
+    const roadmapNode={
+      innerHTML:"",
+      style:{setProperty:(name,value)=>properties.set(name,value)}
+    };
     const nodes=renderWithDom(
       "renderClassicsPreview",
       {
@@ -415,7 +424,7 @@ test("classics roadmap progress is semantic and independent of display wording",
         }}
       },
       [
-        ["#classicsRoadmap",domNode()],
+        ["#classicsRoadmap",roadmapNode],
         ["#najiaTrigramPicker",null],
         ["#najiaDetail",null],
         ["#shiYingStages",null],
@@ -423,17 +432,34 @@ test("classics roadmap progress is semantic and independent of display wording",
         ["#classicsRoleChain",null]
       ]
     );
-    return [...(nodes.get("#classicsRoadmap")?.innerHTML??"").matchAll(/<article\b[^>]*>/g)]
-      .map(match=>attribute(match[0],"class").split(/\s+/));
+    return {
+      classes:[...(nodes.get("#classicsRoadmap")?.innerHTML??"").matchAll(/<article\b[^>]*>/g)]
+        .map(match=>attribute(match[0],"class").split(/\s+/)),
+      learnedStop:properties.get("--classics-learned-stop")
+    };
   };
   const learnedState=classes=>classes.find(token=>/^(?:is-)?(?:learned|taught)$/.test(token));
   const previewState=classes=>classes.find(token=>/^(?:is-)?(?:preview|planned|upcoming)$/.test(token));
   const forward=renderRoadmapStates(["learned","preview"]);
   const reversed=renderRoadmapStates(["preview","learned"]);
-  assert.equal(forward.length,2);
-  assert.equal(reversed.length,2);
-  assert.ok(learnedState(forward[0]));
-  assert.ok(previewState(forward[1]));
-  assert.ok(previewState(reversed[0]));
-  assert.ok(learnedState(reversed[1]));
+  const invalid=renderRoadmapStates(["learned",undefined,"learnt","preview"]);
+  assert.equal(forward.classes.length,2);
+  assert.equal(reversed.classes.length,2);
+  assert.ok(learnedState(forward.classes[0]));
+  assert.ok(previewState(forward.classes[1]));
+  assert.ok(previewState(reversed.classes[0]));
+  assert.ok(learnedState(reversed.classes[1]));
+  assert.ok(previewState(invalid.classes[1]),"missing progress must safely render as preview");
+  assert.ok(previewState(invalid.classes[2]),"unknown progress must safely render as preview");
+  assert.equal(forward.learnedStop,"50%");
+  assert.equal(reversed.learnedStop,"0%","only the contiguous learned prefix may color the connector");
+  assert.equal(invalid.learnedStop,"25%","the connector stop must derive from the current model size");
+
+  baseRuleMatching(
+    ".classics-roadmap::after",
+    body=>/var\(--classics-learned-stop\s*,\s*0%\)/.test(body)&&!/83\.333%/.test(body),
+    "the roadmap connector must consume the model-derived stop with a safe CSS fallback"
+  );
+  baseRuleMatching(".classics-roadmap .learned small",body=>/background\s*:/.test(body)&&/color\s*:/.test(body));
+  baseRuleMatching(".classics-roadmap .preview small",body=>/background\s*:/.test(body)&&/color\s*:/.test(body));
 });

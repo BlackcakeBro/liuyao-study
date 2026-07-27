@@ -530,7 +530,13 @@ function renderClassicsPreview(){
   if(!extendedEdition||!courseTraining?.classics)return;
   const classics=courseTraining.classics;
   const roadmap=document.querySelector("#classicsRoadmap");
-  if(roadmap)roadmap.innerHTML=classics.roadmap.map((step,index)=>`<article class="${step.progress}" style="--roadmap-index:${index}"><small>${step.n}</small><span>${step.state}</span><h3>${step.title}</h3><p>${step.detail}</p></article>`).join("");
+  if(roadmap){
+    const firstPending=classics.roadmap.findIndex(step=>step.progress!=="learned");
+    const learnedCount=firstPending<0?classics.roadmap.length:firstPending;
+    const learnedStop=classics.roadmap.length?learnedCount/classics.roadmap.length*100:0;
+    roadmap.style.setProperty("--classics-learned-stop",`${learnedStop}%`);
+    roadmap.innerHTML=classics.roadmap.map((step,index)=>`<article class="${step.progress==="learned"?"learned":"preview"}" style="--roadmap-index:${index}"><small>${step.n}</small><span>${step.state}</span><h3>${step.title}</h3><p>${step.detail}</p></article>`).join("");
+  }
 
   const picker=document.querySelector("#najiaTrigramPicker");
   const detail=document.querySelector("#najiaDetail");
