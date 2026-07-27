@@ -530,7 +530,7 @@ function renderClassicsPreview(){
   if(!extendedEdition||!courseTraining?.classics)return;
   const classics=courseTraining.classics;
   const roadmap=document.querySelector("#classicsRoadmap");
-  if(roadmap)roadmap.innerHTML=classics.roadmap.map((step,index)=>`<article class="${step.state==="陈师已讲"?"taught":"preview"}" style="--roadmap-index:${index}"><small>${step.n}</small><span>${step.state}</span><h3>${step.title}</h3><p>${step.detail}</p></article>`).join("");
+  if(roadmap)roadmap.innerHTML=classics.roadmap.map((step,index)=>`<article class="${step.progress}" style="--roadmap-index:${index}"><small>${step.n}</small><span>${step.state}</span><h3>${step.title}</h3><p>${step.detail}</p></article>`).join("");
 
   const picker=document.querySelector("#najiaTrigramPicker");
   const detail=document.querySelector("#najiaDetail");
