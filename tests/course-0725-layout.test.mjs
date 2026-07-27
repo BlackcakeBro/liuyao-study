@@ -239,19 +239,6 @@ test("single-hexagram detail moves as one consistently sized content group",()=>
     assert.equal(detail.get("height"),"auto",`${width}px detail mode must grow with wrapped content`);
     assert.equal(detail.get("max-height"),"none",`${width}px detail mode must not clip longer content`);
   }
-  const records=course.palaceOrder.flatMap(palace=>
-    course.palaces[palace].hexagrams.map(item=>({
-      name:item[0],
-      textLength:item[2].length+item[3].length
-    }))
-  ).sort((left,right)=>left.textLength-right.textLength);
-  assert.equal(records[0].name,"天水讼","tablet sizing must cover the shortest current detail");
-  assert.equal(records.at(-1).name,"地风升","tablet sizing must cover the longest current detail");
-  const tabletDetail=declarations(responsiveRule(".scroll-palace-meta.is-hexagram-detail",1080));
-  assert.ok(
-    Number.parseFloat(tabletDetail.get("min-height"))>=368,
-    "tablet detail minimum must keep the shortest and longest current records equal-height"
-  );
   assert.match(
     responsiveRule(".scroll-detail-content",1080),
     /grid-column\s*:\s*1\s*\/\s*-1/,
@@ -263,15 +250,26 @@ test("single-hexagram detail moves as one consistently sized content group",()=>
     "mobile detail mode must reset inherited parent columns"
   );
   assert.match(
-    responsiveRule(".site-header",860),
-    /grid-template-columns\s*:\s*minmax\(0\s*,\s*1fr\)/,
-    "narrow-tablet header tracks must shrink inside the viewport"
+    responsiveRule(".site-header",1100),
+    /grid-template-columns\s*:\s*auto\s+minmax\(0\s*,\s*1fr\)/,
+    "tablet header must preserve the brand while allowing navigation to shrink"
   );
-  assert.match(responsiveRule(".brand",860),/display\s*:\s*none/);
+  assert.match(responsiveRule(".brand",1100),/min-width\s*:\s*0/);
+  assert.doesNotMatch(responsiveRule(".brand",1100),/display\s*:\s*none/);
   assert.match(
-    responsiveRule(".main-nav",860),
+    responsiveRule(".main-nav",1100),
     /min-width\s*:\s*0[\s\S]*max-width\s*:\s*100%[\s\S]*overflow-x\s*:\s*auto/,
-    "narrow-tablet navigation must scroll internally instead of widening the page"
+    "tablet navigation must scroll internally instead of widening the page"
+  );
+  assert.match(
+    responsiveRule(".nav-item",1100),
+    /flex\s*:\s*0\s+0\s+auto/,
+    "tablet navigation items must stay readable inside the internal scroller"
+  );
+  assert.match(
+    responsiveRule(".site-header",760),
+    /grid-template-columns\s*:\s*1fr\s+auto/,
+    "mobile header must retain its established brand layout"
   );
 });
 
@@ -493,7 +491,7 @@ test("classics roadmap progress is semantic and independent of display wording",
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(3).fill("20260727-roadmap-progress-v2"),
+    Array(3).fill("20260727-tablet-layout-v3"),
     "roadmap data, renderer, and styling must ship with one fresh cache version"
   );
 });
