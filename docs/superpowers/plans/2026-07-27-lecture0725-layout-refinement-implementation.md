@@ -18,6 +18,7 @@
 - `liuyao-study-github/training-bank.js`：只调整路线状态字段，不改题库内容与数量。
 - `tests/course-0725-layout.test.mjs`：新增版式与状态回归契约。
 - `tests/course-0725-update.test.mjs`：保留课程事实和新版隔离断言。
+- `liuyao-study-20260718/`：仓库内受保护的经典版树，只做前后哈希核验，不参与发布文件同步。
 - `认知硬核库/六爻/六爻学习网站-副本-20260704课堂核查/`：验证通过后同步的 Obsidian 新版副本。
 
 ### Task 1: 建立失败的版式与路线回归测试
@@ -45,11 +46,12 @@ const trainingSource=[
 const sandbox={window:{}};
 vm.runInNewContext(trainingSource,sandbox);
 
-test("single-hexagram detail uses one positioned content group with balanced vertical gutters",()=>{
+test("single-hexagram detail uses one growth-safe positioned content group",()=>{
   assert.match(app,/class="scroll-detail-content"/);
-  assert.match(css,/\.scroll-palace-meta\.is-hexagram-detail\{[^}]*--detail-gutter:/s);
-  assert.match(css,/\.scroll-detail-content\{[^}]*height:calc\(100% - \(var\(--detail-gutter\) \* 2\)\)/s);
-  assert.match(css,/\.scroll-detail-content\{[^}]*transform:translateY\(-/s);
+  assert.match(css,/\.scroll-palace-meta\.is-hexagram-detail\{[^}]*min-height:/s);
+  assert.match(css,/\.scroll-palace-meta\.is-hexagram-detail\{[^}]*height:auto/s);
+  assert.match(css,/\.scroll-palace-meta\.is-hexagram-detail\{[^}]*max-height:none/s);
+  assert.match(css,/\.scroll-detail-content\{[^}]*(?:translate|transform):/s);
 });
 
 test("07-25 six-relative relationships render as one SVG double-cycle diagram",()=>{
@@ -91,11 +93,15 @@ Expected: 4 个测试因缺少 `scroll-detail-content`、`relative-cycle-svg`、
 Run:
 
 ```bash
-find liuyao-study-github/archive/old-version-20260706 -type f -print0 \
-  | sort -z | xargs -0 shasum -a 256 > /tmp/liuyao-classic-before.sha256
+classic_root="liuyao-study-20260718"
+test -d "$classic_root"
+find "$classic_root" -type f -print0 \
+  | sort -z | xargs -0 shasum -a 256 > /tmp/liuyao-repo-classic-before.sha256
+test -s /tmp/liuyao-repo-classic-before.sha256
+wc -l /tmp/liuyao-repo-classic-before.sha256
 ```
 
-Expected: 生成非空基线文件；不修改经典版目录。
+Expected: 对仓库中真实存在的 `liuyao-study-20260718/` 生成非空基线与文件计数；不修改该目录。不要使用不存在的 `liuyao-study-github/archive/old-version-20260706`。
 
 - [ ] **Step 4: 提交测试**
 
@@ -104,7 +110,7 @@ git add tests/course-0725-layout.test.mjs
 git commit -m "test: lock lecture layout refinements"
 ```
 
-### Task 2: 统一 64 卦详情的尺寸与上下留白
+### Task 2: 统一 64 卦详情的当前视觉尺寸与上下留白
 
 **Files:**
 - Modify: `liuyao-study-github/app.js:1011-1046`
@@ -126,42 +132,39 @@ meta.innerHTML=`
   </div>`;
 ```
 
-- [ ] **Step 2: 用同一内容高度和负向位移实现上下等量留白**
+- [ ] **Step 2: 用统一最小高度和位移实现当前等高，同时保留增长安全**
 
 ```css
 .scroll-palace-meta.is-hexagram-detail{
-  --detail-gutter:28px;
-  --detail-shift:22px;
-  overflow:hidden;
+  min-height:558px;
+  height:auto;
+  max-height:none;
+  display:grid;
+  align-items:center;
 }
 .scroll-detail-content{
   width:100%;
-  height:calc(100% - (var(--detail-gutter) * 2));
-  margin-block:var(--detail-gutter);
   display:flex;
   flex-direction:column;
-  transform:translateY(calc(var(--detail-shift) * -1));
-}
-.scroll-detail-content em{
-  margin-top:auto;
+  translate:0 var(--scroll-detail-lift-y);
 }
 @media(max-width:1080px){
   .scroll-palace-meta.is-hexagram-detail{
-    min-height:610px;
-    height:610px;
-    max-height:610px;
+    min-height:368px;
+    height:auto;
+    max-height:none;
   }
 }
 @media(max-width:760px){
   .scroll-palace-meta.is-hexagram-detail{
-    --detail-gutter:24px;
-    --detail-shift:18px;
-    min-height:650px;
-    height:650px;
-    max-height:650px;
+    min-height:560px;
+    height:auto;
+    max-height:none;
   }
 }
 ```
+
+当前 64 条详情在三个断点都应落在对应的统一最小高度内，因此现有内容视觉等高；`height:auto; max-height:none` 不得删除，以便文字缩放或未来更长文案自然增高而不裁切。
 
 - [ ] **Step 3: 运行单项测试**
 
@@ -332,13 +335,17 @@ document.querySelector("#relative0725Focus").innerHTML=course0725.focusRelatives
 .judgment-boundary__next{grid-column:1/-1}
 ```
 
-- [ ] **Step 4: 更新 CSS 缓存版本**
+- [ ] **Step 4: 更新耦合发布资源的缓存版本**
 
-将 `index.html` 中样式版本更新为：
+`styles.css`、`training-bank.js`、`app.js` 必须使用同一个新缓存版本。当前整合后的版本为：
 
 ```html
-<link rel="stylesheet" href="./styles.css?v=20260727-layout-refine-v2">
+<link rel="stylesheet" href="./styles.css?v=20260727-mobile-nav-v4">
+<script src="./training-bank.js?v=20260727-mobile-nav-v4"></script>
+<script src="./app.js?v=20260727-mobile-nav-v4"></script>
 ```
+
+课程数据文件可继续使用其独立的 `20260727-course-0725-v1` 版本；每次再修改上述耦合资源时，应同步换成一个全新的共同版本，并更新对应回归断言。
 
 - [ ] **Step 5: 运行对齐回归测试**
 
@@ -426,20 +433,26 @@ git commit -m "fix: mark taught assembly topics as learned"
 ```bash
 node --check liuyao-study-github/app.js
 node --check liuyao-study-github/training-bank.js
+node --check liuyao-study-github/data.js
+node --check liuyao-study-github/course-0718.js
+node --check liuyao-study-github/course-0725.js
 node --test tests/*.test.mjs
 ```
 
-Expected: 现有 37 项加新增 4 项，共 41/41 通过。
+Expected: 当前完整套件共 41 项，41/41 通过；题库运行时计数仍为 341。
 
 - [ ] **Step 2: 验证经典版哈希零改动**
 
 ```bash
-find liuyao-study-github/archive/old-version-20260706 -type f -print0 \
-  | sort -z | xargs -0 shasum -a 256 > /tmp/liuyao-classic-after.sha256
-diff -u /tmp/liuyao-classic-before.sha256 /tmp/liuyao-classic-after.sha256
+classic_root="liuyao-study-20260718"
+test -d "$classic_root"
+find "$classic_root" -type f -print0 \
+  | sort -z | xargs -0 shasum -a 256 > /tmp/liuyao-repo-classic-after.sha256
+cmp /tmp/liuyao-repo-classic-before.sha256 \
+    /tmp/liuyao-repo-classic-after.sha256
 ```
 
-Expected: `diff` 无输出、退出码 0。
+Expected: `cmp` 无输出、退出码 0，且前后文件计数一致。Obsidian 经典版目录应使用独立的 before/after 清单验证，不能与仓库经典树混用基线。
 
 - [ ] **Step 3: 启动本地服务并做真实浏览器回归**
 
@@ -449,9 +462,9 @@ python3 -m http.server 4173
 
 检查视口：
 
-- `1440×1000`：巽宫、兑宫各抽查一长一短说明，详情宽高一致，上下留白视觉相等。
-- `768×1024`：单卦内容组不贴底，双环图无裁切。
-- `390×844`：父母、官鬼卡片标签列一致，判断边界无错位。
+- `1440×1000`：抽查最短与最长现有说明，详情宽度和当前视觉高度一致，上下留白视觉相等。
+- `820×1180`：抽查最短与最长现有说明实际等高且页面无横向溢出；再用文字缩放或更长测试文案确认容器能增长而不裁切。
+- `390×844`：父母、官鬼卡片标签列一致，判断边界无错位；底部导航固定在视口安全区内、标签可横向滚动且不遮挡正文，页面无横向溢出。
 - 默认 URL：经典版不出现 `lecture0725`。
 - 新版 URL：`#edition=extended&view=lecture0725` 正常显示全部调整。
 
@@ -475,13 +488,24 @@ done
 
 Expected: 四次 `cmp` 均无输出、退出码 0。
 
-- [ ] **Step 6: 提交并推送**
+- [ ] **Step 6: 提交并准备安全发布**
 
 ```bash
 git add liuyao-study-github tests
 git commit -m "fix: refine lecture layouts"
-git push origin main
+
+# 在功能分支上刷新远端状态，禁止依赖可能过期的本地 main。
+git fetch origin
+test "$(git merge-base HEAD origin/main)" = "$(git rev-parse origin/main)"
+git status --short
+git log --oneline origin/main..HEAD
+
+# 重新运行完整测试并完成评审后，才可由获授权人员执行：
+git push --dry-run origin HEAD:main
+git push origin HEAD:main
 ```
+
+Expected: 当前功能分支包含最新 `origin/main`，工作区干净，`origin/main..HEAD` 只包含已评审提交。若 `merge-base` 检查失败，先把最新 `origin/main` 合入功能分支、解决冲突并重新验证；不得从过期的本地 `main` 直接推送。也可在独立集成工作树中对已评审 HEAD 做明确的 fast-forward 合并后再推送。
 
 - [ ] **Step 7: 发布后检查**
 
