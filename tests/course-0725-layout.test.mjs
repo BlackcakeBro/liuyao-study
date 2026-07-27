@@ -163,10 +163,11 @@ const assertClosedCycle=(edgeTags,nodeNames,tone,expectedPairs)=>{
 test("single-hexagram detail moves as one consistently sized content group",()=>{
   const classList={add(){},remove(){}};
   const meta={innerHTML:"",classList};
+  const course=loadCourse0718();
   const nodes=renderWithDom(
     "render0718Palace",
     {
-      course0718:loadCourse0718(),
+      course0718:course,
       atlas0718State:{palace:"乾",hexagram:null},
       palace0718SwitchTimer:null,
       hexagramDetailMarkup:()=>'<div class="glyph-probe"></div>'
@@ -238,6 +239,19 @@ test("single-hexagram detail moves as one consistently sized content group",()=>
     assert.equal(detail.get("height"),"auto",`${width}px detail mode must grow with wrapped content`);
     assert.equal(detail.get("max-height"),"none",`${width}px detail mode must not clip longer content`);
   }
+  const records=course.palaceOrder.flatMap(palace=>
+    course.palaces[palace].hexagrams.map(item=>({
+      name:item[0],
+      textLength:item[2].length+item[3].length
+    }))
+  ).sort((left,right)=>left.textLength-right.textLength);
+  assert.equal(records[0].name,"天水讼","tablet sizing must cover the shortest current detail");
+  assert.equal(records.at(-1).name,"地风升","tablet sizing must cover the longest current detail");
+  const tabletDetail=declarations(responsiveRule(".scroll-palace-meta.is-hexagram-detail",1080));
+  assert.ok(
+    Number.parseFloat(tabletDetail.get("min-height"))>=368,
+    "tablet detail minimum must keep the shortest and longest current records equal-height"
+  );
   assert.match(
     responsiveRule(".scroll-detail-content",1080),
     /grid-column\s*:\s*1\s*\/\s*-1/,
@@ -247,6 +261,17 @@ test("single-hexagram detail moves as one consistently sized content group",()=>
     responsiveRule(".scroll-palace-meta.is-hexagram-detail",760),
     /grid-template-columns\s*:\s*1fr/,
     "mobile detail mode must reset inherited parent columns"
+  );
+  assert.match(
+    responsiveRule(".site-header",860),
+    /grid-template-columns\s*:\s*minmax\(0\s*,\s*1fr\)/,
+    "narrow-tablet header tracks must shrink inside the viewport"
+  );
+  assert.match(responsiveRule(".brand",860),/display\s*:\s*none/);
+  assert.match(
+    responsiveRule(".main-nav",860),
+    /min-width\s*:\s*0[\s\S]*max-width\s*:\s*100%[\s\S]*overflow-x\s*:\s*auto/,
+    "narrow-tablet navigation must scroll internally instead of widening the page"
   );
 });
 
