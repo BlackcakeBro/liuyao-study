@@ -1038,7 +1038,7 @@ function render0718Palace(palaceKey="乾",activeIndex=null){
     const h=palace.hexagrams[activeIndex];
     const stage=course0718.palaceStages[activeIndex];
     meta.classList.add("is-hexagram-detail");
-    meta.innerHTML=`<span class="scroll-detail-kicker">单卦取象 · ${palaceKey}宫 · ${stage}</span>${hexagramDetailMarkup(h[0])}<h3>${h[0]}</h3><strong>${h[2]}</strong><div class="scroll-detail-block"><b>意象提示</b><p>${h[3]}</p></div><em>${palaceKey}宫 · 宫五行${palace.element} · 第${String(activeIndex+1).padStart(2,"0")}卦</em>`;
+    meta.innerHTML=`<div class="scroll-detail-content"><span class="scroll-detail-kicker">单卦取象 · ${palaceKey}宫 · ${stage}</span>${hexagramDetailMarkup(h[0])}<h3>${h[0]}</h3><strong>${h[2]}</strong><div class="scroll-detail-block"><b>意象提示</b><p>${h[3]}</p></div><em>${palaceKey}宫 · 宫五行${palace.element} · 第${String(activeIndex+1).padStart(2,"0")}卦</em></div>`;
   }else{
     meta.classList.remove("is-hexagram-detail");
     meta.innerHTML=`<span>先天序 ${String(course0718.palaceOrder.indexOf(palaceKey)+1).padStart(2,"0")} · 宫五行${palace.element}</span><h3>${palaceKey}宫</h3><strong>${palace.theme}</strong><p>${palace.status==="pending-meaning"?"本宫八卦的卦名、卦象与宫内序位已列入；课堂取象等待陈师下节课补充。":"本宫八卦按固定序位排列。先辨卦象，再记宫位与核心取象。"}</p><small>点击右侧任一卦，可展开该卦的核心解释与意象提示。</small><em>${course0718.palaceStages.join(" → ")}</em>`;
