@@ -1079,19 +1079,62 @@ function render0718Atlas(){
 function render0725Course(){
   const assembly=document.querySelector("#assembly0725Grid");
   if(!assembly||typeof course0725==="undefined")return;
+  const renderRelativeCycleDiagram=cycles=>{
+    const positions={
+      父母:[360,82],
+      兄弟:[574,238],
+      子孙:[492,490],
+      妻财:[228,490],
+      官鬼:[146,238]
+    };
+    const edge=(relation,verb,tone,marker)=>{
+      const [from,to]=relation.split(verb);
+      const [fromX,fromY]=positions[from];
+      const [toX,toY]=positions[to];
+      const distance=Math.hypot(toX-fromX,toY-fromY);
+      const inset=54;
+      const startX=fromX+(toX-fromX)*inset/distance;
+      const startY=fromY+(toY-fromY)*inset/distance;
+      const endX=toX-(toX-fromX)*inset/distance;
+      const endY=toY-(toY-fromY)*inset/distance;
+      return `<line class="relative-cycle-edge ${tone}" data-from="${from}" data-to="${to}" x1="${startX.toFixed(1)}" y1="${startY.toFixed(1)}" x2="${endX.toFixed(1)}" y2="${endY.toFixed(1)}" marker-end="url(#${marker})"></line>`;
+    };
+    const shengEdges=cycles.generating.map(relation=>edge(relation,"生","sheng","relativeShengArrow")).join("");
+    const keEdges=cycles.controlling.map(relation=>edge(relation,"克","ke","relativeKeArrow")).join("");
+    const nodes=Object.entries(positions).map(([name,[x,y]])=>`
+      <g class="relative-cycle-node" data-relative="${name}" transform="translate(${x} ${y})">
+        <circle r="50"></circle><text text-anchor="middle" dominant-baseline="central">${name}</text>
+      </g>`).join("");
+    return `
+      <figure class="relative-cycle-figure">
+        <svg class="relative-cycle-svg" role="img" aria-label="六亲相生相克双环图" viewBox="0 0 720 570" preserveAspectRatio="xMidYMid meet">
+          <title>六亲相生相克双环图</title>
+          <desc>外环依次为父母生兄弟、兄弟生子孙、子孙生妻财、妻财生官鬼、官鬼生父母；内星依次为父母克子孙、子孙克官鬼、官鬼克兄弟、兄弟克妻财、妻财克父母。</desc>
+          <defs>
+            <marker id="relativeShengArrow" class="relative-cycle-marker sheng" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M 0 0 L 10 5 L 0 10 z"></path></marker>
+            <marker id="relativeKeArrow" class="relative-cycle-marker ke" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M 0 0 L 10 5 L 0 10 z"></path></marker>
+          </defs>
+          <circle class="relative-cycle-guide" cx="360" cy="308" r="250"></circle>
+          <g class="relative-cycle-edges relative-cycle-edges--sheng">${shengEdges}</g>
+          <g class="relative-cycle-edges relative-cycle-edges--ke">${keEdges}</g>
+          ${nodes}
+          <g class="relative-cycle-center" transform="translate(360 308)">
+            <circle r="38"></circle><text text-anchor="middle" y="-4">六亲</text><text text-anchor="middle" y="15">生克</text>
+          </g>
+        </svg>
+        <figcaption class="relative-cycle-legend" aria-label="图例">
+          <span class="sheng"><i aria-hidden="true"></i><b>外环 · 相生</b><small>顺箭头连续助益</small></span>
+          <span class="ke"><i aria-hidden="true"></i><b>内星 · 相克</b><small>顺箭头连续制约</small></span>
+        </figcaption>
+      </figure>`;
+  };
   assembly.innerHTML=course0725.assemblyPrinciples.map((item,index)=>`
     <article style="--course-step:${index}">
       <small>0${index+1}</small><h3>${item.name}</h3><strong>${item.cue}</strong><p>${item.detail}</p>
     </article>`).join("");
   document.querySelector("#shiying0725Roles").innerHTML=course0725.shiYingRoles.map((item,index)=>`
     <article class="${index===0?"shi":"ying"}"><span>${item.name}</span><div><strong>${item.role}</strong><p>${item.note}</p></div></article>`).join("");
-  const cycleMarkup=(label,tone,items)=>`
-    <article class="${tone}"><header><span>${label}</span><small>${tone==="sheng"?"连续助益":"连续制约"}</small></header>
-      <div>${items.map((item,index)=>`<b>${item}${index<items.length-1?"<i>→</i>":""}</b>`).join("")}</div>
-    </article>`;
-  document.querySelector("#relative0725Cycles").innerHTML=
-    cycleMarkup("相生闭环","sheng",course0725.relativeCycles.generating)+
-    cycleMarkup("相克闭环","ke",course0725.relativeCycles.controlling);
+  document.querySelector("#relative0725Cycles").innerHTML=renderRelativeCycleDiagram(course0725.relativeCycles);
   document.querySelector("#relative0725Focus").innerHTML=course0725.focusRelatives.map(item=>`
     <article>
       <header><span>${item.relation}</span><h3>${item.name}爻</h3><strong>${item.tone}</strong></header>
