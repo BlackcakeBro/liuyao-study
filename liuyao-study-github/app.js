@@ -565,9 +565,14 @@ function renderAssemblyLearningTools(){
 }
 
 function classicsHexagramMarkup(hexagram){
-  const lines=[...hexagram.lines].reverse().map((line,index)=>`<i class="${line}"><small>${6-index}爻</small><span></span></i>`).join("");
-  return `<figure class="classics-case-hexagram" aria-label="${hexagram.name}原卦，自下而上六爻"><div>${lines}</div><figcaption>${hexagram.name}</figcaption></figure>`;
+  const marks=[...hexagram.lines].reverse().map((line,index)=>{
+    const y=12+index*30;
+    const stroke=line==="yin"?`<rect x="0" y="${y}" width="68" height="9"/><rect x="102" y="${y}" width="68" height="9"/>`:`<rect x="0" y="${y}" width="170" height="9"/>`;
+    return `<g aria-label="${6-index}爻，${line==="yin"?"阴":"阳"}">${stroke}<text x="-30" y="${y+8}">${6-index}</text></g>`;
+  }).join("");
+  return `<figure class="classics-case-hexagram" aria-label="${hexagram.name}原卦，自上而下显示六爻"><svg viewBox="-36 0 210 200" role="img">${marks}</svg><figcaption>${hexagram.name}</figcaption></figure>`;
 }
+
 function renderClassicsReference(){
   if(!extendedEdition||typeof course0725==="undefined")return;
   const references=document.querySelector("#classicsReferenceCards");
