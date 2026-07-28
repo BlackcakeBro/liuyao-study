@@ -27,16 +27,26 @@ test("taught na-jia, shi-ying and six-relative tools live in the 07-25 course",(
   assert.match(app,/\[\"course-shiying\",\"世应定位\"\]/);
 });
 
-test("extended classics reference retains casting but renders sourced references and cases",()=>{
+test("classics reference is source-locatable and cases retain complete original hexagrams",()=>{
   assert.match(html,/古籍参考/);
   assert.ok(app.includes('if(extendedEdition)document.querySelector(\'[data-view="casting"]\').textContent="古籍参考";'));
   assert.match(html,/id="classicsReferenceCards"/);
   assert.match(html,/id="classicsCaseCards"/);
   assert.match(html,/id="tossCoins"/);
-  assert.equal(sandbox.__course.classicsReferences.length,4);
-  assert.ok(sandbox.__course.classicsReferences.every(item=>item.book&&item.location&&item.purpose));
-  assert.equal(sandbox.__course.classicsCases.length,2);
-  assert.ok(sandbox.__course.classicsCases.every(item=>item.book&&item.location&&item.excerpt&&item.boundary));
+  assert.ok(sandbox.__course.classicsCases.length>=4&&sandbox.__course.classicsCases.length<=6);
+  assert.ok(sandbox.__course.classicsCases.every(item=>{
+    const hexagram=item.hexagram;
+    return item.book&&item.location&&item.sourceText&&item.question&&
+      hexagram&&hexagram.name&&Array.isArray(hexagram.lines)&&hexagram.lines.length===6&&
+      hexagram.lines.every(line=>line==="yang"||line==="yin")&&
+      Number.isInteger(hexagram.shi)&&hexagram.shi>=1&&hexagram.shi<=6&&
+      Number.isInteger(hexagram.ying)&&hexagram.ying>=1&&hexagram.ying<=6&&
+      Array.isArray(hexagram.moving)&&hexagram.moving.every(line=>Number.isInteger(line)&&line>=1&&line<=6);
+  }));
+  assert.ok(sandbox.__course.classicsReferences.length>=4);
+  assert.ok(sandbox.__course.classicsReferences.every(item=>
+    item.book&&item.location&&item.excerpt&&item.keywords&&item.connection
+  ));
   assert.match(app,/function renderClassicsReference\(/);
   assert.match(html,/id="classicRelativeCards"/);
   assert.match(app,/function renderRelatives\(\)/);
