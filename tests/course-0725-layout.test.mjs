@@ -522,80 +522,22 @@ test("relative cards and judgment boundary expose stable aligned regions",()=>{
   baseRuleMatching(".judgment-boundary__next",body=>/grid-area\s*:\s*next/.test(body));
 });
 
-test("classics roadmap progress is semantic and independent of display wording",()=>{
-  const roadmap=loadTraining().classics.roadmap;
-  assert.ok(
-    roadmap.every(step=>["learned","preview"].includes(step.progress)),
-    "every roadmap record must carry a recognized semantic progress value"
-  );
-  for(const title of ["浑天甲子","六亲"]){
-    const entry=roadmap.find(step=>step.title===title);
-    assert.ok(entry,`${title} roadmap record is missing`);
-    assert.equal(entry.progress,"learned",`${title} must carry progress:"learned"`);
-  }
-
-  const renderRoadmapStates=progresses=>{
-    const sharedStep={n:"01",title:"同一标题",state:"完全相同的显示文字",detail:"同一说明"};
-    const properties=new Map();
-    const roadmapNode={
-      innerHTML:"",
-      style:{setProperty:(name,value)=>properties.set(name,value)}
-    };
-    const nodes=renderWithDom(
-      "renderClassicsPreview",
-      {
-        extendedEdition:true,
-        courseTraining:{classics:{
-          roadmap:progresses.map(progress=>({...sharedStep,progress})),
-          najia:[],shiYing:[],roles:[],boundary:""
-        }}
-      },
-      [
-        ["#classicsRoadmap",roadmapNode],
-        ["#najiaTrigramPicker",null],
-        ["#najiaDetail",null],
-        ["#shiYingStages",null],
-        ["#shiYingDetail",null],
-        ["#classicsRoleChain",null]
-      ]
-    );
-    return {
-      classes:[...(nodes.get("#classicsRoadmap")?.innerHTML??"").matchAll(/<article\b[^>]*>/g)]
-        .map(match=>attribute(match[0],"class").split(/\s+/)),
-      learnedStop:properties.get("--classics-learned-stop")
-    };
-  };
-  const learnedState=classes=>classes.find(token=>/^(?:is-)?(?:learned|taught)$/.test(token));
-  const previewState=classes=>classes.find(token=>/^(?:is-)?(?:preview|planned|upcoming)$/.test(token));
-  const forward=renderRoadmapStates(["learned","preview"]);
-  const reversed=renderRoadmapStates(["preview","learned"]);
-  const invalid=renderRoadmapStates(["learned",undefined,"learnt","preview"]);
-  assert.equal(forward.classes.length,2);
-  assert.equal(reversed.classes.length,2);
-  assert.ok(learnedState(forward.classes[0]));
-  assert.ok(previewState(forward.classes[1]));
-  assert.ok(previewState(reversed.classes[0]));
-  assert.ok(learnedState(reversed.classes[1]));
-  assert.ok(previewState(invalid.classes[1]),"missing progress must safely render as preview");
-  assert.ok(previewState(invalid.classes[2]),"unknown progress must safely render as preview");
-  assert.equal(forward.learnedStop,"50%");
-  assert.equal(reversed.learnedStop,"0%","only the contiguous learned prefix may color the connector");
-  assert.equal(invalid.learnedStop,"25%","the connector stop must derive from the current model size");
-
-  baseRuleMatching(
-    ".classics-roadmap::after",
-    body=>/var\(--classics-learned-stop\s*,\s*0%\)/.test(body)&&!/83\.333%/.test(body),
-    "the roadmap connector must consume the model-derived stop with a safe CSS fallback"
-  );
-  baseRuleMatching(".classics-roadmap .learned small",body=>/background\s*:/.test(body)&&/color\s*:/.test(body));
-  baseRuleMatching(".classics-roadmap .preview small",body=>/background\s*:/.test(body)&&/color\s*:/.test(body));
+test("classics reference is source-backed and ships with one fresh cache version",()=>{
+  const training=loadTraining();
+  assert.deepEqual(Array.from(training.classics.chapterOrder),[
+    "八卦与占卦法","八宫六十四卦","浑天甲子","六亲","世应","动变","用神与元忌仇"
+  ]);
+  assert.match(app,/function renderClassicsReference\(/);
+  assert.match(app,/course0725\.classicsReferences/);
+  assert.match(app,/course0725\.classicsCases/);
+  assert.doesNotMatch(html,/id="classicsRoadmap"/);
 
   const coupledAssetVersions=[
-    ...html.matchAll(/(?:href|src)="\.\/(?:styles\.css|training-bank\.js|app\.js)\?v=([^"]+)"/g)
+    ...html.matchAll(/(?:href|src)="\.\/(?:styles\.css|course-0725\.js|training-bank\.js|app\.js)\?v=([^"]+)"/g)
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(3).fill("20260728-mobile-zoom-fallback-v6"),
-    "roadmap data, renderer, and styling must ship with one fresh cache version"
+    Array(4).fill("20260728-classics-reference-v7"),
+    "course data, renderer, training bank, and styling must ship with one fresh cache version"
   );
 });

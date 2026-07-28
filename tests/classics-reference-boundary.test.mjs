@@ -43,7 +43,8 @@ test("extended classics reference retains casting but renders sourced references
 test("judgment boundary owns responsive horizontal padding for every content row",()=>{
   assert.match(css,/\.judgment-boundary\{[^}]*padding(?:-inline)?\s*:\s*clamp\(/s);
   assert.match(css,/\.judgment-boundary__next\{[^}]*border-top:/s);
-  assert.match(css,/@media\(max-width:760px\)\{[^}]*\.judgment-boundary\{[^}]*grid-template-columns:minmax\(0,1fr\)/s);
+  assert.match(css,/\.judgment-boundary\{[^}]*grid-template-columns:minmax\(220px,.8fr\) minmax\(0,1.2fr\)/s);
+  assert.match(css,/@media\(max-width:760px\)\{[^}]*\.judgment-boundary\{[^}]*padding:28px 22px/s);
 });
 
 test("training names classics as a reference and moves taught structures to lecture0725",()=>{
