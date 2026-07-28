@@ -577,7 +577,7 @@ function renderClassicsReference(){
     </article>`).join("");
   const cases=document.querySelector("#classicsCaseCards");
   if(cases)cases.innerHTML=course0725.classicsCases.map((item,index)=>`
-    <article><header><small>CASE ${String(index+1).padStart(2,"0")}</small><span>${item.book}</span><h3>${item.title}</h3><p>${item.location}</p></header>
+    <article><header><small>案例 ${String(index+1).padStart(2,"0")}</small><span>${item.book}</span><h3>${item.title}</h3><p>${item.location}</p></header>
       <div class="classics-case-article">${classicsHexagramMarkup(item.hexagram)}<section><b>占问</b><p>${item.question}</p><b>原文</b><blockquote>${item.sourceText}</blockquote></section></div>
       <footer><b>阅读提示</b><p>${item.focus}</p><b>使用边界</b><p>${item.boundary}</p></footer>
     </article>`).join("");
