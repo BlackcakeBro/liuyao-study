@@ -217,13 +217,24 @@ test("single-hexagram detail moves as one consistently sized content group",()=>
 
   const detailSize=declarations(baseRuleMatching(
     ".scroll-palace-meta.is-hexagram-detail",
-    body=>/min-height\s*:/.test(body)&&/height\s*:\s*auto/.test(body)&&/max-height\s*:\s*none/.test(body),
-    "detail mode must co-locate a consistent minimum with growth-safe height declarations"
+    body=>/min-height\s*:/.test(body)&&/height\s*:\s*490px/.test(body)&&/max-height\s*:\s*490px/.test(body),
+    "desktop detail mode must preserve the shared 490px scroll frame"
   ));
   assert.ok(detailSize.has("min-height"),"detail mode needs a stable visual minimum");
-  assert.equal(detailSize.get("height"),"auto");
-  assert.equal(detailSize.get("max-height"),"none");
+  assert.equal(detailSize.get("height"),"490px");
+  assert.equal(detailSize.get("max-height"),"490px");
   assert.ok(contentRule);
+
+  const atlasHeading=declarations(baseRuleMatching(
+    ".scroll-atlas-heading",
+    body=>/align-items\s*:/.test(body),
+    "the atlas heading needs an explicit cross-axis alignment"
+  ));
+  assert.equal(
+    atlasHeading.get("align-items"),
+    "start",
+    "the heading description must top-align with the title"
+  );
 
   const responsiveRule=(selector,width)=>parsedCss.find(rule=>
     rule.selectors.includes(normalizedSelector(selector))&&
