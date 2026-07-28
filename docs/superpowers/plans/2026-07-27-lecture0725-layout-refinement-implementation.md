@@ -337,15 +337,15 @@ document.querySelector("#relative0725Focus").innerHTML=course0725.focusRelatives
 
 - [ ] **Step 4: 更新耦合发布资源的缓存版本**
 
-`styles.css`、`training-bank.js`、`app.js` 必须使用同一个新缓存版本。当前整合后的版本为：
+`styles.css`、`training-bank.js`、`app.js` 必须使用同一个新的发布缓存 token；不要在本计划中固化某个历史 token。发布前以当前 `index.html` 和对应回归断言为准，三者必须完全一致，例如：
 
 ```html
-<link rel="stylesheet" href="./styles.css?v=20260727-mobile-nav-v4">
-<script src="./training-bank.js?v=20260727-mobile-nav-v4"></script>
-<script src="./app.js?v=20260727-mobile-nav-v4"></script>
+<link rel="stylesheet" href="./styles.css?v=<fresh-release-token>">
+<script src="./training-bank.js?v=<fresh-release-token>"></script>
+<script src="./app.js?v=<fresh-release-token>"></script>
 ```
 
-课程数据文件可继续使用其独立的 `20260727-course-0725-v1` 版本；每次再修改上述耦合资源时，应同步换成一个全新的共同版本，并更新对应回归断言。
+课程数据文件可继续使用其独立版本；每次再修改上述耦合资源时，应同步换成一个全新的共同 token，并更新对应回归断言。移动端兼容性修正还应在不支持 `zoom:calc(...)` 的浏览器中保留分段 `zoom` 回退，不能只依赖计算型 `zoom`。
 
 - [ ] **Step 5: 运行对齐回归测试**
 
