@@ -323,10 +323,55 @@ test("single-hexagram detail moves as one consistently sized content group",()=>
   assert.equal(pathCompass.get("width"),"440px","the path compass needs one stable logical coordinate system");
   const mobileCompass=declarations(responsiveRule(".path-compass",760));
   assert.equal(mobileCompass.get("max-width"),"none","mobile orbit coordinates must retain their 440px logical canvas");
-  assert.match(
-    mobileCompass.get("zoom")??"",
-    /min\(\.82\s*,\s*calc\(\(100vw\s*-\s*30px\)\s*\/\s*440px\)\)/,
-    "mobile compass layout and its fixed orbit coordinates must scale together to the available viewport"
+  const mediaApplies=(contexts,width)=>contexts
+    .filter(context=>context.startsWith("@media"))
+    .every(context=>{
+      const minimum=Number(context.match(/min-width\s*:\s*(\d+)px/)?.[1]??0);
+      const maximum=Number(context.match(/max-width\s*:\s*(\d+)px/)?.[1]??Infinity);
+      return width>=minimum&&width<=maximum;
+    });
+  const fallbackCompassAt=width=>{
+    const resolved=new Map();
+    parsedCss
+      .filter(rule=>
+        rule.selectors.includes(normalizedSelector(".path-compass"))
+        &&!rule.contexts.some(context=>context.startsWith("@supports"))
+        &&mediaApplies(rule.contexts,width)
+      )
+      .forEach(rule=>declarations(rule.body).forEach((value,property)=>resolved.set(property,value)));
+    return resolved;
+  };
+  for(const [width,zoom] of [
+    [320,".65"],[359,".65"],
+    [360,".75"],[381,".75"],
+    [382,".8"],[390,".8"],
+    [391,".82"],[760,".82"]
+  ]){
+    assert.equal(
+      fallbackCompassAt(width).get("zoom"),
+      zoom,
+      `${width}px must have a portable numeric compass fallback`
+    );
+  }
+  assert.equal(
+    fallbackCompassAt(761).get("zoom"),
+    undefined,
+    "portable mobile compass scaling must stop before the tablet breakpoint"
+  );
+  const advancedCompassRules=parsedCss.filter(rule=>{
+    const zoom=declarations(rule.body).get("zoom")??"";
+    return rule.selectors.includes(normalizedSelector(".path-compass"))&&zoom.includes("/");
+  });
+  assert.equal(advancedCompassRules.length,1,"typed division must have one isolated progressive enhancement");
+  assert.ok(
+    advancedCompassRules[0].contexts.some(context=>
+      context.startsWith("@supports")&&context.includes("zoom:calc(1px / 1px)")
+    ),
+    "typed length division must only run behind a matching zoom feature query"
+  );
+  assert.ok(
+    advancedCompassRules[0].contexts.some(context=>context.includes("max-width:760px")),
+    "advanced scaling must remain mobile-only"
   );
   assert.equal(mobileCompass.get("transform"),"none","mobile containment must not use paint-only scaling");
   assert.notEqual(mobileCompass.get("overflow"),"hidden","mobile compass controls must be resized, not clipped");
@@ -550,7 +595,7 @@ test("classics roadmap progress is semantic and independent of display wording",
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(3).fill("20260727-mobile-containment-v5"),
+    Array(3).fill("20260728-mobile-zoom-fallback-v6"),
     "roadmap data, renderer, and styling must ship with one fresh cache version"
   );
 });
