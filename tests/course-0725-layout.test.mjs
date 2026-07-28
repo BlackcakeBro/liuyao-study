@@ -228,6 +228,11 @@ test("single-hexagram detail moves as one consistently sized content group",()=>
     "auto",
     "desktop detail mode must scroll longer or zoomed copy within the fixed frame"
   );
+  assert.equal(
+    detailSize.get("align-items"),
+    "safe center",
+    "overflowed detail copy must remain reachable from the top of its scroll frame"
+  );
   assert.ok(contentRule);
 
   const atlasHeading=declarations(baseRuleMatching(
