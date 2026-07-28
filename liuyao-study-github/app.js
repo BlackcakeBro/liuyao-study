@@ -564,18 +564,22 @@ function renderAssemblyLearningTools(){
 
 }
 
+function classicsHexagramMarkup(hexagram){
+  const lines=[...hexagram.lines].reverse().map((line,index)=>`<i class="${line}"><small>${6-index}爻</small><span></span></i>`).join("");
+  return `<figure class="classics-case-hexagram" aria-label="${hexagram.name}原卦，自下而上六爻"><div>${lines}</div><figcaption>${hexagram.name}</figcaption></figure>`;
+}
 function renderClassicsReference(){
   if(!extendedEdition||typeof course0725==="undefined")return;
   const references=document.querySelector("#classicsReferenceCards");
   if(references)references.innerHTML=course0725.classicsReferences.map((item,index)=>`
-    <article><small>${String(index+1).padStart(2,"0")}</small><span>${item.book}</span>
-      <h3>${item.location}</h3><p>${item.purpose}</p><footer>${item.note}</footer>
+    <article><small>${String(index+1).padStart(2,"0")}</small><span>${item.book}</span><h3>${item.location}</h3>
+      <blockquote class="classics-reference-excerpt">${item.excerpt}</blockquote><p><b>关键词</b> ${item.keywords}</p><footer><b>关联知识</b><br>${item.connection}</footer>
     </article>`).join("");
   const cases=document.querySelector("#classicsCaseCards");
   if(cases)cases.innerHTML=course0725.classicsCases.map((item,index)=>`
     <article><header><small>CASE ${String(index+1).padStart(2,"0")}</small><span>${item.book}</span><h3>${item.title}</h3><p>${item.location}</p></header>
-      <blockquote>${item.excerpt}</blockquote><div><b>课程观察</b><p>${item.focus}</p></div>
-      <footer><b>使用边界</b><p>${item.boundary}</p></footer>
+      <div class="classics-case-article">${classicsHexagramMarkup(item.hexagram)}<section><b>占问</b><p>${item.question}</p><b>原文</b><blockquote>${item.sourceText}</blockquote></section></div>
+      <footer><b>阅读提示</b><p>${item.focus}</p><b>使用边界</b><p>${item.boundary}</p></footer>
     </article>`).join("");
 }
 
