@@ -5,7 +5,7 @@
     {id:"lecture0704",label:"旺衰与地支关系",short:"07·04"},
     {id:"lecture0718",label:"起卦与八宫卦谱",short:"07·18"},
     {id:"lecture0725",label:"装卦与六亲取象",short:"07·25"},
-    {id:"classics",label:"古籍装卦校注",short:"古籍"}
+    {id:"classics",label:"古籍参考",short:"古籍"}
   ];
   const classics={
     source:"《增删卜易》卷一",
@@ -170,12 +170,12 @@
   const innerChoices=classics.najia.map(item=>item.inner.join(" → "));
   const outerChoices=classics.najia.map(item=>item.outer.join(" → "));
   classics.najia.forEach(item=>{
-    add({id:`classics-najia-${item.trigram}-inner`,module:"classics",kind:"najia",source:"《增删卜易》卷一 · 浑天甲子章",question:`${item.trigram}卦作为内卦时，由下向上装哪三支？`,answer:item.inner.join(" → "),candidates:innerChoices,feedback:`${item.trigram}在内卦，由下向上装${item.inner.join("、")}。课堂已讲固定装支原理；此完整序列来自古籍校注。`});
-    add({id:`classics-najia-${item.trigram}-outer`,module:"classics",kind:"najia",source:"《增删卜易》卷一 · 浑天甲子章",question:`${item.trigram}卦作为外卦时，由下向上装哪三支？`,answer:item.outer.join(" → "),candidates:outerChoices,feedback:`${item.trigram}在外卦，由下向上装${item.outer.join("、")}。课堂已讲固定装支原理；此完整序列来自古籍校注。`});
+    add({id:`classics-najia-${item.trigram}-inner`,module:"lecture0725",kind:"najia",source:"《增删卜易》卷一 · 浑天甲子章",question:`${item.trigram}卦作为内卦时，由下向上装哪三支？`,answer:item.inner.join(" → "),candidates:innerChoices,feedback:`${item.trigram}在内卦，由下向上装${item.inner.join("、")}。课堂已讲固定装支原理；此完整序列来自原著参考。`});
+    add({id:`classics-najia-${item.trigram}-outer`,module:"lecture0725",kind:"najia",source:"《增删卜易》卷一 · 浑天甲子章",question:`${item.trigram}卦作为外卦时，由下向上装哪三支？`,answer:item.outer.join(" → "),candidates:outerChoices,feedback:`${item.trigram}在外卦，由下向上装${item.outer.join("、")}。课堂已讲固定装支原理；此完整序列来自原著参考。`});
   });
   const shiChoices=classics.shiYing.map(item=>`${item.shi===6?"上":item.shi}爻（第${item.shi}爻）`);
-  classics.shiYing.forEach(item=>add({id:`classics-shiying-${item.stage}`,module:"classics",kind:"shi-ying",source:"《增删卜易》卷一 · 世应章",question:`八宫序位为“${item.stage}”时，世爻落在哪一爻？`,answer:`${item.shi===6?"上":item.shi}爻（第${item.shi}爻）`,candidates:shiChoices,feedback:`${item.stage}卦世在第${item.shi}爻；应与世中间隔两爻，也就是爻位相差三。此处先记定位骨架。`}));
-  data.sixRelatives.forEach(relative=>add({id:`classics-relative-${relative.key}`,module:"classics",kind:"six-relative",source:"《增删卜易》卷一 · 六亲歌章",question:`古籍六亲定法中，“${relative.relation}”称为什么？`,answer:relative.key,candidates:data.sixRelatives.map(item=>item.key),feedback:`${relative.relation}为${relative.key}。六亲须以卦宫五行为“我”来推。`}));
+  classics.shiYing.forEach(item=>add({id:`classics-shiying-${item.stage}`,module:"lecture0725",kind:"shi-ying",source:"《增删卜易》卷一 · 世应章",question:`八宫序位为“${item.stage}”时，世爻落在哪一爻？`,answer:`${item.shi===6?"上":item.shi}爻（第${item.shi}爻）`,candidates:shiChoices,feedback:`${item.stage}卦世在第${item.shi}爻；应与世中间隔两爻，也就是爻位相差三。此处用于课堂定位复习。`}));
+  data.sixRelatives.forEach(relative=>add({id:`classics-relative-${relative.key}`,module:"lecture0725",kind:"six-relative",source:"《增删卜易》卷一 · 六亲歌章",question:`古籍六亲定法中，“${relative.relation}”称为什么？`,answer:relative.key,candidates:data.sixRelatives.map(item=>item.key),feedback:`${relative.relation}为${relative.key}。六亲须以卦宫五行为“我”来推。`}));
   const yongshenChoices=data.yongshenTopics.map(item=>item.use);
   data.yongshenTopics.forEach((item,index)=>add({id:`classics-yongshen-${index+1}`,module:"classics",kind:"yongshen",source:"《增删卜易》卷一 · 用神章",question:`占问“${item.topic}”时，首先取什么为用神或主要观察点？`,answer:item.use,candidates:yongshenChoices,feedback:`此类占问先取${item.use}。${item.note}取准用神后仍要继续看旺衰、生克、冲合与动变。`}));
   const roleChoices=classics.roles.map(item=>item.definition);

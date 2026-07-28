@@ -485,7 +485,9 @@ function tossCoins() {
 }
 
 function renderRelatives() {
-  document.querySelector("#relativeCards").innerHTML=sixRelatives.map(r=>`<article><span>${r.relation}</span><h3>${r.key}</h3><b>${r.role}</b><div>${r.topics.map(x=>`<small>${x}</small>`).join("")}</div></article>`).join("");
+  const root=document.querySelector("#relativeCards");
+  if(!root)return;
+  root.innerHTML=sixRelatives.map(r=>`<article><span>${r.relation}</span><h3>${r.key}</h3><b>${r.role}</b><div>${r.topics.map(x=>`<small>${x}</small>`).join("")}</div></article>`).join("");
 }
 function renderTopics(active=0) {
   document.querySelector("#topicButtons").innerHTML=yongshenTopics.map((x,i)=>`<button data-topic="${i}" class="${i===active?"active":""}">${x.topic}</button>`).join("");
@@ -526,17 +528,9 @@ function openDrawer(key){
 }
 function closeDrawer(){document.querySelector("#branchDrawer").classList.remove("open");document.querySelector("#branchDrawer").setAttribute("aria-hidden","true");}
 
-function renderClassicsPreview(){
+function renderAssemblyLearningTools(){
   if(!extendedEdition||!courseTraining?.classics)return;
   const classics=courseTraining.classics;
-  const roadmap=document.querySelector("#classicsRoadmap");
-  if(roadmap){
-    const firstPending=classics.roadmap.findIndex(step=>step.progress!=="learned");
-    const learnedCount=firstPending<0?classics.roadmap.length:firstPending;
-    const learnedStop=classics.roadmap.length?learnedCount/classics.roadmap.length*100:0;
-    roadmap.style.setProperty("--classics-learned-stop",`${learnedStop}%`);
-    roadmap.innerHTML=classics.roadmap.map((step,index)=>`<article class="${step.progress==="learned"?"learned":"preview"}" style="--roadmap-index:${index}"><small>${step.n}</small><span>${step.state}</span><h3>${step.title}</h3><p>${step.detail}</p></article>`).join("");
-  }
 
   const picker=document.querySelector("#najiaTrigramPicker");
   const detail=document.querySelector("#najiaDetail");
@@ -568,8 +562,21 @@ function renderClassicsPreview(){
     showStage(classics.shiYing[0].stage);
   }
 
-  const roleChain=document.querySelector("#classicsRoleChain");
-  if(roleChain)roleChain.innerHTML=`<header><span>《增删卜易》关系骨架</span><h3>取准用神后，再看谁生、谁克</h3></header><div>${classics.roles.map((role,index)=>`<article><small>${String(index+1).padStart(2,"0")}</small><b>${role.name}</b><p>${role.definition}</p></article>`).join("")}</div><p>${classics.boundary}</p>`;
+}
+
+function renderClassicsReference(){
+  if(!extendedEdition||typeof course0725==="undefined")return;
+  const references=document.querySelector("#classicsReferenceCards");
+  if(references)references.innerHTML=course0725.classicsReferences.map((item,index)=>`
+    <article><small>${String(index+1).padStart(2,"0")}</small><span>${item.book}</span>
+      <h3>${item.location}</h3><p>${item.purpose}</p><footer>${item.note}</footer>
+    </article>`).join("");
+  const cases=document.querySelector("#classicsCaseCards");
+  if(cases)cases.innerHTML=course0725.classicsCases.map((item,index)=>`
+    <article><header><small>CASE ${String(index+1).padStart(2,"0")}</small><span>${item.book}</span><h3>${item.title}</h3><p>${item.location}</p></header>
+      <blockquote>${item.excerpt}</blockquote><div><b>课程观察</b><p>${item.focus}</p></div>
+      <footer><b>使用边界</b><p>${item.boundary}</p></footer>
+    </article>`).join("");
 }
 
 function renderFlashcard(){
@@ -1179,7 +1186,7 @@ document.querySelector("#resetCast").addEventListener("click",()=>{state.cast=[]
 
 document.querySelectorAll("[data-map]").forEach(b=>b.addEventListener("click",()=>renderMap(b.dataset.map)));
 document.querySelectorAll("#scroll0718Shell .scroll-roller").forEach(button=>button.addEventListener("click",replay0718Scroll));
-renderPath();render0718Atlas();render0725Course();renderClassicsPreview();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
+renderPath();render0718Atlas();render0725Course();renderAssemblyLearningTools();renderClassicsReference();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
 initImmersiveMotion();
 if(["path","foundation","lecture0704","lecture0718","lecture0725","casting","branches","training"].includes(requestedInitialView))setView(requestedInitialView);
 if(requestedAnchor)requestAnimationFrame(()=>requestAnimationFrame(()=>document.getElementById(requestedAnchor)?.scrollIntoView({block:"start"})));
