@@ -84,12 +84,12 @@ const state = {
   castMode:"random", manualCoins:["字","背","字"],quizModule:extendedEdition?"lecture0718":"classic"
 };
 const learningModules = [
-  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦与六亲取象"],["course-najia","纳甲装支"],["course-shiying","世应定位"],["course-relatives","六亲生克"]]:[]),
+  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦与六亲取象"],["course-najia","纳甲装支"],["course-shiying","世应定位"],["course-relatives","六亲生克"],["classics-reference","古籍原著与案例"]]:[]),
   ["foundation-01","术数定位"],["foundation-02","五行能量与万物象"],["foundation-03","五行生克与六亲"],
   ["foundation-04","河图洛书与先后天八卦"],["foundation-05","四时旺衰"],["foundation-06","地支时空"],
   ["foundation-07","八卦体系"],["foundation-08","十天干"],["foundation-09","五味五脏五常"],
   ["foundation-10","节气月令"],["foundation-11","四时五行细论"],["casting-workbench","起卦与动变"],
-  ["classics-reference","古籍原著与案例"],["casting-yongshen","取用神"],["branches-images","十二地支万物类象"]
+  ["casting-yongshen","取用神"],["branches-images","十二地支万物类象"]
 ];
 const hexagramNames = {
   "乾乾":"乾为天","乾兑":"天泽履","乾离":"天火同人","乾震":"天雷无妄","乾巽":"天风姤","乾坎":"天水讼","乾艮":"天山遁","乾坤":"天地否",
@@ -485,9 +485,8 @@ function tossCoins() {
 }
 
 function renderRelatives() {
-  const root=document.querySelector("#relativeCards");
-  if(!root)return;
-  root.innerHTML=sixRelatives.map(r=>`<article><span>${r.relation}</span><h3>${r.key}</h3><b>${r.role}</b><div>${r.topics.map(x=>`<small>${x}</small>`).join("")}</div></article>`).join("");
+  const markup=sixRelatives.map(r=>`<article><span>${r.relation}</span><h3>${r.key}</h3><b>${r.role}</b><div>${r.topics.map(x=>`<small>${x}</small>`).join("")}</div></article>`).join("");
+  document.querySelectorAll("#relativeCards,#classicRelativeCards").forEach(root=>{root.innerHTML=markup;});
 }
 function renderTopics(active=0) {
   document.querySelector("#topicButtons").innerHTML=yongshenTopics.map((x,i)=>`<button data-topic="${i}" class="${i===active?"active":""}">${x.topic}</button>`).join("");

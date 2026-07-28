@@ -37,7 +37,8 @@ test("extended classics reference retains casting but renders sourced references
   assert.equal(sandbox.__course.classicsCases.length,2);
   assert.ok(sandbox.__course.classicsCases.every(item=>item.book&&item.location&&item.excerpt&&item.boundary));
   assert.match(app,/function renderClassicsReference\(/);
-  assert.match(app,/function renderRelatives\(\)\s*\{\s*const root=document\.querySelector\(\"#relativeCards\"\);\s*if\(!root\)return;/s);
+  assert.match(html,/id="classicRelativeCards"/);
+  assert.match(app,/function renderRelatives\(\)/);
 });
 
 test("judgment boundary owns responsive horizontal padding for every content row",()=>{
