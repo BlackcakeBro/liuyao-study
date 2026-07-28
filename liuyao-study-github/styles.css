@@ -514,5 +514,3 @@ button,.branch-card,.map-switcher,.relationship-lab{position:relative;overflow:h
 /* 地支卡片统一以手型提示可打开；cursor 不影响文本拖选 */
 .branch-card,.branch-card :is(strong,span,small,h3,p,b,i),.branch-card .branch-watermark{cursor:pointer}
 
-/* 八宫卦谱使用与其余板块相同的章节标题 */
-.scroll-atlas-heading.section-heading{margin-bottom:22px}.scroll-atlas-heading.section-heading h2{font-size:30px}.scroll-atlas-heading.section-heading p{text-align:left;padding-top:3px}
