@@ -511,3 +511,5 @@ button,.branch-card,.map-switcher,.relationship-lab{position:relative;overflow:h
 .classics-case-diagrams{grid-template-columns:220px 220px;gap:28px}.classics-case-diagrams .classics-case-hexagram{height:365px;box-sizing:border-box}.classics-case-diagrams .classics-case-hexagram svg{height:220px}.classics-case-diagrams .classics-assembly,.classics-change-arrow{display:none}@media(max-width:760px){.classics-case-diagrams{grid-template-columns:1fr;gap:18px}.classics-case-diagrams .classics-case-hexagram{height:auto;min-height:0}}
 /* 地支象意卡片：空白区用于打开详情，文字保持可选择 */
 .branch-card{cursor:pointer}.branch-card :is(strong,span,small,h3,p,b,i){cursor:text}.branch-card .branch-watermark{cursor:pointer}
+/* 地支卡片统一以手型提示可打开；cursor 不影响文本拖选 */
+.branch-card,.branch-card :is(strong,span,small,h3,p,b,i),.branch-card .branch-watermark{cursor:pointer}
