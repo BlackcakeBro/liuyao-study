@@ -564,13 +564,17 @@ function renderAssemblyLearningTools(){
 
 }
 
-function classicsHexagramMarkup(hexagram){
-  const marks=[...hexagram.lines].reverse().map((line,index)=>{
-    const y=12+index*30;
+function classicsHexagramSvg(lines,moving=[]){
+  return [...lines].reverse().map((line,index)=>{
+    const position=6-index,y=12+index*30,changed=moving.includes(position)?`<circle cx="184" cy="${y+4.5}" r="5"/>`:"";
     const stroke=line==="yin"?`<rect x="0" y="${y}" width="68" height="9"/><rect x="102" y="${y}" width="68" height="9"/>`:`<rect x="0" y="${y}" width="170" height="9"/>`;
-    return `<g aria-label="${6-index}爻，${line==="yin"?"阴":"阳"}">${stroke}<text x="-30" y="${y+8}">${6-index}</text></g>`;
+    return `<g class="${moving.includes(position)?"moving":""}" aria-label="${position}爻，${line==="yin"?"阴":"阳"}">${stroke}<text x="-30" y="${y+8}">${position}</text>${changed}</g>`;
   }).join("");
-  return `<figure class="classics-case-hexagram" aria-label="${hexagram.name}原卦，自上而下显示六爻"><svg viewBox="-36 0 210 200" role="img">${marks}</svg><figcaption>${hexagram.name}</figcaption></figure>`;
+}
+function classicsHexagramMarkup(hexagram){
+  const base=`<figure class="classics-case-hexagram"><span>本卦</span><svg viewBox="-36 0 228 200" role="img" aria-label="${hexagram.name}本卦">${classicsHexagramSvg(hexagram.lines,hexagram.moving||[])}</svg><figcaption>${hexagram.name}</figcaption></figure>`;
+  const changed=hexagram.changed?`<i class="classics-change-arrow">动爻变</i><figure class="classics-case-hexagram"><span>变卦</span><svg viewBox="-36 0 210 200" role="img" aria-label="${hexagram.changed.name}变卦">${classicsHexagramSvg(hexagram.changed.lines)}</svg><figcaption>${hexagram.changed.name}</figcaption></figure>`:"";
+  return `<div class="classics-case-diagrams">${base}${changed}</div>`;
 }
 
 function renderClassicsReference(){
@@ -578,7 +582,7 @@ function renderClassicsReference(){
   const references=document.querySelector("#classicsReferenceCards");
   if(references)references.innerHTML=course0725.classicsReferences.map((item,index)=>`
     <article><small>${String(index+1).padStart(2,"0")}</small><span>${item.book}</span><h3>${item.location}</h3>
-      <blockquote class="classics-reference-excerpt">${item.excerpt}</blockquote><p><b>关键词</b> ${item.keywords}</p><footer><b>关联知识</b><br>${item.connection}</footer>
+      <blockquote class="classics-reference-excerpt">${item.excerpt}</blockquote><p><b>关键词</b> ${item.keywords}</p><footer><b>关联知识</b><p>${item.connection}</p></footer>
     </article>`).join("");
   const cases=document.querySelector("#classicsCaseCards");
   if(cases)cases.innerHTML=course0725.classicsCases.map((item,index)=>`
