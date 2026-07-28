@@ -6,7 +6,7 @@
   <meta name="description" content="以陈师讲义为主线，结合古籍校注、万物类象与主动回忆训练的六爻学习网站。">
   <title>爻象研习 · 六爻学习系统｜旺衰、八宫卦谱与装卦六亲</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="./styles.css?v=20260728-mobile-zoom-fallback-v6">
+  <link rel="stylesheet" href="./styles.css?v=20260728-classics-reference-v7">
 </head>
 <body>
   <div class="paper-noise"></div>
@@ -399,26 +399,36 @@
         <div class="lecture0725-grid" id="assembly0725Grid"></div>
       </section>
 
-      <section class="section-block">
+      <section class="section-block course-tool-section" id="courseNajia">
         <div class="section-heading">
-          <div><span class="section-index">02</span><h2>世应：先分“我”与“所测”</h2></div>
-          <p>世应只确定观察角色，不直接判断吉凶；应爻与世爻相差三位，中间隔两爻。</p>
+          <div><span class="section-index">02</span><h2>纳甲装支：内外卦依次落位</h2></div>
+          <p>先分内卦、外卦，再由下向上装入六个爻位；实占可由软件排盘，理解顺序不能省略。</p>
+        </div>
+        <div class="najia-lab"><div class="najia-trigram-picker" id="najiaTrigramPicker"></div><div class="najia-detail" id="najiaDetail"></div></div>
+      </section>
+
+      <section class="section-block course-shiying-section" id="courseShiYing">
+        <div class="section-heading">
+          <div><span class="section-index">03</span><h2>世应：先分“我”与“所测”</h2></div>
+          <p>世应先确定观察角色；应爻与世爻相差三位，中间隔两爻。</p>
         </div>
         <div class="shiying-role-board" id="shiying0725Roles"></div>
+        <div class="shiying-lab"><div class="shiying-stages" id="shiYingStages"></div><div class="shiying-detail" id="shiYingDetail"></div></div>
       </section>
 
       <section class="section-block cycle-section">
         <div class="section-heading">
-          <div><span class="section-index">03</span><h2>六亲生克：必须熟记的两条链</h2></div>
-          <p>六亲不是孤立标签。先记相生和相克的完整闭环，判断时再看谁在帮助谁、约束谁。</p>
+          <div><span class="section-index">04</span><h2>六亲生克：必须熟记的两条链</h2></div>
+          <p>先记完整闭环，再把关系翻译回具体占问的人、事与状态。</p>
         </div>
         <div class="relative-cycle-board" id="relative0725Cycles"></div>
+        <div class="relative-cards course-relative-cards" id="relativeCards"></div>
       </section>
 
       <section class="section-block">
         <div class="section-heading">
-          <div><span class="section-index">04</span><h2>父母爻与官鬼爻：三层取象</h2></div>
-          <p>人物、事物、状态可以并存；同一六亲落到考试、经营、疾病或感情，占义会随问题变化。</p>
+          <div><span class="section-index">05</span><h2>父母爻与官鬼爻：三层取象</h2></div>
+          <p>人物、事物、状态可以并存；子孙、妻财、兄弟留待后续课堂。</p>
         </div>
         <div class="relative-focus-grid" id="relative0725Focus"></div>
       </section>
@@ -439,9 +449,9 @@
       </div>
 
       <div class="page-intro classics-current-intro" data-edition-only="extended">
-        <span class="eyebrow">LECTURE FIRST · CLASSICS SECOND</span>
-        <h1>古籍校注 · 补全装卦表格</h1>
-        <p>八宫、装支原理、世应与六亲已进入课堂主线；本页用《增删卜易》补全固定纳甲表和后续取用骨架。课堂已讲与古籍细表分层展示，不互相冒充。</p>
+        <span class="eyebrow">SOURCE TEXT · CASE STUDY · CASTING PRACTICE</span>
+        <h1>古籍参考</h1>
+        <p>模拟起卦用于巩固爻序与动变；其余内容只提供与课程相关的原著出处和案例研读，不另设纳甲、六亲、世应预习课。</p>
       </div>
 
       <div class="casting-roadmap" data-edition-only="classic">
@@ -451,18 +461,8 @@
         <i>→</i><article><b>4</b><h3>动则有变</h3><p>老阳变阴，老阴变阳，形成变卦。</p></article>
       </div>
 
-      <section class="classics-learning-map" data-edition-only="extended">
-        <header><span>当前学习界线</span><h2>课堂定口径，古籍补细表</h2><p>《增删卜易》卷一的章节顺序继续与课程进度对齐；未逐项讲授的表格明确标为古籍校注。</p></header>
-        <div class="classics-roadmap" id="classicsRoadmap"></div>
-        <div class="classics-source-boundary">
-          <article><b>陈师已讲</b><strong>八宫 · 装支原理 · 世应 · 六亲</strong><p>八宫核心取象已讲完；装支原理、世应角色、六亲生克及父母官鬼已进入课堂主线。</p></article>
-          <i></i>
-          <article><b>古籍校注</b><strong>完整纳甲表 · 动变 · 用神</strong><p>固定装支细表仍据古籍核对；子孙、妻财、兄弟及后续取用等待课堂推进。</p></article>
-        </div>
-      </section>
-
       <div class="section-heading classics-step-heading" data-edition-only="extended">
-        <div><span class="section-index">01</span><h2>课堂复习：起卦、爻位与动变</h2></div>
+        <div><span class="section-index">01</span><h2>模拟起卦：爻位与动变</h2></div>
         <p>模拟器只用于巩固三钱定爻与由下向上的爻序；八宫归属请回到“八宫卦谱”学习。</p>
       </div>
 
@@ -496,39 +496,19 @@
         </article>
       </section>
 
-      <section class="section-block classics-najia-section" id="classicsNajia" data-edition-only="extended">
-        <div class="section-heading">
-          <div><span class="section-index">02</span><h2>浑天甲子：纳甲装支</h2></div>
-          <p>先分内卦、外卦，再由下向上把三支装入三个爻位。此处依据《增删卜易》卷一“浑天甲子章”预习。</p>
-        </div>
-        <div class="najia-lab">
-          <div class="najia-trigram-picker" id="najiaTrigramPicker"></div>
-          <div class="najia-detail" id="najiaDetail"></div>
-        </div>
+      <section class="section-block classics-reference-section" data-edition-only="extended">
+        <div class="section-heading"><div><span class="section-index">02</span><h2>原著参考</h2></div><p>每一项标出书名与卷章，作为课程学习后的回查入口，而不是第二套课堂。</p></div>
+        <div class="classics-reference-cards" id="classicsReferenceCards"></div>
       </section>
 
-      <section class="section-block">
-        <div class="section-heading">
-          <div><span class="section-index" data-edition-only="classic">05</span><span class="section-index" data-edition-only="extended">03</span><h2>六亲：把五行关系翻译成人事</h2></div>
-          <p>六亲不是固定好坏，而是根据占问承担不同角色。</p>
-        </div>
-        <div class="relative-cards" id="relativeCards"></div>
-      </section>
-
-      <section class="section-block shiying-section" id="classicsShiYing" data-edition-only="extended">
-        <div class="section-heading">
-          <div><span class="section-index">04</span><h2>世应定位：宫内序位决定落爻</h2></div>
-          <p>先记“本宫六、一二三四五、游魂四、归魂三”；应爻与世爻相隔两位。</p>
-        </div>
-        <div class="shiying-lab">
-          <div class="shiying-stages" id="shiYingStages"></div>
-          <div class="shiying-detail" id="shiYingDetail"></div>
-        </div>
+      <section class="section-block classics-case-section" data-edition-only="extended">
+        <div class="section-heading"><div><span class="section-index">03</span><h2>原著案例研读</h2></div><p>从原著的具体占问情境回看课程边界；只展示可定位出处的材料。</p></div>
+        <div class="classics-case-cards" id="classicsCaseCards"></div>
       </section>
 
       <section class="section-block yongshen-section">
         <div class="section-heading">
-          <div><span class="section-index" data-edition-only="classic">06</span><span class="section-index" data-edition-only="extended">05</span><h2>取用神：先问什么，再看什么</h2></div>
+          <div><span class="section-index" data-edition-only="classic">06</span><span class="section-index" data-edition-only="extended">04</span><h2 data-edition-only="classic">取用神：先问什么，再看什么</h2><h2 data-edition-only="extended">后续参考：取用神</h2></div>
           <p>选择占问主题，系统给出初步观察对象；真正断卦仍要检查旺衰、空破、动变和组合。</p>
         </div>
         <div class="yongshen-picker">
@@ -543,8 +523,8 @@
         <p>《增删卜易》把入门顺序明确落在：八卦爻画、起卦、六十四卦宫、浑天甲子、六亲、世应、动变、用神及元忌仇神。网站后续将按这条顺序逐项建立古籍原文对照。</p>
       </section>
       <section class="classic-note" data-edition-only="extended">
-        <span>古籍预习边界</span>
-        <p>本页“纳甲、世应、用神与元忌仇”依据《增删卜易》卷一相关章节整理，只帮助建立下一步知识骨架。遇到古籍版本差异或与课堂口径不一致时，以陈师后续讲授为主，并同步修订训练题。</p>
+        <span>古籍参考边界</span>
+        <p>本页保留模拟起卦、原著出处、案例研读与后续取用参考。遇到古籍版本差异或与课堂口径不一致时，以陈师后续讲授为主，并同步修订训练题。</p>
       </section>
     </section>
 
@@ -608,11 +588,11 @@
   <footer><span>爻象研习 · 六爻知识体系</span><p>关系 → 结构 → 力量 → 类象 → 验证</p></footer>
   <script src="./data.js?v=20260727-course-0725-v1"></script>
   <script src="./course-0718.js?v=20260727-course-0725-v1"></script>
-  <script src="./course-0725.js?v=20260727-course-0725-v1"></script>
-  <script src="./training-bank.js?v=20260728-mobile-zoom-fallback-v6"></script>
+  <script src="./course-0725.js?v=20260728-classics-reference-v7"></script>
+  <script src="./training-bank.js?v=20260728-classics-reference-v7"></script>
   <script src="./vendor/jquery-3.7.1.min.js"></script>
   <script src="./vendor/jquery.ripples-min.js"></script>
-  <script src="./app.js?v=20260728-mobile-zoom-fallback-v6"></script>
+  <script src="./app.js?v=20260728-classics-reference-v7"></script>
   <script>
     window.addEventListener('load', function(){
       setTimeout(function(){
