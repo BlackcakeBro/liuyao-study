@@ -22,6 +22,9 @@ test("taught na-jia, shi-ying and six-relative tools live in the 07-25 course",(
   assert.ok(sectionAt("najiaTrigramPicker")<sectionAt("casting"));
   assert.ok(sectionAt("shiYingStages")<sectionAt("casting"));
   assert.ok(sectionAt("relativeCards")<sectionAt("casting"));
+  assert.doesNotMatch(app,/#classicsNajia|#classicsShiYing/);
+  assert.match(app,/\[\"course-najia\",\"纳甲装支\"\]/);
+  assert.match(app,/\[\"course-shiying\",\"世应定位\"\]/);
 });
 
 test("extended classics reference retains casting but renders sourced references and cases",()=>{
