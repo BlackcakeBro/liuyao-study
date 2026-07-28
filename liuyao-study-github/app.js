@@ -573,9 +573,8 @@ function classicsHexagramSvg(lines,moving=[]){
 }
 function classicsHexagramMarkup(hexagram){
   const base=`<figure class="classics-case-hexagram"><span>本卦</span><svg viewBox="-36 0 228 200" role="img" aria-label="${hexagram.name}本卦">${classicsHexagramSvg(hexagram.lines,hexagram.moving||[])}</svg><figcaption>${hexagram.name}</figcaption></figure>`;
-  const changed=hexagram.changed?`<i class="classics-change-arrow">动爻变</i><figure class="classics-case-hexagram"><span>变卦</span><svg viewBox="-36 0 210 200" role="img" aria-label="${hexagram.changed.name}变卦">${classicsHexagramSvg(hexagram.changed.lines)}</svg><figcaption>${hexagram.changed.name}</figcaption></figure>`:"";
-  const assembly=`<dl class="classics-assembly"><dt>装卦记录</dt><dd>本卦：${hexagram.name}</dd>${hexagram.changed?`<dd>变卦：${hexagram.changed.name}</dd><dd>动爻：${(hexagram.moving||[]).map(item=>`第${item}爻`).join("、")}</dd>`:"<dd>原文未载变卦与动爻</dd>"}</dl>`;
-  return `<div class="classics-case-diagrams">${base}${changed}${assembly}</div>`;
+  const changed=hexagram.changed?`<figure class="classics-case-hexagram"><span>变卦</span><svg viewBox="-36 0 228 200" role="img" aria-label="${hexagram.changed.name}变卦">${classicsHexagramSvg(hexagram.changed.lines)}</svg><figcaption>${hexagram.changed.name}</figcaption></figure>`:"";
+  return `<div class="classics-case-diagrams">${base}${changed}</div>`;
 }
 
 function renderClassicsReference(){

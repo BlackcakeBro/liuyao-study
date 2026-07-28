@@ -33,13 +33,12 @@ test("extended classics reference retains casting but renders sourced references
   assert.match(html,/id="classicsReferenceCards"/);
   assert.match(html,/id="classicsCaseCards"/);
   assert.match(html,/id="tossCoins"/);
-  assert.equal(sandbox.__course.classicsReferences.length,6);
+  assert.equal(sandbox.__course.classicsReferences.length,8);
   assert.ok(sandbox.__course.classicsReferences.every(item=>item.book&&item.location&&item.excerpt&&item.keywords&&item.connection));
   assert.equal(sandbox.__course.classicsCases.length,5);
   assert.ok(sandbox.__course.classicsCases.every(item=>item.book&&item.location&&item.sourceText&&item.hexagram?.lines?.length===6&&item.boundary));
   assert.ok(sandbox.__course.classicsReferences.every(item=>!/(预习|后续课堂|等待课程)/.test(JSON.stringify(item))));
   assert.match(app,/classics-case-hexagram/);
-  assert.match(app,/classics-change-arrow/);
   assert.ok(sandbox.__course.classicsCases.some(item=>item.hexagram.changed&&item.hexagram.moving?.length));
   assert.match(app,/function renderClassicsReference\(/);
   assert.match(html,/id="classicRelativeCards"/);
