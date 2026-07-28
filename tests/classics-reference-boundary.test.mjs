@@ -29,6 +29,7 @@ test("taught na-jia, shi-ying and six-relative tools live in the 07-25 course",(
 
 test("extended classics reference retains casting but renders sourced references and cases",()=>{
   assert.match(html,/古籍参考/);
+  assert.ok(app.includes('if(extendedEdition)document.querySelector(\'[data-view="casting"]\').textContent="古籍参考";'));
   assert.match(html,/id="classicsReferenceCards"/);
   assert.match(html,/id="classicsCaseCards"/);
   assert.match(html,/id="tossCoins"/);

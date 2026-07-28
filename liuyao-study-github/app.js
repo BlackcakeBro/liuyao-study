@@ -10,6 +10,7 @@ const requestedInitialView=hashParams.get("view")||siteParams.get("view");
 const requestedAnchor=hashParams.get("anchor")||(!rawHash.includes("=")?rawHash:null);
 const extendedEdition=hashParams.get("edition")==="extended"||siteParams.get("v")==="changsheng-ring-v3"||["lecture0704","lecture0718","lecture0725"].includes(requestedInitialView);
 document.documentElement.dataset.siteEdition=extendedEdition?"extended":"classic";
+if(extendedEdition)document.querySelector('[data-view="casting"]').textContent="古籍参考";
 if(extendedEdition)document.querySelectorAll('[data-edition-only="classic"]').forEach(element=>element.remove());
 else document.querySelectorAll('[data-edition-only="extended"]').forEach(element=>element.remove());
 if(!extendedEdition){
