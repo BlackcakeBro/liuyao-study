@@ -509,3 +509,5 @@ button,.branch-card,.map-switcher,.relationship-lab{position:relative;overflow:h
 @media(max-width:760px){.classics-case-diagrams{grid-template-columns:1fr;width:100%}.classics-case-diagrams .classics-case-hexagram{width:min(250px,100%)}.classics-case-diagrams .classics-assembly{grid-column:1;grid-template-columns:78px 1fr}.classics-change-arrow{margin:0}.section-heading>p{max-width:none}}
 /* 2026-07-28 · 案例双卦同尺寸 */
 .classics-case-diagrams{grid-template-columns:220px 220px;gap:28px}.classics-case-diagrams .classics-case-hexagram{height:365px;box-sizing:border-box}.classics-case-diagrams .classics-case-hexagram svg{height:220px}.classics-case-diagrams .classics-assembly,.classics-change-arrow{display:none}@media(max-width:760px){.classics-case-diagrams{grid-template-columns:1fr;gap:18px}.classics-case-diagrams .classics-case-hexagram{height:auto;min-height:0}}
+/* 地支象意卡片：空白区用于打开详情，文字保持可选择 */
+.branch-card{cursor:pointer}.branch-card :is(strong,span,small,h3,p,b,i){cursor:text}.branch-card .branch-watermark{cursor:pointer}
