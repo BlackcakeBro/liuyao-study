@@ -558,7 +558,7 @@ test("classics reference is source-backed and ships with one fresh cache version
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(4).fill("20260728-atlas-hero-unify-v18"),
+    Array(4).fill("20260728-atlas-hero-spacing-v19"),
     "course data, renderer, training bank, and styling must ship with one fresh cache version"
   );
 });
