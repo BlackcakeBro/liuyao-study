@@ -6,16 +6,15 @@ const html=fs.readFileSync("liuyao-study-github/index.html","utf8");
 const app=fs.readFileSync("liuyao-study-github/app.js","utf8");
 const css=fs.readFileSync("liuyao-study-github/styles.css","utf8");
 
-test("extended classics preview advances from the taught eight palaces into na-jia and shi-ying",()=>{
+test("extended classics reference separates taught tools from source-backed materials",()=>{
   assert.match(html,/data-edition-only="classic"/);
   assert.match(html,/data-edition-only="extended"/);
-  assert.match(html,/古籍校注 · 补全装卦表格/);
-  assert.match(html,/浑天甲子/);
-  assert.match(html,/纳甲装支/);
-  assert.match(html,/世应定位/);
-  assert.match(html,/陈师已讲/);
-  assert.match(html,/古籍预习/);
-  assert.match(app,/renderClassicsPreview/);
+  assert.match(html,/古籍参考/);
+  assert.match(html,/原著参考/);
+  assert.match(html,/原著案例研读/);
+  assert.match(html,/模拟起卦/);
+  assert.match(app,/renderAssemblyLearningTools/);
+  assert.match(app,/renderClassicsReference/);
 });
 
 test("classic and extended editions keep separate ancient-preview and training surfaces",()=>{

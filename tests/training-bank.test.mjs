@@ -20,8 +20,8 @@ test("audited question bank covers foundation, all taught courses, and ancient a
     foundation:73,
     lecture0704:54,
     lecture0718:148,
-    lecture0725:26,
-    classics:40
+    lecture0725:55,
+    classics:11
   });
   assert.equal(training.bank.length,341);
   assert.equal(new Set(training.bank.map(question=>question.id)).size,training.bank.length);
@@ -65,4 +65,14 @@ test("ancient preview follows the verified chapter order and exact na-jia sequen
   assert.deepEqual(Array.from(training.classics.najia[0].inner),["子水","寅木","辰土"]);
   assert.deepEqual(Array.from(training.classics.najia[0].outer),["午火","申金","戌土"]);
   assert.deepEqual(Array.from(training.classics.shiYing,stage=>stage.shi),[6,1,2,3,4,5,4,3]);
+});
+
+
+test("taught assembly questions stay in the 07-25 module while later ancient reference remains separate",()=>{
+  const taughtKinds=new Set(["najia","shi-ying","six-relative"]);
+  const taught=training.bank.filter(question=>taughtKinds.has(question.kind));
+  assert.ok(taught.every(question=>question.module==="lecture0725"||question.module==="foundation"));
+  assert.ok(training.bank.filter(question=>question.module==="classics").every(question=>
+    ["yongshen","role"].includes(question.kind)
+  ));
 });
