@@ -223,6 +223,11 @@ test("single-hexagram detail moves as one consistently sized content group",()=>
   assert.ok(detailSize.has("min-height"),"detail mode needs a stable visual minimum");
   assert.equal(detailSize.get("height"),"490px");
   assert.equal(detailSize.get("max-height"),"490px");
+  assert.equal(
+    detailSize.get("overflow-y"),
+    "auto",
+    "desktop detail mode must scroll longer or zoomed copy within the fixed frame"
+  );
   assert.ok(contentRule);
 
   const atlasHeading=declarations(baseRuleMatching(
