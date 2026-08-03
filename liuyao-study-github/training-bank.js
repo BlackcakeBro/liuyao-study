@@ -16,7 +16,7 @@
       {n:"01",title:"起卦与爻位",progress:"learned",state:"陈师已讲",detail:"三钱定爻、初爻至上爻、内外卦与动变。"},
       {n:"02",title:"八宫六十四卦",progress:"learned",state:"陈师已讲",detail:"八宫归属、宫内序位及八宫核心取象已经讲完。"},
       {n:"03",title:"浑天甲子",progress:"learned",state:"课堂原理 + 古籍校注",detail:"课堂已讲内外卦固定装支原理；完整逐爻表仍作古籍校注。"},
-      {n:"04",title:"六亲",progress:"learned",state:"五类六亲已讲",detail:"六亲生克链与父母、官鬼、兄弟、妻财、子孙的三层取象均已进入课堂。"},
+      {n:"04",title:"六亲",progress:"learned",state:"六亲已讲",detail:"六亲生克链与父母、官鬼、兄弟、妻财、子孙的三层取象均已进入课堂。"},
       {n:"05",title:"世应",progress:"learned",state:"陈师已讲",detail:"世为求测者，应为所测或对方；应与世中间隔两爻。"},
       {n:"06",title:"动变与取用",progress:"learned",state:"课堂已讲取用顺序",detail:"先定所问、再取用神，并结合世爻、月日、旺衰与动静；元忌仇关系继续参考古籍。"}
     ],

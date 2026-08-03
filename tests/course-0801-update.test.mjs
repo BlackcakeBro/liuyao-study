@@ -56,3 +56,12 @@ test("the longer combined lesson title wraps inside a mobile viewport",()=>{
   assert.match(css,/@media\(max-width:760px\)\{#lecture0725\{[^}]*overflow-x:hidden/);
   assert.match(css,/\.lecture0725-intro h1\{[^}]*overflow-wrap:anywhere[^}]*word-break:break-all/);
 });
+
+test("the relative section uses a concise title and aligns boundary labels with copy",()=>{
+  const section=html.slice(html.indexOf('id="relative0725Focus"')-500,html.indexOf('id="relative0725Focus"')+100);
+  assert.match(section,/<h2>六亲：人物、事物与状态<\/h2>/);
+  assert.doesNotMatch(section,/来自 7 月 25 日课堂|来自 8 月 1 日课堂/);
+  assert.doesNotMatch(html,/五类六亲已讲/);
+  assert.match(css,/\.relative-card-boundary\{[^}]*display:grid[^}]*grid-template-columns:72px minmax\(0,1fr\)[^}]*align-items:start/);
+  assert.match(css,/\.relative-card-boundary p\{[^}]*margin:0/);
+});
