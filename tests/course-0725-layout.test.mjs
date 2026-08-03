@@ -9,6 +9,7 @@ const css=fs.readFileSync("liuyao-study-github/styles.css","utf8");
 const dataSource=fs.readFileSync("liuyao-study-github/data.js","utf8");
 const course0718Source=fs.readFileSync("liuyao-study-github/course-0718.js","utf8");
 const course0725Source=fs.readFileSync("liuyao-study-github/course-0725.js","utf8");
+const course0801Source=fs.readFileSync("liuyao-study-github/course-0801.js","utf8");
 const trainingSource=fs.readFileSync("liuyao-study-github/training-bank.js","utf8");
 
 const matchingBrace=(source,open)=>{
@@ -98,6 +99,11 @@ const loadCourse0718=()=>{
   vm.runInNewContext(`${course0718Source};globalThis.__course=course0718;`,sandbox);
   return sandbox.__course;
 };
+const loadCourse0801=()=>{
+  const sandbox={};
+  vm.runInNewContext(`${course0801Source};globalThis.__course=course0801;`,sandbox);
+  return sandbox.__course;
+};
 
 const loadTraining=()=>{
   const sandbox={window:{}};
@@ -105,6 +111,7 @@ const loadTraining=()=>{
   vm.runInContext(dataSource,sandbox);
   vm.runInContext(course0718Source,sandbox);
   vm.runInContext(course0725Source,sandbox);
+  vm.runInContext(course0801Source,sandbox);
   vm.runInContext(trainingSource,sandbox);
   return sandbox.window.LIUYAO_TRAINING;
 };
@@ -402,12 +409,15 @@ test("07-25 six-relative relationships use one accessible SVG with distinct shen
   const course=loadCourse0725();
   const nodes=renderWithDom(
     "render0725Course",
-    {course0725:course},
+    {course0725:course,course0801:loadCourse0801()},
     [
       ["#assembly0725Grid",domNode()],
       ["#shiying0725Roles",domNode()],
       ["#relative0725Cycles",domNode()],
       ["#relative0725Focus",domNode()],
+      ["#useGod0801Steps",domNode()],
+      ["#sixGod0801Grid",domNode()],
+      ["#sixGod0801Boundary",domNode()],
       ["#judgment0725Rules",domNode()],
       ["#next0725Lesson",domNode()]
     ]
@@ -451,12 +461,15 @@ test("07-25 six-relative relationships use one accessible SVG with distinct shen
 test("relative cards and judgment boundary expose stable aligned regions",()=>{
   const nodes=renderWithDom(
     "render0725Course",
-    {course0725:loadCourse0725()},
+    {course0725:loadCourse0725(),course0801:loadCourse0801()},
     [
       ["#assembly0725Grid",domNode()],
       ["#shiying0725Roles",domNode()],
       ["#relative0725Cycles",domNode()],
       ["#relative0725Focus",domNode()],
+      ["#useGod0801Steps",domNode()],
+      ["#sixGod0801Grid",domNode()],
+      ["#sixGod0801Boundary",domNode()],
       ["#judgment0725Rules",domNode()],
       ["#next0725Lesson",domNode()]
     ]
@@ -464,11 +477,11 @@ test("relative cards and judgment boundary expose stable aligned regions",()=>{
   const focusMarkup=nodes.get("#relative0725Focus")?.innerHTML??"";
   const cards=[...focusMarkup.matchAll(/<article\b[\s\S]*?<\/article>/g)]
     .map(match=>match[0]);
-  assert.equal(cards.length,2,"父母、官鬼必须各自渲染为一张卡片");
+  assert.equal(cards.length,5,"五类六亲必须各自渲染为一张卡片");
   const cardNames=new Set();
   for(const card of cards){
-    const name=card.match(/<h3\b[^>]*>\s*(父母|官鬼)爻\s*<\/h3>/)?.[1]??"";
-    assert.ok(name==="父母"||name==="官鬼","每张卡片必须保留稳定的六亲身份");
+    const name=card.match(/<h3\b[^>]*>\s*(父母|官鬼|兄弟|妻财|子孙)爻\s*<\/h3>/)?.[1]??"";
+    assert.ok(["父母","官鬼","兄弟","妻财","子孙"].includes(name),"每张卡片必须保留稳定的六亲身份");
     cardNames.add(name);
     assert.equal(
       tagsWithClass(card,"relative-card-body").length,
@@ -488,7 +501,7 @@ test("relative cards and judgment boundary expose stable aligned regions",()=>{
     assert.equal((card.match(/<dt\b/g)??[]).length,3,`${name}卡片必须包含三项取象名称`);
     assert.equal((card.match(/<dd\b/g)??[]).length,3,`${name}卡片必须包含三项取象内容`);
   }
-  assert.deepEqual(cardNames,new Set(["父母","官鬼"]));
+  assert.deepEqual(cardNames,new Set(["父母","官鬼","兄弟","妻财","子孙"]));
   const cardRule=baseRuleMatching(
     ".relative-focus-grid>article",
     body=>{
@@ -554,11 +567,11 @@ test("classics reference is source-backed and ships with one fresh cache version
   assert.doesNotMatch(html,/id="classicsRoadmap"/);
 
   const coupledAssetVersions=[
-    ...html.matchAll(/(?:href|src)="\.\/(?:styles\.css|course-0725\.js|training-bank\.js|app\.js)\?v=([^"]+)"/g)
+    ...html.matchAll(/(?:href|src)="\.\/(?:styles\.css|course-0725\.js|course-0801\.js|training-bank\.js|app\.js)\?v=([^"]+)"/g)
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(4).fill("20260728-single-line-titles-v20"),
+    Array(5).fill("20260803-course-0801-v21"),
     "course data, renderer, training bank, and styling must ship with one fresh cache version"
   );
 });

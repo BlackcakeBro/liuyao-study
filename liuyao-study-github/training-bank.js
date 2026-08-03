@@ -5,6 +5,7 @@
     {id:"lecture0704",label:"旺衰与地支关系",short:"07·04"},
     {id:"lecture0718",label:"起卦与八宫卦谱",short:"07·18"},
     {id:"lecture0725",label:"装卦与六亲取象",short:"07·25"},
+    {id:"lecture0801",label:"六亲与六神进阶",short:"08·01"},
     {id:"classics",label:"古籍参考",short:"古籍"}
   ];
   const classics={
@@ -15,9 +16,9 @@
       {n:"01",title:"起卦与爻位",progress:"learned",state:"陈师已讲",detail:"三钱定爻、初爻至上爻、内外卦与动变。"},
       {n:"02",title:"八宫六十四卦",progress:"learned",state:"陈师已讲",detail:"八宫归属、宫内序位及八宫核心取象已经讲完。"},
       {n:"03",title:"浑天甲子",progress:"learned",state:"课堂原理 + 古籍校注",detail:"课堂已讲内外卦固定装支原理；完整逐爻表仍作古籍校注。"},
-      {n:"04",title:"六亲",progress:"learned",state:"陈师讲至父母、官鬼",detail:"六亲生克链已讲；父母、官鬼已展开，子孙、妻财、兄弟待续。"},
+      {n:"04",title:"六亲",progress:"learned",state:"五类六亲已讲",detail:"六亲生克链与父母、官鬼、兄弟、妻财、子孙的三层取象均已进入课堂。"},
       {n:"05",title:"世应",progress:"learned",state:"陈师已讲",detail:"世为求测者，应为所测或对方；应与世中间隔两爻。"},
-      {n:"06",title:"动变与取用",progress:"preview",state:"古籍预习",detail:"动变基础已讲；按占问取用神及元忌仇关系仍待课程推进。"}
+      {n:"06",title:"动变与取用",progress:"learned",state:"课堂已讲取用顺序",detail:"先定所问、再取用神，并结合世爻、月日、旺衰与动静；元忌仇关系继续参考古籍。"}
     ],
     najia:[
       {trigram:"乾",inner:["子水","寅木","辰土"],outer:["午火","申金","戌土"]},
@@ -164,7 +165,40 @@
   course0725.judgmentRules.forEach((rule,index)=>add({
     id:`0725-rule-${index+1}`,module:"lecture0725",kind:"judgment-rule",source:source0725,
     question:"哪一条符合本课的六亲判断原则？",answer:rule,candidates:ruleChoices,
-    feedback:`${rule} ${course0725.nextLesson}`
+    feedback:rule
+  }));
+
+  const source0801="陈师 2026-08-01";
+  const layers0801=course0801.focusRelatives.flatMap(item=>[item.people.join("、"),item.things.join("、"),item.states.join("、")]);
+  course0801.focusRelatives.forEach(item=>{
+    [["人物",item.people],["事物",item.things],["状态",item.states]].forEach(([layer,values])=>add({
+      id:`0801-relative-${item.name}-${layer}`,module:"lecture0801",kind:"relative-image",source:source0801,
+      question:`哪组内容属于${item.name}爻的“${layer}”层取象？`,answer:values.join("、"),candidates:layers0801,
+      feedback:`${item.name}爻 · ${layer}：${values.join("、")}。${item.boundary}`
+    }));
+  });
+  const boundaries0801=[...course0801.focusRelatives.map(item=>item.boundary),"只看六亲名称即可直接判断吉凶。"];
+  course0801.focusRelatives.forEach(item=>add({
+    id:`0801-relative-boundary-${item.name}`,module:"lecture0801",kind:"judgment-boundary",source:source0801,
+    question:`关于${item.name}爻，哪条符合本课判断边界？`,answer:item.boundary,candidates:boundaries0801,feedback:item.boundary
+  }));
+  const useGodCues=course0801.useGodSteps.map(item=>item.cue);
+  course0801.useGodSteps.forEach((item,index)=>add({
+    id:`0801-usegod-${index+1}`,module:"lecture0801",kind:"use-god",source:source0801,
+    question:`“${item.name}”这一步的核心是什么？`,answer:item.cue,candidates:useGodCues,feedback:`${item.cue}。${item.detail}`
+  }));
+  const sixGodCues=course0801.sixGods.map(item=>item.cue);
+  const sixGodCombos=course0801.sixGods.map(item=>item.combos.join("、"));
+  course0801.sixGods.forEach(item=>{
+    add({id:`0801-sixgod-${item.name}-cue`,module:"lecture0801",kind:"six-god",source:source0801,
+      question:`六神“${item.name}”的课堂核心提示是哪一组？`,answer:item.cue,candidates:sixGodCues,feedback:`${item.name}：${item.images.join("、")}。${item.boundary}`});
+    add({id:`0801-sixgod-${item.name}-combo`,module:"lecture0801",kind:"six-god-combination",source:source0801,
+      question:`哪组是课堂列举的“${item.name}”组合示例？`,answer:item.combos.join("、"),candidates:sixGodCombos,feedback:`${item.combos.join("；")}。${course0801.sixGodBoundary}`});
+  });
+  const rules0801=[...course0801.judgmentRules,"六神名称本身足以直接断定结果。"];
+  course0801.judgmentRules.forEach((rule,index)=>add({
+    id:`0801-rule-${index+1}`,module:"lecture0801",kind:"judgment-rule",source:source0801,
+    question:"哪一条符合 8 月 1 日课堂的判断顺序？",answer:rule,candidates:rules0801,feedback:rule
   }));
 
   const innerChoices=classics.najia.map(item=>item.inner.join(" → "));

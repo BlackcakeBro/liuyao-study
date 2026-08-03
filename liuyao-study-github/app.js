@@ -85,7 +85,7 @@ const state = {
   castMode:"random", manualCoins:["字","背","字"],quizModule:extendedEdition?"lecture0718":"classic"
 };
 const learningModules = [
-  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦与六亲取象"],["course-najia","纳甲装支"],["course-shiying","世应定位"],["course-relatives","六亲生克"],["classics-reference","古籍原著与案例"]]:[]),
+  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦、六亲与六神"],["course-najia","纳甲装支"],["course-shiying","世应定位"],["course-relatives","六亲生克"],["course-yongshen","按占问取用"],["course-sixgods","六神初识"],["classics-reference","古籍原著与案例"]]:[]),
   ["foundation-01","术数定位"],["foundation-02","五行能量与万物象"],["foundation-03","五行生克与六亲"],
   ["foundation-04","河图洛书与先后天八卦"],["foundation-05","四时旺衰"],["foundation-06","地支时空"],
   ["foundation-07","八卦体系"],["foundation-08","十天干"],["foundation-09","五味五脏五常"],
@@ -734,6 +734,8 @@ function renderLearningTracking(){
   targets.set("lecture0704-main",document.querySelector("#lecture0704 .page-intro"));
   targets.set("lecture0718-main",document.querySelector("#lecture0718 .page-intro"));
   targets.set("lecture0725-main",document.querySelector("#lecture0725 .page-intro"));
+  targets.set("course-yongshen",document.querySelector(".use-god-0801-section"));
+  targets.set("course-sixgods",document.querySelector(".six-god-0801-section"));
 
   learningModules.forEach(([key,label])=>{
     const target=targets.get(key);
@@ -1162,9 +1164,13 @@ function render0725Course(){
   document.querySelector("#shiying0725Roles").innerHTML=course0725.shiYingRoles.map((item,index)=>`
     <article class="${index===0?"shi":"ying"}"><span>${item.name}</span><div><strong>${item.role}</strong><p>${item.note}</p></div></article>`).join("");
   document.querySelector("#relative0725Cycles").innerHTML=renderRelativeCycleDiagram(course0725.relativeCycles);
-  document.querySelector("#relative0725Focus").innerHTML=course0725.focusRelatives.map(item=>`
+  const relativeLessons=[
+    ...course0725.focusRelatives.map(item=>({...item,lesson:"07·25"})),
+    ...course0801.focusRelatives.map(item=>({...item,lesson:"08·01"}))
+  ];
+  document.querySelector("#relative0725Focus").innerHTML=relativeLessons.map(item=>`
     <article>
-      <header><span>${item.relation}</span><h3>${item.name}爻</h3><strong>${item.tone}</strong></header>
+      <header><span>${item.relation} · ${item.lesson}</span><h3>${item.name}爻</h3><strong>${item.tone}</strong></header>
       <div class="relative-card-body">
         <dl class="relative-layers">
           <div><dt>人物</dt><dd>${item.people.join(" · ")}</dd></div>
@@ -1174,8 +1180,16 @@ function render0725Course(){
       </div>
       <footer class="relative-card-boundary"><b>使用边界</b><p>${item.boundary}</p></footer>
     </article>`).join("");
-  document.querySelector("#judgment0725Rules").innerHTML=course0725.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
-  document.querySelector("#next0725Lesson").innerHTML=`<b>后续课堂：</b>${course0725.nextLesson}`;
+  document.querySelector("#useGod0801Steps").innerHTML=course0801.useGodSteps.map((item,index)=>`
+    <article><small>0${index+1}</small><h3>${item.name}</h3><strong>${item.cue}</strong><p>${item.detail}</p></article>`).join("");
+  document.querySelector("#sixGod0801Grid").innerHTML=course0801.sixGods.map(item=>`
+    <article><header><span>${item.cue}</span><h3>${item.name}</h3></header>
+      <div><b>核心象意</b><p>${item.images.join(" · ")}</p></div>
+      <div><b>组合示例</b><p>${item.combos.join(" · ")}</p></div>
+      <footer>${item.boundary}</footer></article>`).join("");
+  document.querySelector("#sixGod0801Boundary").innerHTML=`<b>课堂边界</b>${course0801.sixGodBoundary}`;
+  document.querySelector("#judgment0725Rules").innerHTML=[...course0725.judgmentRules,...course0801.judgmentRules].map(rule=>`<li>${rule}</li>`).join("");
+  document.querySelector("#next0725Lesson").innerHTML=`<b>待续范围：</b>${course0801.nextLesson}`;
 }
 
 document.querySelectorAll(".nav-item").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
