@@ -66,14 +66,14 @@ const hiddenStemData = {
   寅:{group:"四长生", stems:["甲","丙","戊"], logic:"寅属木藏甲，又为火长生藏丙，并带戊土。", relation:"与巳、申等关系中常看甲、丙、戊如何被合克。"},
   卯:{group:"四正", stems:["乙"], logic:"卯为纯木之地，藏乙。", relation:"卯辰穿、卯申暗合/绝等，要看乙木与对方藏干。"},
   辰:{group:"四墓库", stems:["戊","癸","乙"], logic:"辰为阳土、水库，春末有乙木余气。", relation:"卯辰穿常从卯木克辰土、水库受扰取象。"},
-  巳:{group:"四长生", stems:["丙","庚","戊"], logic:"巳属火藏丙，又为金长生藏庚，并带戊土。", relation:"寅巳穿、巳申合刑、子巳绝暗合，都离不开庚与丙。"},
+  巳:{group:"四长生", stems:["丙","庚","戊"], logic:"巳属火藏丙，又为金长生藏庚，并带戊土。", relation:"寅巳穿常看巳中庚受伤；巳申兼有六合与刑；子中癸与巳中戊暗合，同时又属水火绝。"},
   午:{group:"四正", stems:["丁","己"], logic:"午为火地，藏丁己；注意不是藏丙。", relation:"丑午穿常看丑中癸水晦午中丁火。"},
   未:{group:"四墓库", stems:["己","乙","丁"], logic:"未为阴土、木库，夏末有丁火余气。", relation:"子未穿看未中己土伤子癸，也可看子水反伤未中丁。"},
   申:{group:"四长生", stems:["庚","壬","戊"], logic:"申属金藏庚，又为水长生藏壬，并带戊土。", relation:"申亥穿看申中庚金伤亥中甲木。"},
   酉:{group:"四正", stems:["辛"], logic:"酉为纯金之地，藏辛。", relation:"酉戌穿看戌中丁火长期克酉中辛金。"},
   戌:{group:"四墓库", stems:["戊","丁","辛"], logic:"戌为阳土、火库，秋末有辛金余气。", relation:"戌为火库，酉戌穿的慢性火克金象很明显。"},
   亥:{group:"四长生", stems:["壬","甲"], logic:"亥属水藏壬，又为木长生藏甲。", relation:"申亥穿测孕育时，可取亥中甲木为孩子/胎象。"},
-  子:{group:"四正", stems:["癸"], logic:"子为纯水之地，藏癸。", relation:"子未穿、子巳绝暗合都常从癸水受制或水火关系看。"},
+  子:{group:"四正", stems:["癸"], logic:"子为纯水之地，藏癸。", relation:"子未穿看癸水受制；子中癸与巳中戊暗合，子巳同时又属水火绝。"},
   丑:{group:"四墓库", stems:["己","辛","癸"], logic:"丑为阴土、金库，冬末有癸水余气。", relation:"丑午穿看癸水晦丁火，或午月丁火反伤辛金。"}
 };
 const savedQuizStats = JSON.parse(localStorage.getItem("liuyao-quiz-stats") || '{"correct":0,"total":0}');
@@ -264,6 +264,34 @@ function relationsForBranch(typeKey, branch){
 function allActiveBranchesFor(typeKey){
   return new Set(relationGroupsFor(typeKey).flat());
 }
+function overlappingRelationsFor(typeKey,branch,selectedGroups){
+  const found=[];
+  const seen=new Set();
+  selectedGroups.forEach(currentGroup=>{
+    Object.entries(branchRelationTypes).forEach(([otherKey,otherRelation])=>{
+      if(otherKey===typeKey)return;
+      relationGroupsFor(otherKey).forEach(otherGroup=>{
+        if(!otherGroup.includes(branch))return;
+        const shared=currentGroup.filter(item=>otherGroup.includes(item));
+        if(shared.length<2||!shared.includes(branch))return;
+        shared.filter(item=>item!==branch).forEach(partner=>{
+          const signature=[otherKey,...[branch,partner].sort()].join(":");
+          if(seen.has(signature))return;
+          seen.add(signature);
+          found.push(`${branch} · ${partner}同时也是${otherRelation.label}`);
+        });
+      });
+    });
+  });
+  return found;
+}
+function readableRelationGroup(typeKey,group){
+  if(typeKey==="sanhe")return `${sanheInfo(group)?.label||group.join(" · ")}（${group.join(" · ")}）`;
+  if(typeKey==="xing"&&group.length===1)return `${group[0]} · ${group[0]}自刑`;
+  if(typeKey==="xing"&&group.length===3)return `${group.join(" · ")}三刑`;
+  if(typeKey==="xing")return `${group.join(" · ")}相刑`;
+  return group.join(" · ");
+}
 function groupKey(group){ return group.join(""); }
 function sanheInfo(group){ return sanheJu[groupKey(group)]; }
 function relationColorFor(typeKey, group){
@@ -321,9 +349,10 @@ function renderBranchRelationLab(typeKey=branchRelationState.type, branch=branch
     const b=btn.dataset.branchRel;
     if(activeSet.has(b)) renderBranchRelationLab(typeKey,b);
   }));
-  const readable=selectedGroups.length?selectedGroups.map(g=>typeKey==="sanhe"?`${sanheInfo(g)?.label||g.join(" · ")}（${g.join(" · ")}）`:g.join(" · ")).join(" / "):"此支在该关系中无对应组合";
+  const readable=selectedGroups.length?selectedGroups.map(group=>readableRelationGroup(typeKey,group)).join(" / "):"此支在该关系中无对应组合";
+  const overlaps=overlappingRelationsFor(typeKey,branch,selectedGroups);
   const colorNote=activeSanhe ? `当前 ${branch} 属于 <b style="color:${activeRelationColor}">${activeSanhe.label}</b>，圆环中相关地支按 ${activeSanhe.element} 的五行颜色标出。` : "";
-  document.querySelector("#relationInspector").innerHTML=`<span>${rel.label} · ${rel.tone}</span><h3>${branch} 的关系</h3><p>${rel.note}${colorNote?`<br>${colorNote}`:""}</p><div><b>当前连线</b><strong>${readable}</strong></div><small>${selectedGroups.length?"点击圆环其他地支，可切换观察对象。":"该关系并非覆盖全部十二地支，淡色节点表示没有此关系。"}</small>`;
+  document.querySelector("#relationInspector").innerHTML=`<span>${rel.label} · ${rel.tone}</span><h3>${branch} 的关系</h3><p>${rel.note}${colorNote?`<br>${colorNote}`:""}</p><div><b>当前连线</b><strong>${readable}</strong></div>${overlaps.length?`<div class="relation-overlap"><b>兼有关系</b><strong>${overlaps.join("<br>")}</strong></div>`:""}<small>${selectedGroups.length?"点击圆环其他地支，可切换观察对象；兼有关系会同时标出，不按单一关系理解。":"该关系并非覆盖全部十二地支，淡色节点表示没有此关系。"}</small>`;
 }
 
 function renderChangsheng(activeName="长生") {
