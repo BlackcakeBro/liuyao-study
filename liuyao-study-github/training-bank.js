@@ -1,7 +1,7 @@
 (()=>{
   const data=window.LIUYAO_DATA;
   const modules=[
-    {id:"foundation",label:"基础关系",short:"基础"},
+    {id:"foundation",label:"基础体系",short:"基础"},
     {id:"lecture0704",label:"旺衰与地支关系",short:"07·04"},
     {id:"lecture0718",label:"起卦与八宫卦谱",short:"07·18"},
     {id:"lecture0725",label:"装卦与六亲取象",short:"07·25"},
