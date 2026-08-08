@@ -378,13 +378,15 @@ button,.branch-card,.map-switcher,.relationship-lab{position:relative;overflow:h
 
 /* 2026-07-23 · 单卦详情：六条爻线按上下文字边界紧凑居中 */
 .scroll-detail-glyph-stage{
+  width:100%;
   height:167px;
   margin:10px 0 9px;
   display:grid;
-  place-items:center;
+  align-items:center;
+  justify-items:stretch;
 }
 .scroll-detail-hexagram{
-  width:176px;
+  width:100%;
   display:grid;
   gap:16px;
   filter:drop-shadow(0 8px 13px rgba(45,37,28,.12));
@@ -422,7 +424,6 @@ button,.branch-card,.map-switcher,.relationship-lab{position:relative;overflow:h
     height:154px;
   }
   .scroll-detail-hexagram{
-    width:164px;
     gap:14px;
   }
   .scroll-detail-yao{
@@ -436,7 +437,6 @@ button,.branch-card,.map-switcher,.relationship-lab{position:relative;overflow:h
     margin:9px 0 8px;
   }
   .scroll-detail-hexagram{
-    width:158px;
     gap:13px;
   }
   .scroll-detail-yao{

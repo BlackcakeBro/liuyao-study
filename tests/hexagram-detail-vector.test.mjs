@@ -28,8 +28,15 @@ test("all eight natural-image trigrams have exact top-down line patterns",()=>{
   }
 });
 
-test("confirmed detail proportions are encoded in scoped CSS",()=>{
-  assert.match(css,/\.scroll-detail-hexagram\{[^}]*width:176px[^}]*gap:16px/s);
+test("detail diagram spans and aligns to the same content width as its kicker",()=>{
+  assert.match(css,/\.scroll-detail-glyph-stage\{[^}]*width:100%[^}]*justify-items:stretch/s);
+  assert.match(css,/\.scroll-detail-hexagram\{[^}]*width:100%[^}]*gap:16px/s);
+  const diagramRules=[...css.matchAll(/\.scroll-detail-hexagram\{([^}]*)\}/g)].map(match=>match[1]);
+  assert.ok(diagramRules.length>=3,"base and responsive diagram rules must remain present");
+  assert.ok(
+    diagramRules.every(rule=>!(/width\s*:\s*\d+px/.test(rule))),
+    "no breakpoint may restore a fixed diagram width"
+  );
   assert.match(css,/\.scroll-detail-yao\{[^}]*height:10px/s);
   assert.match(css,/\.scroll-detail-yao\.broken\{[^}]*gap:24px/s);
   assert.match(css,/\.scroll-detail-glyph-stage\{[^}]*height:167px[^}]*margin:10px 0 9px/s);
