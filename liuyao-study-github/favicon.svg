@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 72" role="img" aria-label="爻象研习">
+  <path fill="#9f3b2d" d="M7 2h50a5 5 0 0 1 5 5v46c0 10-8 17-18 17H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Z"/>
+  <path fill="none" stroke="#c47768" stroke-width="3" d="M8 4h48a4 4 0 0 1 4 4v45c0 9-7 15-16 15H8a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4Z"/>
+  <text x="32" y="50" fill="#f5ead8" font-family="Songti SC, STSong, serif" font-size="40" font-weight="700" text-anchor="middle">爻</text>
+</svg>
