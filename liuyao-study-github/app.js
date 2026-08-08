@@ -385,7 +385,9 @@ function renderHiddenStems(active="寅") {
   const order=["寅","卯","辰","巳","午","未","申","酉","戌","亥","子","丑"];
   picker.innerHTML=order.map(k=>`<button data-hidden-branch="${k}" class="${k===active?"active":""}"><b>${k}</b><small>${hiddenStemData[k].group}</small></button>`).join("");
   const x=hiddenStemData[active];
-  document.querySelector("#hiddenStemDetail").innerHTML=`<span>${x.group}</span><h3>${active}中藏干</h3><div class="stem-beads">${x.stems.map(st=>`<b>${st}</b>`).join("")}</div><p>${x.logic}</p><em>${x.relation}</em>`;
+  const detail=document.querySelector("#hiddenStemDetail");
+  detail.dataset.activeBranch=active;
+  detail.innerHTML=`<span>${x.group}</span><h3>${active}中藏干</h3><div class="stem-beads">${x.stems.map(st=>`<b>${st}</b>`).join("")}</div><p>${x.logic}</p><em>${x.relation}</em>`;
   picker.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>renderHiddenStems(b.dataset.hiddenBranch)));
 }
 
