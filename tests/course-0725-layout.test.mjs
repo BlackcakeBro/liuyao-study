@@ -10,6 +10,7 @@ const dataSource=fs.readFileSync("liuyao-study-github/data.js","utf8");
 const course0718Source=fs.readFileSync("liuyao-study-github/course-0718.js","utf8");
 const course0725Source=fs.readFileSync("liuyao-study-github/course-0725.js","utf8");
 const course0801Source=fs.readFileSync("liuyao-study-github/course-0801.js","utf8");
+const course0808Source=fs.readFileSync("liuyao-study-github/course-0808.js","utf8");
 const trainingSource=fs.readFileSync("liuyao-study-github/training-bank.js","utf8");
 
 const matchingBrace=(source,open)=>{
@@ -105,6 +106,11 @@ const loadCourse0801=()=>{
   return sandbox.__course;
 };
 
+const loadCourse0808=()=>{
+  const sandbox={};
+  vm.runInNewContext(`${course0808Source};globalThis.__course=course0808;`,sandbox);
+  return sandbox.__course;
+};
 const loadTraining=()=>{
   const sandbox={window:{}};
   vm.createContext(sandbox);
@@ -112,6 +118,7 @@ const loadTraining=()=>{
   vm.runInContext(course0718Source,sandbox);
   vm.runInContext(course0725Source,sandbox);
   vm.runInContext(course0801Source,sandbox);
+  vm.runInContext(course0808Source,sandbox);
   vm.runInContext(trainingSource,sandbox);
   return sandbox.window.LIUYAO_TRAINING;
 };
@@ -409,15 +416,21 @@ test("07-25 six-relative relationships use one accessible SVG with distinct shen
   const course=loadCourse0725();
   const nodes=renderWithDom(
     "render0725Course",
-    {course0725:course,course0801:loadCourse0801()},
+    {course0725:course,course0801:loadCourse0801(),course0808:loadCourse0808(),Set},
     [
       ["#assembly0725Grid",domNode()],
       ["#shiying0725Roles",domNode()],
       ["#relative0725Cycles",domNode()],
       ["#relative0725Focus",domNode()],
       ["#useGod0801Steps",domNode()],
-      ["#sixGod0801Grid",domNode()],
-      ["#sixGod0801Boundary",domNode()],
+      ["#sixGod0808Grid",domNode()],
+      ["#sixGod0808Boundary",domNode()],
+      ["#dayMonth0808TimeLayers",domNode()],
+      ["#dayMonth0808Principles",domNode()],
+      ["#dayMonth0808Patterns",domNode()],
+      ["#xuZi0808Example",domNode()],
+      ["#dayMonth0808Applications",domNode()],
+      ["#dayMonth0808Boundary",domNode()],
       ["#judgment0725Rules",domNode()],
       ["#next0725Lesson",domNode()]
     ]
@@ -461,15 +474,21 @@ test("07-25 six-relative relationships use one accessible SVG with distinct shen
 test("relative cards and judgment boundary expose stable aligned regions",()=>{
   const nodes=renderWithDom(
     "render0725Course",
-    {course0725:loadCourse0725(),course0801:loadCourse0801()},
+    {course0725:loadCourse0725(),course0801:loadCourse0801(),course0808:loadCourse0808(),Set},
     [
       ["#assembly0725Grid",domNode()],
       ["#shiying0725Roles",domNode()],
       ["#relative0725Cycles",domNode()],
       ["#relative0725Focus",domNode()],
       ["#useGod0801Steps",domNode()],
-      ["#sixGod0801Grid",domNode()],
-      ["#sixGod0801Boundary",domNode()],
+      ["#sixGod0808Grid",domNode()],
+      ["#sixGod0808Boundary",domNode()],
+      ["#dayMonth0808TimeLayers",domNode()],
+      ["#dayMonth0808Principles",domNode()],
+      ["#dayMonth0808Patterns",domNode()],
+      ["#xuZi0808Example",domNode()],
+      ["#dayMonth0808Applications",domNode()],
+      ["#dayMonth0808Boundary",domNode()],
       ["#judgment0725Rules",domNode()],
       ["#next0725Lesson",domNode()]
     ]
@@ -567,11 +586,11 @@ test("classics reference is source-backed and ships with one fresh cache version
   assert.doesNotMatch(html,/id="classicsRoadmap"/);
 
   const coupledAssetVersions=[
-    ...html.matchAll(/(?:href|src)="\.\/(?:styles\.css|course-0725\.js|course-0801\.js|training-bank\.js|app\.js)\?v=([^"]+)"/g)
+    ...html.matchAll(/(?:href|src)="\.\/(?:styles\.css|course-0725\.js|course-0801\.js|course-0808\.js|training-bank\.js|app\.js)\?v=([^"]+)"/g)
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(5).fill("20260808-hexagram-align-v29"),
+    Array(6).fill("20260810-lecture0808-v30"),
     "course data, renderer, training bank, and styling must ship with one fresh cache version"
   );
 });

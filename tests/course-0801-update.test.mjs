@@ -25,15 +25,15 @@ test("08-01 classroom data completes the remaining three relatives",()=>{
   assert.ok(course.focusRelatives.every(item=>item.boundary.length>=30));
 });
 
-test("08-01 page teaches question-first use-god reading and six-god introduction",()=>{
+test("08-01 data preserves question-first use-god reading and the original six-god introduction",()=>{
   const course=loadCourse();
   assert.deepEqual(Array.from(course.useGodSteps,item=>item.name),["先定所问","取用神","联系世爻","合看力量"]);
   assert.deepEqual(Array.from(course.sixGods,item=>item.name),["青龙","朱雀","勾陈","螣蛇","白虎","玄武"]);
   assert.match(course.sixGodBoundary,/初步|后续|不可/);
   assert.match(html,/id="useGod0801Steps"/);
-  assert.match(html,/id="sixGod0801Grid"/);
+  assert.match(html,/id="sixGod0808Grid"/);
   assert.match(app,/course0801\.useGodSteps/);
-  assert.match(app,/course0801\.sixGods/);
+  assert.doesNotMatch(app,/course0801\.sixGods\.map/);
 });
 
 test("08-01 assets load before training and questions have a distinct source module",()=>{
@@ -49,7 +49,7 @@ test("the combined lesson no longer labels the three relatives as pending",()=>{
   const section=html.slice(html.indexOf('<section class="view" id="lecture0725">'),html.indexOf('<section class="view" id="casting">'));
   assert.doesNotMatch(section,/三类六亲待续|子孙、妻财、兄弟留待后续课堂/);
   assert.match(section,/兄弟、妻财、子孙/);
-  assert.match(section,/六神初识/);
+  assert.match(section,/六神详解/);
 });
 
 test("the longer combined lesson title wraps inside a mobile viewport",()=>{

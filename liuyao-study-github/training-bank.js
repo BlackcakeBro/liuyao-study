@@ -5,7 +5,8 @@
     {id:"lecture0704",label:"旺衰与地支关系",short:"07·04"},
     {id:"lecture0718",label:"起卦与八宫卦谱",short:"07·18"},
     {id:"lecture0725",label:"装卦与六亲取象",short:"07·25"},
-    {id:"lecture0801",label:"六亲与六神进阶",short:"08·01"},
+    {id:"lecture0801",label:"六亲与六神初识",short:"08·01"},
+    {id:"lecture0808",label:"六神详解与日月建",short:"08·08"},
     {id:"classics",label:"古籍参考",short:"古籍"}
   ];
   const classics={
@@ -214,6 +215,24 @@
   data.yongshenTopics.forEach((item,index)=>add({id:`classics-yongshen-${index+1}`,module:"classics",kind:"yongshen",source:"《增删卜易》卷一 · 用神章",question:`占问“${item.topic}”时，首先取什么为用神或主要观察点？`,answer:item.use,candidates:yongshenChoices,feedback:`此类占问先取${item.use}。${item.note}取准用神后仍要继续看旺衰、生克、冲合与动变。`}));
   const roleChoices=classics.roles.map(item=>item.definition);
   classics.roles.forEach(role=>add({id:`classics-role-${role.name}`,module:"classics",kind:"role",source:"《增删卜易》卷一 · 用神、元神、忌神、仇神章",question:`古籍所说“${role.name}”指什么？`,answer:role.definition,candidates:roleChoices,feedback:`${role.name}：${role.definition}。这是关系定义，是否有力仍须继续判断旺衰与动变。`}));
+
+  const source0808="陈师 2026-08-08";
+  const sixGodCoreChoices=course0808.sixGodDetails.map(item=>item.core);
+  const sixGodSceneChoices=course0808.sixGodDetails.map(item=>item.scenes);
+  course0808.sixGodDetails.forEach(item=>{
+    add({id:`0808-sixgod-core-${item.name}`,module:"lecture0808",kind:"six-god-detail",source:source0808,question:`六神“${item.name}”的核心象意是哪一组？`,answer:item.core,candidates:sixGodCoreChoices,feedback:`${item.name}：${item.core}。${item.boundary}`});
+    add({id:`0808-sixgod-scene-${item.name}`,module:"lecture0808",kind:"six-god-scene",source:source0808,question:`哪组场景更符合“${item.name}”的课堂取象？`,answer:item.scenes,candidates:sixGodSceneChoices,feedback:`${item.scenes}。六神只给核查方向，仍须结合占问、六亲、旺衰与动变。`});
+  });
+  const principleChoices=course0808.dayMonthPrinciples.map(item=>item.detail);
+  course0808.dayMonthPrinciples.forEach((item,index)=>add({id:`0808-daymonth-principle-${index+1}`,module:"lecture0808",kind:"day-month-principle",source:source0808,question:`“${item.name}”在日月建判断中指什么？`,answer:item.detail,candidates:principleChoices,feedback:`${item.name}：${item.detail}`}));
+  const patternChoices=course0808.outcomePatterns.map(item=>item.result);
+  course0808.outcomePatterns.forEach((item,index)=>add({id:`0808-daymonth-pattern-${index+1}`,module:"lecture0808",kind:"day-month-pattern",source:source0808,question:`出现“${item.name}”时，应怎样合看爻力？`,answer:item.result,candidates:patternChoices,feedback:`${item.name}：${item.result}仍须结合动静、冲合及所问。`}));
+  const exampleChoices=course0808.xuMonthZiDayExample.map(item=>item.result);
+  course0808.xuMonthZiDayExample.forEach(item=>add({id:`0808-example-${item.branch}`,module:"lecture0808",kind:"xu-month-zi-day",source:source0808,question:`戌月子日示例中，${item.branch}爻应如何合看？`,answer:item.result,candidates:exampleChoices,feedback:`戌月：${item.month}；子日：${item.day}；合看为“${item.result}”。`}));
+  const applicationChoices=course0808.applications.map(item=>item.detail);
+  course0808.applications.forEach((item,index)=>add({id:`0808-daymonth-application-${index+1}`,module:"lecture0808",kind:"day-month-application",source:source0808,question:`日月旺衰用于“${item.name}”时，哪项边界正确？`,answer:item.detail,candidates:applicationChoices,feedback:`${item.name}：${item.detail}`}));
+  const ruleChoices0808=[...course0808.judgmentRules,"只看六神名称即可越过用神与月日旺衰直接下结论。"];
+  course0808.judgmentRules.forEach((rule,index)=>add({id:`0808-daymonth-rule-${index+1}`,module:"lecture0808",kind:"judgment-rule",source:source0808,question:"哪一项符合本课六神与日月建的判断边界？",answer:rule,candidates:ruleChoices0808,feedback:`${rule} ${course0808.ethicsBoundary}`}));
 
   window.LIUYAO_TRAINING={modules,classics,bank};
 })();

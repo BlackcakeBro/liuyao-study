@@ -85,7 +85,7 @@ const state = {
   castMode:"random", manualCoins:["字","背","字"],quizModule:extendedEdition?"lecture0718":"classic"
 };
 const learningModules = [
-  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦、六亲与六神"],["course-najia","纳甲装支"],["course-shiying","世应定位"],["course-relatives","六亲生克"],["course-yongshen","按占问取用"],["course-sixgods","六神初识"],["classics-reference","古籍原著与案例"]]:[]),
+  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦、六亲与六神"],["course-najia","纳甲装支"],["course-shiying","世应定位"],["course-relatives","六亲生克"],["course-yongshen","按占问取用"],["course-sixgods","六神详解"],["course-daymonth","日月建与旺衰"],["classics-reference","古籍原著与案例"]]:[]),
   ["foundation-01","术数定位"],["foundation-02","五行能量与万物象"],["foundation-03","五行生克与六亲"],
   ["foundation-04","河图洛书与先后天八卦"],["foundation-05","四时旺衰"],["foundation-06","地支时空"],
   ["foundation-07","八卦体系"],["foundation-08","十天干"],["foundation-09","五味五脏五常"],
@@ -766,7 +766,8 @@ function renderLearningTracking(){
   targets.set("lecture0718-main",document.querySelector("#lecture0718 .page-intro"));
   targets.set("lecture0725-main",document.querySelector("#lecture0725 .page-intro"));
   targets.set("course-yongshen",document.querySelector(".use-god-0801-section"));
-  targets.set("course-sixgods",document.querySelector(".six-god-0801-section"));
+  targets.set("course-sixgods",document.querySelector(".six-god-0808-section"));
+  targets.set("course-daymonth",document.querySelector(".day-month-0808-section"));
 
   learningModules.forEach(([key,label])=>{
     const target=targets.get(key);
@@ -1213,14 +1214,19 @@ function render0725Course(){
     </article>`).join("");
   document.querySelector("#useGod0801Steps").innerHTML=course0801.useGodSteps.map((item,index)=>`
     <article><small>0${index+1}</small><h3>${item.name}</h3><strong>${item.cue}</strong><p>${item.detail}</p></article>`).join("");
-  document.querySelector("#sixGod0801Grid").innerHTML=course0801.sixGods.map(item=>`
+  document.querySelector("#sixGod0808Grid").innerHTML=course0808.sixGodDetails.map(item=>`
     <article><header><span>${item.cue}</span><h3>${item.name}</h3></header>
-      <div><b>核心象意</b><p>${item.images.join(" · ")}</p></div>
-      <div><b>组合示例</b><p>${item.combos.join(" · ")}</p></div>
-      <footer>${item.boundary}</footer></article>`).join("");
-  document.querySelector("#sixGod0801Boundary").innerHTML=`<b>课堂边界</b>${course0801.sixGodBoundary}`;
-  document.querySelector("#judgment0725Rules").innerHTML=[...course0725.judgmentRules,...course0801.judgmentRules].map(rule=>`<li>${rule}</li>`).join("");
-  document.querySelector("#next0725Lesson").innerHTML=`<b>待续范围：</b>${course0801.nextLesson}`;
+      <dl><div><dt>核心</dt><dd>${item.core}</dd></div><div><dt>人物</dt><dd>${item.people}</dd></div><div><dt>事物</dt><dd>${item.things}</dd></div><div><dt>场景</dt><dd>${item.scenes}</dd></div></dl>
+      <footer><b>使用边界</b><p>${item.boundary}</p></footer></article>`).join("");
+  document.querySelector("#sixGod0808Boundary").innerHTML=`<b>取象顺序</b>占问 → 用神与六亲 → 月日旺衰 → 动变 → 六神落象 → 现实核验`;
+  document.querySelector("#dayMonth0808TimeLayers").innerHTML=course0808.timeLayers.map((item,index)=>`<article><small>0${index+1}</small><h3>${item.name}</h3><strong>${item.cue}</strong><p>${item.detail}</p></article>`).join("");
+  document.querySelector("#dayMonth0808Principles").innerHTML=course0808.dayMonthPrinciples.map(item=>`<article><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
+  document.querySelector("#dayMonth0808Patterns").innerHTML=course0808.outcomePatterns.map(item=>`<article><h3>${item.name}</h3><p>${item.result}</p></article>`).join("");
+  document.querySelector("#xuZi0808Example").innerHTML=`<div class="xu-zi-head"><b>爻支</b><b>戌月</b><b>子日</b><b>合看</b></div>${course0808.xuMonthZiDayExample.map(item=>`<article><strong>${item.branch}</strong><span>${item.month}</span><span>${item.day}</span><b>${item.result}</b></article>`).join("")}`;
+  document.querySelector("#dayMonth0808Applications").innerHTML=course0808.applications.map(item=>`<article><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
+  document.querySelector("#dayMonth0808Boundary").innerHTML=`<b>术与道</b>${course0808.ethicsBoundary}`;
+  document.querySelector("#judgment0725Rules").innerHTML=[...new Set([...course0725.judgmentRules,...course0801.judgmentRules,...course0808.judgmentRules])].map(rule=>`<li>${rule}</li>`).join("");
+  document.querySelector("#next0725Lesson").innerHTML=`<b>总原则：</b>${course0808.ethicsBoundary}`;
 }
 
 document.querySelectorAll(".nav-item").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
