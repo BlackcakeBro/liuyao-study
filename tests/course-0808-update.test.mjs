@@ -32,6 +32,8 @@ test("08-08 course keeps its evidence boundary and complete taught scope",()=>{
     "卯","巳","未","辰","寅","子"
   ]);
   assert.equal(course.applications.length,5);
+  assert.match(source0808,/同功同权/);
+  assert.doesNotMatch(source0808,/同工同权/);
 });
 
 test("08-08 learning surface expands six gods and adds day-month strength reading",()=>{
@@ -56,4 +58,3 @@ test("08-08 asset and its distinct training module load before the question bank
   assert.match(training,/0808-daymonth-/);
   assert.match(training,/0808-example-/);
 });
-
