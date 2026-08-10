@@ -1197,12 +1197,12 @@ function render0725Course(){
     <article class="${index===0?"shi":"ying"}"><span>${item.name}</span><div><strong>${item.role}</strong><p>${item.note}</p></div></article>`).join("");
   document.querySelector("#relative0725Cycles").innerHTML=renderRelativeCycleDiagram(course0725.relativeCycles);
   const relativeLessons=[
-    ...course0725.focusRelatives.map(item=>({...item,lesson:"07·25"})),
-    ...course0801.focusRelatives.map(item=>({...item,lesson:"08·01"}))
+    ...course0725.focusRelatives,
+    ...course0801.focusRelatives
   ];
   document.querySelector("#relative0725Focus").innerHTML=relativeLessons.map(item=>`
     <article>
-      <header><span>${item.relation} · ${item.lesson}</span><h3>${item.name}爻</h3><strong>${item.tone}</strong></header>
+      <header><span>${item.relation}</span><h3>${item.name}爻</h3><strong>${item.tone}</strong></header>
       <div class="relative-card-body">
         <dl class="relative-layers">
           <div><dt>人物</dt><dd>${item.people.join(" · ")}</dd></div>

@@ -494,6 +494,7 @@ test("relative cards and judgment boundary expose stable aligned regions",()=>{
     ]
   );
   const focusMarkup=nodes.get("#relative0725Focus")?.innerHTML??"";
+  assert.doesNotMatch(focusMarkup,/07·25|08·01/,"六亲卡片上方只保留关系定义，不显示课程日期");
   const cards=[...focusMarkup.matchAll(/<article\b[\s\S]*?<\/article>/g)]
     .map(match=>match[0]);
   assert.equal(cards.length,5,"五类六亲必须各自渲染为一张卡片");
@@ -590,7 +591,7 @@ test("classics reference is source-backed and ships with one fresh cache version
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(6).fill("20260810-term-fix-v31"),
+    Array(6).fill("20260810-relative-date-v32"),
     "course data, renderer, training bank, and styling must ship with one fresh cache version"
   );
 });
