@@ -85,7 +85,7 @@ const state = {
   castMode:"random", manualCoins:["字","背","字"],quizModule:extendedEdition?"lecture0718":"classic"
 };
 const learningModules = [
-  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦、六亲与六神"],["course-najia","纳甲装支"],["course-shiying","世应定位"],["course-relatives","六亲生克"],["course-yongshen","按占问取用"],["course-sixgods","六神详解"],["course-daymonth","日月建与旺衰"],["classics-reference","古籍原著与案例"]]:[]),
+  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦、六亲与六神"],["course-najia","纳甲装支"],["course-shiying","世应定位"],["course-relatives","六亲生克"],["course-yongshen","按占问取用"],["course-sixgods","六神详解"],["course-daymonth","日月建与旺衰"],["course-moving","动爻与寻物例"],["course-void","旬空与月破"],["course-tomb","墓库与卦身"],["classics-reference","古籍原著与案例"]]:[]),
   ["foundation-01","术数定位"],["foundation-02","五行能量与万物象"],["foundation-03","五行生克与六亲"],
   ["foundation-04","河图洛书与先后天八卦"],["foundation-05","四时旺衰"],["foundation-06","地支时空"],
   ["foundation-07","八卦体系"],["foundation-08","十天干"],["foundation-09","五味五脏五常"],
@@ -768,6 +768,10 @@ function renderLearningTracking(){
   targets.set("course-yongshen",document.querySelector(".use-god-0801-section"));
   targets.set("course-sixgods",document.querySelector(".six-god-0808-section"));
   targets.set("course-daymonth",document.querySelector(".day-month-0808-section"));
+  const course0815Sections=document.querySelectorAll(".course-0815-section");
+  targets.set("course-moving",course0815Sections[0]);
+  targets.set("course-void",course0815Sections[1]);
+  targets.set("course-tomb",course0815Sections[2]);
 
   learningModules.forEach(([key,label])=>{
     const target=targets.get(key);
@@ -1225,8 +1229,16 @@ function render0725Course(){
   document.querySelector("#xuZi0808Example").innerHTML=`<div class="xu-zi-head"><b>爻支</b><b>戌月</b><b>子日</b><b>合看</b></div>${course0808.xuMonthZiDayExample.map(item=>`<article><strong>${item.branch}</strong><span>${item.month}</span><span>${item.day}</span><b>${item.result}</b></article>`).join("")}`;
   document.querySelector("#dayMonth0808Applications").innerHTML=course0808.applications.map(item=>`<article><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
   document.querySelector("#dayMonth0808Boundary").innerHTML=`<b>术与道</b>${course0808.ethicsBoundary}`;
-  document.querySelector("#judgment0725Rules").innerHTML=[...new Set([...course0725.judgmentRules,...course0801.judgmentRules,...course0808.judgmentRules])].map(rule=>`<li>${rule}</li>`).join("");
-  document.querySelector("#next0725Lesson").innerHTML=`<b>总原则：</b>${course0808.ethicsBoundary}`;
+  const render0815Cards=(selector,items)=>{const target=document.querySelector(selector);if(target)target.innerHTML=items.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");};
+  render0815Cards("#movingYao0815Grid",course0815.movingYaoPrinciples);
+  render0815Cards("#void0815Grid",course0815.voidPrinciples);
+  render0815Cards("#monthBreak0815Grid",course0815.monthBreakPrinciples);
+  render0815Cards("#tombStorehouse0815Grid",course0815.tombStorehousePrinciples);
+  render0815Cards("#hexagramBody0815Grid",course0815.hexagramBodyPrinciples);
+  const caseStudy=document.querySelector("#caseStudy0815");
+  if(caseStudy)caseStudy.innerHTML=`<div><span>课堂例题</span><h3>${course0815.caseStudy.title}</h3><p>${course0815.caseStudy.detail}</p></div><ol>${course0815.caseStudy.steps.map(step=>`<li>${step}</li>`).join("")}</ol>`;
+  document.querySelector("#judgment0725Rules").innerHTML=[...new Set([...course0725.judgmentRules,...course0801.judgmentRules,...course0808.judgmentRules,...course0815.judgmentRules])].map(rule=>`<li>${rule}</li>`).join("");
+  document.querySelector("#next0725Lesson").innerHTML=`<b>总原则：</b>${course0815.ethicsBoundary}`;
 }
 
 document.querySelectorAll(".nav-item").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));

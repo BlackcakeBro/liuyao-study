@@ -6,7 +6,7 @@ import vm from "node:vm";
 const html=fs.readFileSync("liuyao-study-github/index.html","utf8");
 const css=fs.readFileSync("liuyao-study-github/styles.css","utf8");
 const app=fs.readFileSync("liuyao-study-github/app.js","utf8");
-const source=["data.js","course-0718.js","course-0725.js","course-0801.js","course-0808.js","training-bank.js"]
+const source=["data.js","course-0718.js","course-0725.js","course-0801.js","course-0808.js","course-0815.js","training-bank.js"]
   .map(file=>fs.readFileSync(`liuyao-study-github/${file}`,"utf8")).join("\n")+
   "\n;globalThis.__training=window.LIUYAO_TRAINING;globalThis.__course=course0725;";
 const sandbox={window:{}};
@@ -58,5 +58,5 @@ test("training names classics as a reference and moves taught structures to lect
   const taughtKinds=new Set(["najia","shi-ying","six-relative"]);
   const taught=sandbox.__training.bank.filter(item=>taughtKinds.has(item.kind));
   assert.ok(taught.every(item=>item.module==="lecture0725"||item.module==="foundation"));
-  assert.equal(sandbox.__training.bank.length,408);
+  assert.equal(sandbox.__training.bank.length,431);
 });

@@ -7,6 +7,7 @@
     {id:"lecture0725",label:"装卦与六亲取象",short:"07·25"},
     {id:"lecture0801",label:"六亲与六神初识",short:"08·01"},
     {id:"lecture0808",label:"六神详解与日月建",short:"08·08"},
+    {id:"lecture0815",label:"动静空破与墓库",short:"08·15"},
     {id:"classics",label:"古籍参考",short:"古籍"}
   ];
   const classics={
@@ -233,6 +234,22 @@
   course0808.applications.forEach((item,index)=>add({id:`0808-daymonth-application-${index+1}`,module:"lecture0808",kind:"day-month-application",source:source0808,question:`日月旺衰用于“${item.name}”时，哪项边界正确？`,answer:item.detail,candidates:applicationChoices,feedback:`${item.name}：${item.detail}`}));
   const ruleChoices0808=[...course0808.judgmentRules,"只看六神名称即可越过用神与月日旺衰直接下结论。"];
   course0808.judgmentRules.forEach((rule,index)=>add({id:`0808-daymonth-rule-${index+1}`,module:"lecture0808",kind:"judgment-rule",source:source0808,question:"哪一项符合本课六神与日月建的判断边界？",answer:rule,candidates:ruleChoices0808,feedback:`${rule} ${course0808.ethicsBoundary}`}));
+
+  const source0815="陈师 2026-08-15";
+  const all0815Details=[...course0815.movingYaoPrinciples,...course0815.voidPrinciples,...course0815.monthBreakPrinciples,...course0815.tombStorehousePrinciples,...course0815.hexagramBodyPrinciples].map(item=>item.detail);
+  const add0815Principles=(prefix,kind,items)=>{
+    const choices=all0815Details;
+    items.forEach((item,index)=>add({id:`0815-${prefix}-${index+1}`,module:"lecture0815",kind,source:source0815,question:`“${item.name}”在本课中的观察重点是什么？`,answer:item.detail,candidates:choices,feedback:`${item.name}：${item.detail}`}));
+  };
+  add0815Principles("moving","moving-yao",course0815.movingYaoPrinciples);
+  add0815Principles("void","void",course0815.voidPrinciples);
+  add0815Principles("monthbreak","month-break",course0815.monthBreakPrinciples);
+  add0815Principles("tomb","tomb-storehouse",course0815.tombStorehousePrinciples);
+  add0815Principles("body","hexagram-body",course0815.hexagramBodyPrinciples);
+  const ruleChoices0815=[...course0815.judgmentRules,"看到旬空、月破或入墓即可直接判定结果。"];
+  course0815.judgmentRules.forEach((rule,index)=>add({id:`0815-rule-${index+1}`,module:"lecture0815",kind:"judgment-boundary",source:source0815,question:"哪一项符合本课动静、空破与墓库的判断边界？",answer:rule,candidates:ruleChoices0815,feedback:`${rule} ${course0815.ethicsBoundary}`}));
+  const caseChoices=[...course0815.caseStudy.steps,"先凭一条象意断定遗失物被盗。"];
+  course0815.caseStudy.steps.forEach((step,index)=>add({id:`0815-case-${index+1}`,module:"lecture0815",kind:"case-study",source:source0815,question:"寻物例的第${index+1}步应如何处理？",answer:step,candidates:caseChoices,feedback:`${step} ${course0815.ethicsBoundary}`}));
 
   window.LIUYAO_TRAINING={modules,classics,bank};
 })();
