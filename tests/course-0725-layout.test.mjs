@@ -606,11 +606,11 @@ test("classics reference is source-backed and ships with one fresh cache version
   assert.doesNotMatch(html,/id="classicsRoadmap"/);
 
   const coupledAssetVersions=[
-    ...html.matchAll(/(?:href|src)="\.\/(?:styles\.css|course-0725\.js|course-0801\.js|course-0808\.js|course-0815\.js|training-bank\.js|app\.js)\?v=([^"]+)"/g)
+    ...html.matchAll(/(?:href|src)="\.\/(?:styles\.css|course-0725\.js|course-0801\.js|course-0808\.js|course-0815\.js|course-0822\.js|training-bank\.js|app\.js)\?v=([^"]+)"/g)
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(7).fill("20260819-course-0815-v1"),
+    Array(8).fill("20260824-course-0822-v1"),
     "course data, renderer, training bank, and styling must ship with one fresh cache version"
   );
 });
