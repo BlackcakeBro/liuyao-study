@@ -3,7 +3,9 @@ const course0822={
     date:"2026-08-22",teacher:"陈师",duration:"待补核",
     sourceUrl:"https://meeting.tencent.com/cw/l5kr5RDV0c",
     evidenceStatus:"partial",
-    evidence:"已核对腾讯会议页面、完整逐字稿可见段（00:07–15:41）与录制画面入口。逐字稿在当前页面仅提供至 15:41；页面智能纪要仅作定位，未将其未回看部分写作课堂已核事实。",
+    transcriptCoverage:"00:07–15:41",
+    visualEvidenceStatus:"unavailable",
+    evidence:"复核后，平台逐字稿可读范围为 00:07–15:41；平台时间轴显示全程索引至 02:35:32，但仅作定位。画面轨未取得：播放器反复播放与截帧仍持续加载，未获得可用音画；因此本页仅纳入前 15:41 的逐字稿内容，不以时间轴或智能纪要补写后续课堂事实。",
     scope:"游魂归魂的辅助取象；断卦的切入顺序；用神与多用神取舍；以兄弟/朋友占问示范动空的观察边界"
   },
   judgmentSteps:[
