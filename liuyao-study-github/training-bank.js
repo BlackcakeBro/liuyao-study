@@ -8,6 +8,7 @@
     {id:"lecture0801",label:"六亲与六神初识",short:"08·01"},
     {id:"lecture0808",label:"六神详解与日月建",short:"08·08"},
     {id:"lecture0815",label:"动静空破与墓库",short:"08·15"},
+    {id:"lecture0822",label:"断卦：用神与判断步骤",short:"08·22"},
     {id:"classics",label:"古籍参考",short:"古籍"}
   ];
   const classics={
@@ -250,6 +251,15 @@
   course0815.judgmentRules.forEach((rule,index)=>add({id:`0815-rule-${index+1}`,module:"lecture0815",kind:"judgment-boundary",source:source0815,question:"哪一项符合本课动静、空破与墓库的判断边界？",answer:rule,candidates:ruleChoices0815,feedback:`${rule} ${course0815.ethicsBoundary}`}));
   const caseChoices=[...course0815.caseStudy.steps,"先凭一条象意断定遗失物被盗。"];
   course0815.caseStudy.steps.forEach((step,index)=>add({id:`0815-case-${index+1}`,module:"lecture0815",kind:"case-study",source:source0815,question:"寻物例的第${index+1}步应如何处理？",answer:step,candidates:caseChoices,feedback:`${step} ${course0815.ethicsBoundary}`}));
+
+  if(typeof course0822!=="undefined"){
+    const source0822="陈师 2026-08-22";
+    const all0822Details=[...course0822.judgmentSteps,...course0822.coreConcepts].map(item=>item.detail);
+    course0822.judgmentSteps.forEach((item,index)=>add({id:`0822-step-${index+1}`,module:"lecture0822",kind:"judgment-step",source:source0822,question:`断卦“${item.name}”的课堂重点是什么？`,answer:item.detail,candidates:all0822Details,feedback:`${item.name}：${item.detail}`}));
+    course0822.coreConcepts.forEach((item,index)=>add({id:`0822-concept-${index+1}`,module:"lecture0822",kind:"judgment-concept",source:source0822,question:`“${item.name}”在本讲中的观察重点是什么？`,answer:item.detail,candidates:all0822Details,feedback:`${item.name}：${item.detail}`}));
+    const ruleChoices0822=[...course0822.judgmentRules,"只要见到游魂、归魂或动爻，就能脱离占问直接定结果。"];
+    course0822.judgmentRules.forEach((rule,index)=>add({id:`0822-rule-${index+1}`,module:"lecture0822",kind:"judgment-boundary",source:source0822,question:"哪一项符合本讲的断卦判断边界？",answer:rule,candidates:ruleChoices0822,feedback:`${rule} ${course0822.ethicsBoundary}`}));
+  }
 
   window.LIUYAO_TRAINING={modules,classics,bank};
 })();

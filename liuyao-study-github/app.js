@@ -8,13 +8,13 @@ const rawHash=decodeURIComponent(location.hash.slice(1));
 const hashParams=new URLSearchParams(location.hash.slice(1));
 const requestedInitialView=hashParams.get("view")||siteParams.get("view");
 const requestedAnchor=hashParams.get("anchor")||(!rawHash.includes("=")?rawHash:null);
-const extendedEdition=hashParams.get("edition")==="extended"||siteParams.get("v")==="changsheng-ring-v3"||["lecture0704","lecture0718","lecture0725"].includes(requestedInitialView);
+const extendedEdition=hashParams.get("edition")==="extended"||siteParams.get("v")==="changsheng-ring-v3"||["lecture0704","lecture0718","lecture0725"].includes(requestedInitialView)||requestedInitialView==="judgment";
 document.documentElement.dataset.siteEdition=extendedEdition?"extended":"classic";
 if(extendedEdition)document.querySelector('[data-view="casting"]').textContent="古籍参考";
 if(extendedEdition)document.querySelectorAll('[data-edition-only="classic"]').forEach(element=>element.remove());
 else document.querySelectorAll('[data-edition-only="extended"]').forEach(element=>element.remove());
 if(!extendedEdition){
-  document.querySelectorAll('[data-view="lecture0704"],[data-view="lecture0718"],[data-view="lecture0725"],#lecture0704,#lecture0718,#lecture0725').forEach(element=>element.remove());
+  document.querySelectorAll('[data-view="lecture0704"],[data-view="lecture0718"],[data-view="lecture0725"],[data-view="judgment"],#lecture0704,#lecture0718,#lecture0725,#judgment').forEach(element=>element.remove());
   document.title="爻象研习 · 六爻学习系统";
   document.querySelector(".brand small").textContent="从基础关系到断卦实证";
 }
@@ -85,7 +85,7 @@ const state = {
   castMode:"random", manualCoins:["字","背","字"],quizModule:extendedEdition?"lecture0718":"classic"
 };
 const learningModules = [
-  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦、六亲与六神"],["course-najia","纳甲装支"],["course-shiying","世应定位"],["course-relatives","六亲生克"],["course-yongshen","按占问取用"],["course-sixgods","六神详解"],["course-daymonth","日月建与旺衰"],["course-moving","动爻与寻物例"],["course-void","旬空与月破"],["course-tomb","墓库与卦身"],["classics-reference","古籍原著与案例"]]:[]),
+  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦"],["lecture0822-main","断卦：用神与判断步骤"],["course-najia","纳甲装支"],["course-shiying","世应定位"],["course-relatives","六亲生克"],["course-yongshen","按占问取用"],["course-sixgods","六神详解"],["course-daymonth","日月建与旺衰"],["course-moving","动爻与寻物例"],["course-void","旬空与月破"],["course-tomb","墓库与卦身"],["classics-reference","古籍原著与案例"]]:[]),
   ["foundation-01","术数定位"],["foundation-02","五行能量与万物象"],["foundation-03","五行生克与六亲"],
   ["foundation-04","河图洛书与先后天八卦"],["foundation-05","四时旺衰"],["foundation-06","地支时空"],
   ["foundation-07","八卦体系"],["foundation-08","十天干"],["foundation-09","五味五脏五常"],
@@ -1241,6 +1241,19 @@ function render0725Course(){
   document.querySelector("#next0725Lesson").innerHTML=`<b>总原则：</b>${course0815.ethicsBoundary}`;
 }
 
+function render0822Course(){
+  if(typeof course0822==="undefined")return;
+  const steps=document.querySelector("#judgmentSteps0822");
+  const concepts=document.querySelector("#judgmentConcepts0822");
+  const cases=document.querySelector("#judgmentCases0822");
+  if(!steps||!concepts||!cases)return;
+  steps.innerHTML=course0822.judgmentSteps.map((item,index)=>`<article><small>${String(index+1).padStart(2,"0")}</small><div><strong>${item.cue}</strong><h3>${item.name}</h3><p>${item.detail}</p></div></article>`).join("");
+  concepts.innerHTML=course0822.coreConcepts.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
+  cases.innerHTML=course0822.caseStudies.map((item,index)=>`<article><header><span>课堂示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header><p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`).join("");
+  document.querySelector("#judgment0822Rules").innerHTML=course0822.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
+  document.querySelector("#judgment0822Ethics").innerHTML=`<b>总原则：</b>${course0822.ethicsBoundary}`;
+}
+
 document.querySelectorAll(".nav-item").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
 document.querySelectorAll("[data-jump]").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.jump)));
 document.querySelector("[data-view-link]").addEventListener("click",()=>setView("path"));
@@ -1263,7 +1276,7 @@ document.querySelector("#resetCast").addEventListener("click",()=>{state.cast=[]
 
 document.querySelectorAll("[data-map]").forEach(b=>b.addEventListener("click",()=>renderMap(b.dataset.map)));
 document.querySelectorAll("#scroll0718Shell .scroll-roller").forEach(button=>button.addEventListener("click",replay0718Scroll));
-renderPath();render0718Atlas();render0725Course();renderAssemblyLearningTools();renderClassicsReference();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
+renderPath();render0718Atlas();render0725Course();render0822Course();renderAssemblyLearningTools();renderClassicsReference();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
 initImmersiveMotion();
-if(["path","foundation","lecture0704","lecture0718","lecture0725","casting","branches","training"].includes(requestedInitialView))setView(requestedInitialView);
+if(["path","foundation","lecture0704","lecture0718","lecture0725","judgment","casting","branches","training"].includes(requestedInitialView))setView(requestedInitialView);
 if(requestedAnchor)requestAnimationFrame(()=>requestAnimationFrame(()=>document.getElementById(requestedAnchor)?.scrollIntoView({block:"start"})));
