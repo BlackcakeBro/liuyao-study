@@ -253,7 +253,7 @@
   course0815.caseStudy.steps.forEach((step,index)=>add({id:`0815-case-${index+1}`,module:"lecture0815",kind:"case-study",source:source0815,question:"寻物例的第${index+1}步应如何处理？",answer:step,candidates:caseChoices,feedback:`${step} ${course0815.ethicsBoundary}`}));
 
   if(typeof course0822!=="undefined"){
-    const source0822="陈师 2026-08-22 · 逐字稿 00:07–15:41 · 画面待核";
+    const source0822="陈师 2026-08-22 · 全程音画复核 02:35:05";
     const all0822Details=[...course0822.judgmentSteps,...course0822.coreConcepts].map(item=>item.detail);
     course0822.judgmentSteps.forEach((item,index)=>add({id:`0822-step-${index+1}`,module:"lecture0822",kind:"judgment-step",source:source0822,question:`断卦“${item.name}”的课堂重点是什么？`,answer:item.detail,candidates:all0822Details,feedback:`${item.name}：${item.detail}`}));
     course0822.coreConcepts.forEach((item,index)=>add({id:`0822-concept-${index+1}`,module:"lecture0822",kind:"judgment-concept",source:source0822,question:`“${item.name}”在本讲中的观察重点是什么？`,answer:item.detail,candidates:all0822Details,feedback:`${item.name}：${item.detail}`}));
