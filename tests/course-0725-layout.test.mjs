@@ -610,7 +610,7 @@ test("classics reference is source-backed and ships with one fresh cache version
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(8).fill("20260825-course-0822-video-v3"),
+    Array(8).fill("20260829-youhun-guihun-v4"),
     "course data, renderer, training bank, and styling must ship with one fresh cache version"
   );
 });
