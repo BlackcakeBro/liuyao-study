@@ -24,10 +24,10 @@ test("audited question bank covers foundation, all taught courses, and ancient a
     lecture0801:32,
     lecture0808:35,
     lecture0815:23,
-    lecture0822:16,
+    lecture0822:17,
     classics:11
   });
-  assert.equal(training.bank.length,447);
+  assert.equal(training.bank.length,448);
   assert.equal(new Set(training.bank.map(question=>question.id)).size,training.bank.length);
 });
 

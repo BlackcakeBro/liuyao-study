@@ -22,7 +22,7 @@ test("08-22 course is reconciled against the complete screen recording and audio
   assert.match(course.meta.evidence,/屏幕共享画面/);
   assert.match(course.meta.evidence,/音轨/);
   assert.deepEqual(Array.from(course.judgmentSteps,item=>item.name),["先定占问","取用神","看力量与关系","辨吉凶与细节","最后看应期"]);
-  assert.deepEqual(Array.from(course.coreConcepts,item=>item.name),["用神","多用神取舍","元神、忌神与仇神","飞神与伏神","进神与退神","伏吟与反吟","应期"]);
+  assert.deepEqual(Array.from(course.coreConcepts,item=>item.name),["游魂与归魂","用神","多用神取舍","元神、忌神与仇神","飞神与伏神","进神与退神","伏吟与反吟","应期"]);
   assert.equal(course.caseStudies.length,6);
   assert.match(course.caseStudies.map(item=>item.title).join("\n"),/伏神/);
   assert.match(course.caseStudies.map(item=>item.title).join("\n"),/进神/);
