@@ -1254,6 +1254,19 @@ function render0822Course(){
   document.querySelector("#judgment0822Ethics").innerHTML=`<b>总原则：</b>${course0822.ethicsBoundary}`;
 }
 
+function render0829Course(){
+  if(typeof course0829==="undefined")return;
+  const timing=document.querySelector("#judgmentTiming0829");
+  const wealth=document.querySelector("#judgmentWealth0829");
+  const cases=document.querySelector("#judgmentCases0829");
+  if(!timing||!wealth||!cases)return;
+  timing.innerHTML=course0829.timingPrinciples.map((item,index)=>`<article><small>${String(index+1).padStart(2,"0")}</small><div><strong>${item.cue}</strong><h3>${item.name}</h3><p>${item.detail}</p></div></article>`).join("");
+  wealth.innerHTML=course0829.wealthPrinciples.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
+  cases.innerHTML=course0829.caseStudies.map((item,index)=>`<article><header><span>课堂示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header><p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`).join("");
+  document.querySelector("#judgment0829Rules").innerHTML=course0829.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
+  document.querySelector("#judgment0829Ethics").innerHTML=`<b>总原则：</b>${course0829.ethicsBoundary}`;
+}
+
 document.querySelectorAll(".nav-item").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
 document.querySelectorAll("[data-jump]").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.jump)));
 document.querySelector("[data-view-link]").addEventListener("click",()=>setView("path"));
@@ -1276,7 +1289,7 @@ document.querySelector("#resetCast").addEventListener("click",()=>{state.cast=[]
 
 document.querySelectorAll("[data-map]").forEach(b=>b.addEventListener("click",()=>renderMap(b.dataset.map)));
 document.querySelectorAll("#scroll0718Shell .scroll-roller").forEach(button=>button.addEventListener("click",replay0718Scroll));
-renderPath();render0718Atlas();render0725Course();render0822Course();renderAssemblyLearningTools();renderClassicsReference();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
+renderPath();render0718Atlas();render0725Course();render0822Course();render0829Course();renderAssemblyLearningTools();renderClassicsReference();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
 initImmersiveMotion();
 if(["path","foundation","lecture0704","lecture0718","lecture0725","judgment","casting","branches","training"].includes(requestedInitialView))setView(requestedInitialView);
 if(requestedAnchor)requestAnimationFrame(()=>requestAnimationFrame(()=>document.getElementById(requestedAnchor)?.scrollIntoView({block:"start"})));

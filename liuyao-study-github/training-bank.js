@@ -9,6 +9,7 @@
     {id:"lecture0808",label:"六神详解与日月建",short:"08·08"},
     {id:"lecture0815",label:"动静空破与墓库",short:"08·15"},
     {id:"lecture0822",label:"断卦：用神与判断步骤",short:"08·22"},
+    {id:"lecture0829",label:"断卦：应期与求财",short:"08·29"},
     {id:"classics",label:"古籍参考",short:"古籍"}
   ];
   const classics={
@@ -260,6 +261,19 @@
     const ruleChoices0822=[...course0822.judgmentRules,"只要见到游魂、归魂或动爻，就能脱离占问直接定结果。"];
     course0822.judgmentRules.forEach((rule,index)=>add({id:`0822-rule-${index+1}`,module:"lecture0822",kind:"judgment-boundary",source:source0822,question:"哪一项符合本讲的断卦判断边界？",answer:rule,candidates:ruleChoices0822,feedback:`${rule} ${course0822.ethicsBoundary}`}));
   }
+
+  if(typeof course0829!=="undefined"){
+    const source0829="陈师 2026-08-29 · 全程音画复核 02:48:00";
+    const all0829Details=[...course0829.timingPrinciples,...course0829.wealthPrinciples].map(item=>item.detail);
+    course0829.timingPrinciples.forEach((item,index)=>add({id:`0829-timing-${index+1}`,module:"lecture0829",kind:"judgment-timing",source:source0829,question:`应期“${item.name}”的课堂重点是什么？`,answer:item.detail,candidates:all0829Details,feedback:`${item.name}：${item.detail}`}));
+    course0829.wealthPrinciples.forEach((item,index)=>add({id:`0829-wealth-${index+1}`,module:"lecture0829",kind:"judgment-wealth",source:source0829,question:`求财中“${item.name}”的观察重点是什么？`,answer:item.detail,candidates:all0829Details,feedback:`${item.name}：${item.detail}`}));
+    const caseChoices0829=course0829.caseStudies.map(item=>item.detail);
+    course0829.caseStudies.forEach((item,index)=>add({id:`0829-case-${index+1}`,module:"lecture0829",kind:"case-study",source:source0829,question:`“${item.title}”例首先提醒如何处理？`,answer:item.detail,candidates:caseChoices0829,feedback:`${item.title}：${item.detail} ${course0829.ethicsBoundary}`}));
+
+    const ruleChoices0829=[...course0829.judgmentRules,"离开具体占问，只凭单一爻象就能确定应期、财运或他人处境。"];
+    course0829.judgmentRules.forEach((rule,index)=>add({id:`0829-rule-${index+1}`,module:"lecture0829",kind:"judgment-boundary",source:source0829,question:"哪一项符合本讲应期与求财的使用边界？",answer:rule,candidates:ruleChoices0829,feedback:`${rule} ${course0829.ethicsBoundary}`}));
+  }
+
 
   window.LIUYAO_TRAINING={modules,classics,bank};
 })();
