@@ -6,6 +6,7 @@ import vm from "node:vm";
 const read=path=>fs.readFileSync(path,"utf8");
 const html=read("liuyao-study-github/index.html");
 const app=read("liuyao-study-github/app.js");
+const css=read("liuyao-study-github/styles.css");
 const training=read("liuyao-study-github/training-bank.js");
 const source=read("liuyao-study-github/course-0829.js");
 const load=()=>{const sandbox={};vm.runInNewContext(`${source};globalThis.__course=course0829;`,sandbox);return sandbox.__course;};
@@ -40,5 +41,7 @@ test("08-29 timing and wealth surface is loaded, rendered, and trained only in t
   }
   assert.match(training,/id:"lecture0829"/);
   assert.match(training,/陈师 2026-08-29/);
-  assert.match(training,/全程音画复核/);
+  assert.doesNotMatch(html,/<b>全程复核|屏幕共享画面|<span>音轨<\/span>|<span>02:35:05<\/span>|<span>02:48:00<\/span>/);
+  assert.match(css,/\.judgment0822-intro\{[^}]*max-width:none/);
+  assert.doesNotMatch(training,/全程音画复核|02:48:00|02:35:05/);
 });

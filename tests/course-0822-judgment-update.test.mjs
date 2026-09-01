@@ -30,22 +30,20 @@ test("08-22 course is reconciled against the complete screen recording and audio
   assert.match(source,/现实核验/);
 });
 
-test("08-22 judgment page and training module state full video verification and stay in the extended edition",()=>{
+test("08-22 judgment page and training module keep learning content in the extended edition",()=>{
   assert.match(html,/data-view="judgment"/);
   assert.match(html,/id="judgment"/);
   assert.match(html,/id="judgmentSteps0822"/);
   assert.match(html,/id="judgmentConcepts0822"/);
   assert.match(html,/id="judgmentCases0822"/);
-  assert.match(html,/全程复核/);
-  assert.match(html,/飞神伏神/);
-  assert.match(html,/进神退神/);
+  assert.doesNotMatch(html,/全程复核|屏幕共享画面|<span>音轨<\/span>|<span>02:35:05<\/span>/);
   assert.match(html,/course-0822\.js\?v=/);
   assert.ok(html.indexOf("course-0822.js")<html.indexOf("training-bank.js"));
   assert.match(app,/render0822Course\(\)/);
   assert.match(app,/course0822\.judgmentSteps/);
   assert.match(training,/id:"lecture0822"/);
   assert.match(training,/陈师 2026-08-22/);
-  assert.match(training,/全程音画复核/);
+  assert.doesNotMatch(training,/全程音画复核|02:35:05/);
   assert.match(training,/course0822\.judgmentSteps/);
   assert.match(training,/course0822\.coreConcepts/);
 });
