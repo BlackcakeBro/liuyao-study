@@ -1254,6 +1254,11 @@ function render0822Course(){
   document.querySelector("#judgment0822Ethics").innerHTML=`<b>总原则：</b>${course0822.ethicsBoundary}`;
 }
 
+function courseCaseDiagramMarkup(hexagram){
+  const figure=(label,item,moving=[])=>`<figure><span>${label}</span><svg viewBox="-36 0 228 200" role="img" aria-label="${item.name}${label}">${classicsHexagramSvg(item.lines,moving)}</svg><figcaption>${item.name}</figcaption></figure>`;
+  return `<div class="case-diagram"><div class="case-diagram-figures">${figure("本卦",hexagram,hexagram.moving)}${figure("变卦",hexagram.changed)}</div><dl class="case-assembly"><dt>装卦</dt>${hexagram.assembly.map(row=>`<div class="${hexagram.moving.includes(row.position)?"is-moving":""}"><b>${row.position===6?"上":row.position}爻</b><span>${row.main}</span><i>→</i><span>${row.changed}</span></div>`).join("")}</dl></div>`;
+}
+
 function render0829Course(){
   if(typeof course0829==="undefined")return;
   const timing=document.querySelector("#judgmentTiming0829");
@@ -1262,7 +1267,7 @@ function render0829Course(){
   if(!timing||!wealth||!cases)return;
   timing.innerHTML=course0829.timingPrinciples.map((item,index)=>`<article><small>${String(index+1).padStart(2,"0")}</small><div><strong>${item.cue}</strong><h3>${item.name}</h3><p>${item.detail}</p></div></article>`).join("");
   wealth.innerHTML=course0829.wealthPrinciples.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
-  cases.innerHTML=course0829.caseStudies.map((item,index)=>`<article><header><span>课堂示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header><p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`).join("");
+  cases.innerHTML=course0829.caseStudies.map((item,index)=>`<article><header><span>课堂示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header>${courseCaseDiagramMarkup(item.hexagram)}<p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`).join("");
   document.querySelector("#judgment0829Rules").innerHTML=course0829.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
   document.querySelector("#judgment0829Ethics").innerHTML=`<b>总原则：</b>${course0829.ethicsBoundary}`;
 }

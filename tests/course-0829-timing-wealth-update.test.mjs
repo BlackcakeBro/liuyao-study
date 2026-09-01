@@ -22,9 +22,14 @@ test("08-29 course is grounded in the complete recording's audio and screen trac
   assert.match(course.meta.evidence,/音轨/);
   assert.deepEqual(Array.from(course.timingPrinciples,item=>item.name),["先看能否，再谈何时","逐项找出限制条件","先月后日，寻找窗口","空、墓、合、冲须分吉凶","应期范围先近后远"]);
   assert.deepEqual(Array.from(course.wealthPrinciples,item=>item.name),["求财先定四个观察点","财路、阻力与耗财","世应先看双方能否相接","妻财持世","子孙持世","兄弟持世","官鬼持世"]);
-  assert.equal(course.caseStudies.length,5);
+  assert.equal(course.caseStudies.length,4);
   assert.match(course.caseStudies.map(item=>item.title).join("\n"),/调动/);
-  assert.match(course.caseStudies.map(item=>item.title).join("\n"),/求财/);
+  course.caseStudies.forEach(item=>{
+    assert.ok(item.hexagram);
+    assert.equal(item.hexagram.lines.length,6);
+    assert.equal(item.hexagram.changed.lines.length,6);
+    assert.equal(item.hexagram.assembly.length,6);
+  });
   assert.match(course.ethicsBoundary,/具体占问/);
 });
 
