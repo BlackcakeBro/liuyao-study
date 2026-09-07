@@ -1272,6 +1272,17 @@ function render0829Course(){
   document.querySelector("#judgment0829Ethics").innerHTML=`<b>总原则：</b>${course0829.ethicsBoundary}`;
 }
 
+function render0905Course(){
+  if(typeof course0905==="undefined")return;
+  const concepts=document.querySelector("#judgmentWealth0905");
+  const rules=document.querySelector("#judgment0905Rules");
+  const ethics=document.querySelector("#judgment0905Ethics");
+  if(!concepts||!rules||!ethics)return;
+  concepts.innerHTML=course0905.wealthCompletion.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
+  rules.innerHTML=course0905.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
+  ethics.innerHTML=`<b>专题边界：</b>${course0905.ethicsBoundary}`;
+}
+
 document.querySelectorAll(".nav-item").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
 document.querySelectorAll("[data-jump]").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.jump)));
 document.querySelector("[data-view-link]").addEventListener("click",()=>setView("path"));
@@ -1294,7 +1305,7 @@ document.querySelector("#resetCast").addEventListener("click",()=>{state.cast=[]
 
 document.querySelectorAll("[data-map]").forEach(b=>b.addEventListener("click",()=>renderMap(b.dataset.map)));
 document.querySelectorAll("#scroll0718Shell .scroll-roller").forEach(button=>button.addEventListener("click",replay0718Scroll));
-renderPath();render0718Atlas();render0725Course();render0822Course();render0829Course();renderAssemblyLearningTools();renderClassicsReference();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
+renderPath();render0718Atlas();render0725Course();render0822Course();render0829Course();render0905Course();renderAssemblyLearningTools();renderClassicsReference();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
 initImmersiveMotion();
 if(["path","foundation","lecture0704","lecture0718","lecture0725","judgment","casting","branches","training"].includes(requestedInitialView))setView(requestedInitialView);
 if(requestedAnchor)requestAnimationFrame(()=>requestAnimationFrame(()=>document.getElementById(requestedAnchor)?.scrollIntoView({block:"start"})));

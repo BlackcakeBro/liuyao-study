@@ -9,7 +9,8 @@
     {id:"lecture0808",label:"六神详解与日月建",short:"08·08"},
     {id:"lecture0815",label:"动静空破与墓库",short:"08·15"},
     {id:"lecture0822",label:"断卦：用神与判断步骤",short:"08·22"},
-    {id:"lecture0829",label:"断卦：应期与求财",short:"08·29"},
+    {id:"lecture0829",label:"断卦：应期与求财",short:"应期"},
+    {id:"judgmentWealth",label:"断卦：求财专题",short:"求财"},
     {id:"classics",label:"古籍参考",short:"古籍"}
   ];
   const classics={
@@ -274,6 +275,12 @@
     course0829.judgmentRules.forEach((rule,index)=>add({id:`0829-rule-${index+1}`,module:"lecture0829",kind:"judgment-boundary",source:source0829,question:"哪一项符合本讲应期与求财的使用边界？",answer:rule,candidates:ruleChoices0829,feedback:`${rule} ${course0829.ethicsBoundary}`}));
   }
 
+
+  if(typeof course0905!=="undefined"){
+    const source0905="求财专题";
+    const wealthChoices0905=course0905.wealthCompletion.map(item=>item.detail);
+    course0905.wealthCompletion.forEach((item,index)=>add({id:`0905-wealth-${index+1}`,module:"judgmentWealth",kind:"judgment-wealth",source:source0905,question:`求财专题“${item.name}”的课堂观察重点是什么？`,answer:item.detail,candidates:wealthChoices0905,feedback:`${item.name}：${item.detail}`}));
+  }
 
   window.LIUYAO_TRAINING={modules,classics,bank};
 })();

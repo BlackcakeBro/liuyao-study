@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import vm from "node:vm";
 import fs from "node:fs";
 
-const source=["data.js","course-0718.js","course-0725.js","course-0801.js","course-0808.js","course-0815.js","course-0822.js","course-0829.js","training-bank.js"]
+const source=["data.js","course-0718.js","course-0725.js","course-0801.js","course-0808.js","course-0815.js","course-0822.js","course-0829.js","course-0905.js","training-bank.js"]
   .map(file=>fs.readFileSync(`liuyao-study-github/${file}`,"utf8"))
   .join("\n")+"\n;globalThis.__training=window.LIUYAO_TRAINING;";
 const sandbox={window:{}};
@@ -26,9 +26,10 @@ test("audited question bank covers foundation, all taught courses, and ancient a
     lecture0815:23,
     lecture0822:17,
     lecture0829:20,
+    judgmentWealth:7,
     classics:11
   });
-  assert.equal(training.bank.length,468);
+  assert.equal(training.bank.length,475);
   assert.equal(new Set(training.bank.map(question=>question.id)).size,training.bank.length);
 });
 
