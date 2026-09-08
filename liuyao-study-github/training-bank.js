@@ -10,20 +10,20 @@
     {id:"lecture0815",label:"动静空破与墓库",short:"08·15"},
     {id:"lecture0822",label:"断卦：用神与判断步骤",short:"08·22"},
     {id:"lecture0829",label:"断卦：应期与求财",short:"应期"},
-    {id:"judgmentWealth",label:"断卦：求财专题",short:"求财"},
+    {id:"judgmentWealth",label:"断卦：求财",short:"求财"},
     {id:"classics",label:"古籍参考",short:"古籍"}
   ];
   const classics={
     source:"《增删卜易》卷一",
-    boundary:"已进入课堂的结构以陈师口径为主；完整纳甲表等细节继续标为古籍校注，不冒充课堂逐项讲授。",
+    boundary:"已进入的结构以陈师口径为主；完整纳甲表等细节继续标为古籍校注，不冒充逐项讲授。",
     chapterOrder:["八卦与占卦法","八宫六十四卦","浑天甲子","六亲","世应","动变","用神与元忌仇"],
     roadmap:[
       {n:"01",title:"起卦与爻位",progress:"learned",state:"陈师已讲",detail:"三钱定爻、初爻至上爻、内外卦与动变。"},
       {n:"02",title:"八宫六十四卦",progress:"learned",state:"陈师已讲",detail:"八宫归属、宫内序位及八宫核心取象已经讲完。"},
-      {n:"03",title:"浑天甲子",progress:"learned",state:"课堂原理 + 古籍校注",detail:"课堂已讲内外卦固定装支原理；完整逐爻表仍作古籍校注。"},
-      {n:"04",title:"六亲",progress:"learned",state:"六亲已讲",detail:"六亲生克链与父母、官鬼、兄弟、妻财、子孙的三层取象均已进入课堂。"},
+      {n:"03",title:"浑天甲子",progress:"learned",state:"固定原理 + 古籍校注",detail:"已纳入内外卦固定装支原理；完整逐爻表仍作古籍校注。"},
+      {n:"04",title:"六亲",progress:"learned",state:"六亲已讲",detail:"六亲生克链与父母、官鬼、兄弟、妻财、子孙的三层取象均已进入。"},
       {n:"05",title:"世应",progress:"learned",state:"陈师已讲",detail:"世为求测者，应为所测或对方；应与世中间隔两爻。"},
-      {n:"06",title:"动变与取用",progress:"learned",state:"课堂已讲取用顺序",detail:"先定所问、再取用神，并结合世爻、月日、旺衰与动静；元忌仇关系继续参考古籍。"}
+      {n:"06",title:"动变与取用",progress:"learned",state:"已纳入取用顺序",detail:"先定所问、再取用神，并结合世爻、月日、旺衰与动静；元忌仇关系继续参考古籍。"}
     ],
     najia:[
       {trigram:"乾",inner:["子水","寅木","辰土"],outer:["午火","申金","戌土"]},
@@ -111,8 +111,8 @@
   const coinChoices=course0718.coins.map(item=>`${item.result} · ${item.line}${item.moving?"":"静"}`);
   course0718.coins.forEach(item=>add({id:`0718-coin-${item.faces}`,module:"lecture0718",kind:"coin",source:"陈师 2026-07-18",question:`三枚铜钱出现“${item.faces}”时，定为什么爻？`,answer:`${item.result} · ${item.line}${item.moving?"":"静"}`,candidates:coinChoices,feedback:`${item.faces}定${item.result}，${item.note}`}));
   const faceChoices=["阴面（汉字面）","阳面（满文面）","阳面（汉字面）","阴面（满文面）"];
-  add({id:"0718-coin-face-hanzi",module:"lecture0718",kind:"coin-face",source:"陈师 2026-07-18",question:"乾隆通宝铜钱的汉字面在本课中记作什么？",answer:"阴面（汉字面）",candidates:faceChoices,feedback:"本课口径：汉字面记阴，满文面记阳。"});
-  add({id:"0718-coin-face-manchu",module:"lecture0718",kind:"coin-face",source:"陈师 2026-07-18",question:"乾隆通宝铜钱的满文面在本课中记作什么？",answer:"阳面（满文面）",candidates:faceChoices,feedback:"本课口径：满文面记阳，汉字面记阴。"});
+  add({id:"0718-coin-face-hanzi",module:"lecture0718",kind:"coin-face",source:"陈师 2026-07-18",question:"乾隆通宝铜钱的汉字面在中记作什么？",answer:"阴面（汉字面）",candidates:faceChoices,feedback:"取用原则：汉字面记阴，满文面记阳。"});
+  add({id:"0718-coin-face-manchu",module:"lecture0718",kind:"coin-face",source:"陈师 2026-07-18",question:"乾隆通宝铜钱的满文面在中记作什么？",answer:"阳面（满文面）",candidates:faceChoices,feedback:"取用原则：满文面记阳，汉字面记阴。"});
   const yaoChoices=course0718.yao.map(item=>`${item.name} · ${item.triad} · ${item.zone}`);
   course0718.yao.forEach(item=>add({id:`0718-yao-${item.n}`,module:"lecture0718",kind:"yao-position",source:"陈师 2026-07-18",question:`第${item.n}次投掷对应哪一爻、哪一位与哪一卦区？`,answer:`${item.name} · ${item.triad} · ${item.zone}`,candidates:yaoChoices,feedback:`第${item.n}次投掷记为${item.name}，属${item.triad}、${item.zone}；${item.cue}。`}));
   const palaceChoices=course0718.palaceOrder.map(key=>`${key}宫`);
@@ -121,7 +121,7 @@
     add({id:`0718-palace-element-${key}`,module:"lecture0718",kind:"palace-element",source:"陈师 2026-07-18",question:`${key}宫八卦的宫五行是什么？`,answer:palace.element,candidates:cycle,feedback:`${key}宫八卦俱属${palace.element}。`});
     palace.hexagrams.forEach((hexagram,index)=>{
       add({id:`0718-membership-${hexagram[0]}`,module:"lecture0718",kind:"palace-membership",palace:key,source:"陈师 2026-07-18",question:`“${hexagram[0]}”属于八宫中的哪一宫？`,answer:`${key}宫`,candidates:palaceChoices,feedback:`${hexagram[0]}属${key}宫，为宫内“${course0718.palaceStages[index]}”序位；宫五行${palace.element}。`});
-      if(palace.status==="verified")add({id:`0718-cue-${hexagram[0]}`,module:"lecture0718",kind:"hexagram-cue",palace:key,source:palace.source||"陈师 2026-07-18",question:`按陈师课堂取象，哪组核心提示属于“${hexagram[0]}”？`,answer:hexagram[2],candidates:course0718.palaceOrder.filter(palaceKey=>course0718.palaces[palaceKey].status==="verified").flatMap(palaceKey=>course0718.palaces[palaceKey].hexagrams.map(item=>item[2])),feedback:`${hexagram[0]}：${hexagram[2]}。这只是课堂取象提示，不可脱离用神、旺衰与全卦直接下结论。`});
+      if(palace.status==="verified")add({id:`0718-cue-${hexagram[0]}`,module:"lecture0718",kind:"hexagram-cue",palace:key,source:palace.source||"陈师 2026-07-18",question:`按陈师取象，哪组核心提示属于“${hexagram[0]}”？`,answer:hexagram[2],candidates:course0718.palaceOrder.filter(palaceKey=>course0718.palaces[palaceKey].status==="verified").flatMap(palaceKey=>course0718.palaces[palaceKey].hexagrams.map(item=>item[2])),feedback:`${hexagram[0]}：${hexagram[2]}。这只是取象提示，不可脱离用神、旺衰与全卦直接下结论。`});
     });
   });
 
@@ -129,13 +129,13 @@
   const assemblyChoices=[...course0725.assemblyPrinciples.map(item=>item.cue),"先凭卦名直接定吉凶"];
   course0725.assemblyPrinciples.forEach(item=>add({
     id:`0725-assembly-${item.name}`,module:"lecture0725",kind:"assembly",source:source0725,
-    question:`装卦步骤“${item.name}”的课堂核心是什么？`,answer:item.cue,candidates:assemblyChoices,
+    question:`装卦步骤“${item.name}”的核心是什么？`,answer:item.cue,candidates:assemblyChoices,
     feedback:`${item.name}：${item.detail}`
   }));
   const roleChoices0725=[...course0725.shiYingRoles.map(item=>item.role),"固定代表长辈","固定代表晚辈"];
   course0725.shiYingRoles.forEach(item=>add({
     id:`0725-shiying-${item.name}`,module:"lecture0725",kind:"shi-ying-role",source:source0725,
-    question:`本课中“${item.name}”首先代表什么？`,answer:item.role,candidates:roleChoices0725,
+    question:`中“${item.name}”首先代表什么？`,answer:item.role,candidates:roleChoices0725,
     feedback:`${item.name}：${item.role}。${item.note}`
   }));
   const relativeNames=["父母","兄弟","子孙","妻财","官鬼"];
@@ -152,7 +152,7 @@
   course0725.focusRelatives.forEach(item=>{
     [["人物",item.people],["事物",item.things],["状态",item.states]].forEach(([layer,values])=>add({
       id:`0725-${item.name}-${layer}`,module:"lecture0725",kind:"relative-image",source:source0725,
-      question:`按本课三层取象，哪组属于${item.name}爻的“${layer}”层？`,answer:values.join("、"),candidates:layerChoices,
+      question:`按此项三层取象，哪组属于${item.name}爻的“${layer}”层？`,answer:values.join("、"),candidates:layerChoices,
       feedback:`${item.name}爻 · ${layer}：${values.join("、")}。${item.boundary}`
     }));
   });
@@ -163,13 +163,13 @@
   ];
   course0725.focusRelatives.forEach(item=>add({
     id:`0725-boundary-${item.name}`,module:"lecture0725",kind:"judgment-boundary",source:source0725,
-    question:`关于${item.name}爻，哪一条符合本课使用边界？`,answer:item.boundary,candidates:boundaryChoices,
+    question:`关于${item.name}爻，哪一条符合此项使用边界？`,answer:item.boundary,candidates:boundaryChoices,
     feedback:item.boundary
   }));
   const ruleChoices=[...course0725.judgmentRules,"六亲名称本身已经包含固定吉凶。"];
   course0725.judgmentRules.forEach((rule,index)=>add({
     id:`0725-rule-${index+1}`,module:"lecture0725",kind:"judgment-rule",source:source0725,
-    question:"哪一条符合本课的六亲判断原则？",answer:rule,candidates:ruleChoices,
+    question:"哪一条符合此项的六亲判断原则？",answer:rule,candidates:ruleChoices,
     feedback:rule
   }));
 
@@ -185,7 +185,7 @@
   const boundaries0801=[...course0801.focusRelatives.map(item=>item.boundary),"只看六亲名称即可直接判断吉凶。"];
   course0801.focusRelatives.forEach(item=>add({
     id:`0801-relative-boundary-${item.name}`,module:"lecture0801",kind:"judgment-boundary",source:source0801,
-    question:`关于${item.name}爻，哪条符合本课判断边界？`,answer:item.boundary,candidates:boundaries0801,feedback:item.boundary
+    question:`关于${item.name}爻，哪条符合此项判断边界？`,answer:item.boundary,candidates:boundaries0801,feedback:item.boundary
   }));
   const useGodCues=course0801.useGodSteps.map(item=>item.cue);
   course0801.useGodSteps.forEach((item,index)=>add({
@@ -196,24 +196,24 @@
   const sixGodCombos=course0801.sixGods.map(item=>item.combos.join("、"));
   course0801.sixGods.forEach(item=>{
     add({id:`0801-sixgod-${item.name}-cue`,module:"lecture0801",kind:"six-god",source:source0801,
-      question:`六神“${item.name}”的课堂核心提示是哪一组？`,answer:item.cue,candidates:sixGodCues,feedback:`${item.name}：${item.images.join("、")}。${item.boundary}`});
+      question:`六神“${item.name}”的核心提示是哪一组？`,answer:item.cue,candidates:sixGodCues,feedback:`${item.name}：${item.images.join("、")}。${item.boundary}`});
     add({id:`0801-sixgod-${item.name}-combo`,module:"lecture0801",kind:"six-god-combination",source:source0801,
-      question:`哪组是课堂列举的“${item.name}”组合示例？`,answer:item.combos.join("、"),candidates:sixGodCombos,feedback:`${item.combos.join("；")}。${course0801.sixGodBoundary}`});
+      question:`哪组是以下“${item.name}”组合示例？`,answer:item.combos.join("、"),candidates:sixGodCombos,feedback:`${item.combos.join("；")}。${course0801.sixGodBoundary}`});
   });
   const rules0801=[...course0801.judgmentRules,"六神名称本身足以直接断定结果。"];
   course0801.judgmentRules.forEach((rule,index)=>add({
     id:`0801-rule-${index+1}`,module:"lecture0801",kind:"judgment-rule",source:source0801,
-    question:"哪一条符合 8 月 1 日课堂的判断顺序？",answer:rule,candidates:rules0801,feedback:rule
+    question:"哪一条符合 8 月 1 日判断顺序？",answer:rule,candidates:rules0801,feedback:rule
   }));
 
   const innerChoices=classics.najia.map(item=>item.inner.join(" → "));
   const outerChoices=classics.najia.map(item=>item.outer.join(" → "));
   classics.najia.forEach(item=>{
-    add({id:`classics-najia-${item.trigram}-inner`,module:"lecture0725",kind:"najia",source:"《增删卜易》卷一 · 浑天甲子章",question:`${item.trigram}卦作为内卦时，由下向上装哪三支？`,answer:item.inner.join(" → "),candidates:innerChoices,feedback:`${item.trigram}在内卦，由下向上装${item.inner.join("、")}。课堂已讲固定装支原理；此完整序列来自原著参考。`});
-    add({id:`classics-najia-${item.trigram}-outer`,module:"lecture0725",kind:"najia",source:"《增删卜易》卷一 · 浑天甲子章",question:`${item.trigram}卦作为外卦时，由下向上装哪三支？`,answer:item.outer.join(" → "),candidates:outerChoices,feedback:`${item.trigram}在外卦，由下向上装${item.outer.join("、")}。课堂已讲固定装支原理；此完整序列来自原著参考。`});
+    add({id:`classics-najia-${item.trigram}-inner`,module:"lecture0725",kind:"najia",source:"《增删卜易》卷一 · 浑天甲子章",question:`${item.trigram}卦作为内卦时，由下向上装哪三支？`,answer:item.inner.join(" → "),candidates:innerChoices,feedback:`${item.trigram}在内卦，由下向上装${item.inner.join("、")}。已纳入固定装支原理；此完整序列来自原著参考。`});
+    add({id:`classics-najia-${item.trigram}-outer`,module:"lecture0725",kind:"najia",source:"《增删卜易》卷一 · 浑天甲子章",question:`${item.trigram}卦作为外卦时，由下向上装哪三支？`,answer:item.outer.join(" → "),candidates:outerChoices,feedback:`${item.trigram}在外卦，由下向上装${item.outer.join("、")}。已纳入固定装支原理；此完整序列来自原著参考。`});
   });
   const shiChoices=classics.shiYing.map(item=>`${item.shi===6?"上":item.shi}爻（第${item.shi}爻）`);
-  classics.shiYing.forEach(item=>add({id:`classics-shiying-${item.stage}`,module:"lecture0725",kind:"shi-ying",source:"《增删卜易》卷一 · 世应章",question:`八宫序位为“${item.stage}”时，世爻落在哪一爻？`,answer:`${item.shi===6?"上":item.shi}爻（第${item.shi}爻）`,candidates:shiChoices,feedback:`${item.stage}卦世在第${item.shi}爻；应与世中间隔两爻，也就是爻位相差三。此处用于课堂定位复习。`}));
+  classics.shiYing.forEach(item=>add({id:`classics-shiying-${item.stage}`,module:"lecture0725",kind:"shi-ying",source:"《增删卜易》卷一 · 世应章",question:`八宫序位为“${item.stage}”时，世爻落在哪一爻？`,answer:`${item.shi===6?"上":item.shi}爻（第${item.shi}爻）`,candidates:shiChoices,feedback:`${item.stage}卦世在第${item.shi}爻；应与世中间隔两爻，也就是爻位相差三。此处用于定位复习。`}));
   data.sixRelatives.forEach(relative=>add({id:`classics-relative-${relative.key}`,module:"lecture0725",kind:"six-relative",source:"《增删卜易》卷一 · 六亲歌章",question:`古籍六亲定法中，“${relative.relation}”称为什么？`,answer:relative.key,candidates:data.sixRelatives.map(item=>item.key),feedback:`${relative.relation}为${relative.key}。六亲须以卦宫五行为“我”来推。`}));
   const yongshenChoices=data.yongshenTopics.map(item=>item.use);
   data.yongshenTopics.forEach((item,index)=>add({id:`classics-yongshen-${index+1}`,module:"classics",kind:"yongshen",source:"《增删卜易》卷一 · 用神章",question:`占问“${item.topic}”时，首先取什么为用神或主要观察点？`,answer:item.use,candidates:yongshenChoices,feedback:`此类占问先取${item.use}。${item.note}取准用神后仍要继续看旺衰、生克、冲合与动变。`}));
@@ -225,7 +225,7 @@
   const sixGodSceneChoices=course0808.sixGodDetails.map(item=>item.scenes);
   course0808.sixGodDetails.forEach(item=>{
     add({id:`0808-sixgod-core-${item.name}`,module:"lecture0808",kind:"six-god-detail",source:source0808,question:`六神“${item.name}”的核心象意是哪一组？`,answer:item.core,candidates:sixGodCoreChoices,feedback:`${item.name}：${item.core}。${item.boundary}`});
-    add({id:`0808-sixgod-scene-${item.name}`,module:"lecture0808",kind:"six-god-scene",source:source0808,question:`哪组场景更符合“${item.name}”的课堂取象？`,answer:item.scenes,candidates:sixGodSceneChoices,feedback:`${item.scenes}。六神只给核查方向，仍须结合占问、六亲、旺衰与动变。`});
+    add({id:`0808-sixgod-scene-${item.name}`,module:"lecture0808",kind:"six-god-scene",source:source0808,question:`哪组场景更符合“${item.name}”的取象？`,answer:item.scenes,candidates:sixGodSceneChoices,feedback:`${item.scenes}。六神只给核查方向，仍须结合占问、六亲、旺衰与动变。`});
   });
   const principleChoices=course0808.dayMonthPrinciples.map(item=>item.detail);
   course0808.dayMonthPrinciples.forEach((item,index)=>add({id:`0808-daymonth-principle-${index+1}`,module:"lecture0808",kind:"day-month-principle",source:source0808,question:`“${item.name}”在日月建判断中指什么？`,answer:item.detail,candidates:principleChoices,feedback:`${item.name}：${item.detail}`}));
@@ -236,13 +236,13 @@
   const applicationChoices=course0808.applications.map(item=>item.detail);
   course0808.applications.forEach((item,index)=>add({id:`0808-daymonth-application-${index+1}`,module:"lecture0808",kind:"day-month-application",source:source0808,question:`日月旺衰用于“${item.name}”时，哪项边界正确？`,answer:item.detail,candidates:applicationChoices,feedback:`${item.name}：${item.detail}`}));
   const ruleChoices0808=[...course0808.judgmentRules,"只看六神名称即可越过用神与月日旺衰直接下结论。"];
-  course0808.judgmentRules.forEach((rule,index)=>add({id:`0808-daymonth-rule-${index+1}`,module:"lecture0808",kind:"judgment-rule",source:source0808,question:"哪一项符合本课六神与日月建的判断边界？",answer:rule,candidates:ruleChoices0808,feedback:`${rule} ${course0808.ethicsBoundary}`}));
+  course0808.judgmentRules.forEach((rule,index)=>add({id:`0808-daymonth-rule-${index+1}`,module:"lecture0808",kind:"judgment-rule",source:source0808,question:"哪一项符合此项六神与日月建的判断边界？",answer:rule,candidates:ruleChoices0808,feedback:`${rule} ${course0808.ethicsBoundary}`}));
 
   const source0815="陈师 2026-08-15";
   const all0815Details=[...course0815.movingYaoPrinciples,...course0815.voidPrinciples,...course0815.monthBreakPrinciples,...course0815.tombStorehousePrinciples,...course0815.hexagramBodyPrinciples].map(item=>item.detail);
   const add0815Principles=(prefix,kind,items)=>{
     const choices=all0815Details;
-    items.forEach((item,index)=>add({id:`0815-${prefix}-${index+1}`,module:"lecture0815",kind,source:source0815,question:`“${item.name}”在本课中的观察重点是什么？`,answer:item.detail,candidates:choices,feedback:`${item.name}：${item.detail}`}));
+    items.forEach((item,index)=>add({id:`0815-${prefix}-${index+1}`,module:"lecture0815",kind,source:source0815,question:`“${item.name}”在中的观察重点是什么？`,answer:item.detail,candidates:choices,feedback:`${item.name}：${item.detail}`}));
   };
   add0815Principles("moving","moving-yao",course0815.movingYaoPrinciples);
   add0815Principles("void","void",course0815.voidPrinciples);
@@ -250,36 +250,36 @@
   add0815Principles("tomb","tomb-storehouse",course0815.tombStorehousePrinciples);
   add0815Principles("body","hexagram-body",course0815.hexagramBodyPrinciples);
   const ruleChoices0815=[...course0815.judgmentRules,"看到旬空、月破或入墓即可直接判定结果。"];
-  course0815.judgmentRules.forEach((rule,index)=>add({id:`0815-rule-${index+1}`,module:"lecture0815",kind:"judgment-boundary",source:source0815,question:"哪一项符合本课动静、空破与墓库的判断边界？",answer:rule,candidates:ruleChoices0815,feedback:`${rule} ${course0815.ethicsBoundary}`}));
+  course0815.judgmentRules.forEach((rule,index)=>add({id:`0815-rule-${index+1}`,module:"lecture0815",kind:"judgment-boundary",source:source0815,question:"哪一项符合此项动静、空破与墓库的判断边界？",answer:rule,candidates:ruleChoices0815,feedback:`${rule} ${course0815.ethicsBoundary}`}));
   const caseChoices=[...course0815.caseStudy.steps,"先凭一条象意断定遗失物被盗。"];
   course0815.caseStudy.steps.forEach((step,index)=>add({id:`0815-case-${index+1}`,module:"lecture0815",kind:"case-study",source:source0815,question:"寻物例的第${index+1}步应如何处理？",answer:step,candidates:caseChoices,feedback:`${step} ${course0815.ethicsBoundary}`}));
 
   if(typeof course0822!=="undefined"){
     const source0822="陈师 2026-08-22";
     const all0822Details=[...course0822.judgmentSteps,...course0822.coreConcepts].map(item=>item.detail);
-    course0822.judgmentSteps.forEach((item,index)=>add({id:`0822-step-${index+1}`,module:"lecture0822",kind:"judgment-step",source:source0822,question:`断卦“${item.name}”的课堂重点是什么？`,answer:item.detail,candidates:all0822Details,feedback:`${item.name}：${item.detail}`}));
-    course0822.coreConcepts.forEach((item,index)=>add({id:`0822-concept-${index+1}`,module:"lecture0822",kind:"judgment-concept",source:source0822,question:`“${item.name}”在本讲中的观察重点是什么？`,answer:item.detail,candidates:all0822Details,feedback:`${item.name}：${item.detail}`}));
+    course0822.judgmentSteps.forEach((item,index)=>add({id:`0822-step-${index+1}`,module:"lecture0822",kind:"judgment-step",source:source0822,question:`断卦“${item.name}”的重点是什么？`,answer:item.detail,candidates:all0822Details,feedback:`${item.name}：${item.detail}`}));
+    course0822.coreConcepts.forEach((item,index)=>add({id:`0822-concept-${index+1}`,module:"lecture0822",kind:"judgment-concept",source:source0822,question:`“${item.name}”在中的观察重点是什么？`,answer:item.detail,candidates:all0822Details,feedback:`${item.name}：${item.detail}`}));
     const ruleChoices0822=[...course0822.judgmentRules,"只要见到游魂、归魂或动爻，就能脱离占问直接定结果。"];
-    course0822.judgmentRules.forEach((rule,index)=>add({id:`0822-rule-${index+1}`,module:"lecture0822",kind:"judgment-boundary",source:source0822,question:"哪一项符合本讲的断卦判断边界？",answer:rule,candidates:ruleChoices0822,feedback:`${rule} ${course0822.ethicsBoundary}`}));
+    course0822.judgmentRules.forEach((rule,index)=>add({id:`0822-rule-${index+1}`,module:"lecture0822",kind:"judgment-boundary",source:source0822,question:"哪一项符合的断卦判断边界？",answer:rule,candidates:ruleChoices0822,feedback:`${rule} ${course0822.ethicsBoundary}`}));
   }
 
   if(typeof course0829!=="undefined"){
     const source0829="陈师 2026-08-29";
     const all0829Details=[...course0829.timingPrinciples,...course0829.wealthPrinciples].map(item=>item.detail);
-    course0829.timingPrinciples.forEach((item,index)=>add({id:`0829-timing-${index+1}`,module:"lecture0829",kind:"judgment-timing",source:source0829,question:`应期“${item.name}”的课堂重点是什么？`,answer:item.detail,candidates:all0829Details,feedback:`${item.name}：${item.detail}`}));
+    course0829.timingPrinciples.forEach((item,index)=>add({id:`0829-timing-${index+1}`,module:"lecture0829",kind:"judgment-timing",source:source0829,question:`应期“${item.name}”的重点是什么？`,answer:item.detail,candidates:all0829Details,feedback:`${item.name}：${item.detail}`}));
     course0829.wealthPrinciples.forEach((item,index)=>add({id:`0829-wealth-${index+1}`,module:"lecture0829",kind:"judgment-wealth",source:source0829,question:`求财中“${item.name}”的观察重点是什么？`,answer:item.detail,candidates:all0829Details,feedback:`${item.name}：${item.detail}`}));
     const caseChoices0829=course0829.caseStudies.map(item=>item.detail);
     course0829.caseStudies.forEach((item,index)=>add({id:`0829-case-${index+1}`,module:"lecture0829",kind:"case-study",source:source0829,question:`“${item.title}”例首先提醒如何处理？`,answer:item.detail,candidates:caseChoices0829,feedback:`${item.title}：${item.detail} ${course0829.ethicsBoundary}`}));
 
     const ruleChoices0829=[...course0829.judgmentRules,"离开具体占问，只凭单一爻象就能确定应期、财运或他人处境。"];
-    course0829.judgmentRules.forEach((rule,index)=>add({id:`0829-rule-${index+1}`,module:"lecture0829",kind:"judgment-boundary",source:source0829,question:"哪一项符合本讲应期与求财的使用边界？",answer:rule,candidates:ruleChoices0829,feedback:`${rule} ${course0829.ethicsBoundary}`}));
+    course0829.judgmentRules.forEach((rule,index)=>add({id:`0829-rule-${index+1}`,module:"lecture0829",kind:"judgment-boundary",source:source0829,question:"哪一项符合应期与求财的使用边界？",answer:rule,candidates:ruleChoices0829,feedback:`${rule} ${course0829.ethicsBoundary}`}));
   }
 
 
   if(typeof course0905!=="undefined"){
-    const source0905="求财专题";
+    const source0905="求财";
     const wealthChoices0905=course0905.wealthCompletion.map(item=>item.detail);
-    course0905.wealthCompletion.forEach((item,index)=>add({id:`0905-wealth-${index+1}`,module:"judgmentWealth",kind:"judgment-wealth",source:source0905,question:`求财专题“${item.name}”的课堂观察重点是什么？`,answer:item.detail,candidates:wealthChoices0905,feedback:`${item.name}：${item.detail}`}));
+    course0905.wealthCompletion.forEach((item,index)=>add({id:`0905-wealth-${index+1}`,module:"judgmentWealth",kind:"judgment-wealth",source:source0905,question:`求财中“${item.name}”的观察重点是什么？`,answer:item.detail,candidates:wealthChoices0905,feedback:`${item.name}：${item.detail}`}));
   }
 
   window.LIUYAO_TRAINING={modules,classics,bank};

@@ -704,14 +704,14 @@ function renderTrainingFilters(){
   }
 }
 function renderQuiz(){
-  const q=state.quiz,source=q.source?` · ${q.source}`:"";document.querySelector("#quizContent").innerHTML=`<div class="quiz-question"><small>第 ${state.quizTotal+1} 题 · 单项选择${source}</small><h3>${q.question}</h3></div><div class="quiz-options">${q.options.map(o=>`<button class="quiz-option" data-answer="${o}">${o}</button>`).join("")}</div><div class="quiz-feedback" id="quizFeedback">先判断题目属于哪套知识体系，再选择答案。</div>`;
+  const q=state.quiz;document.querySelector("#quizContent").innerHTML=`<div class="quiz-question"><small>第 ${state.quizTotal+1} 题 · 单项选择</small><h3>${q.question}</h3></div><div class="quiz-options">${q.options.map(o=>`<button class="quiz-option" data-answer="${o}">${o}</button>`).join("")}</div><div class="quiz-feedback" id="quizFeedback">先判断题目属于哪套知识体系，再选择答案。</div>`;
   document.querySelector("#nextQuiz").disabled=true;document.querySelectorAll(".quiz-option").forEach(b=>b.addEventListener("click",()=>answerQuiz(b)));
 }
 function answerQuiz(button){
   if(state.quiz.answered)return;state.quiz.answered=true;state.quizTotal++;const ok=button.dataset.answer===state.quiz.answer;if(ok)state.quizCorrect++;
   localStorage.setItem("liuyao-quiz-stats",JSON.stringify({correct:state.quizCorrect,total:state.quizTotal}));
   document.querySelectorAll(".quiz-option").forEach(b=>{b.disabled=true;if(b.dataset.answer===state.quiz.answer)b.classList.add("correct");});if(!ok)button.classList.add("wrong");
-  document.querySelector("#quizFeedback").innerHTML=`${ok?"回答正确。":"这次没有选对。"}<br>${state.quiz.source?`<b>来源：${state.quiz.source}</b><br>`:""}${state.quiz.feedback}`;document.querySelector("#quizCorrect").textContent=state.quizCorrect;document.querySelector("#quizTotal").textContent=state.quizTotal;document.querySelector("#nextQuiz").disabled=false;
+  document.querySelector("#quizFeedback").innerHTML=`${ok?"回答正确。":"这次没有选对。"}<br>${state.quiz.feedback}`;document.querySelector("#quizCorrect").textContent=state.quizCorrect;document.querySelector("#quizTotal").textContent=state.quizTotal;document.querySelector("#nextQuiz").disabled=false;
   updateProgress();
 }
 
@@ -1106,7 +1106,7 @@ function render0718Palace(palaceKey="乾",activeIndex=null){
     meta.innerHTML=`<div class="scroll-detail-content"><span class="scroll-detail-kicker">单卦取象 · ${palaceKey}宫 · ${stage}</span>${hexagramDetailMarkup(h[0])}<h3>${h[0]}</h3><strong>${h[2]}</strong><div class="scroll-detail-block"><b>意象提示</b><p>${h[3]}</p></div><em>${palaceKey}宫 · 宫五行${palace.element} · 第${String(activeIndex+1).padStart(2,"0")}卦</em></div>`;
   }else{
     meta.classList.remove("is-hexagram-detail");
-    meta.innerHTML=`<span>先天序 ${String(course0718.palaceOrder.indexOf(palaceKey)+1).padStart(2,"0")} · 宫五行${palace.element}</span><h3>${palaceKey}宫</h3><strong>${palace.theme}</strong><p>${palace.status==="pending-meaning"?"本宫八卦的卦名、卦象与宫内序位已列入；课堂取象等待陈师下节课补充。":"本宫八卦按固定序位排列。先辨卦象，再记宫位与核心取象。"}</p><small>点击右侧任一卦，可展开该卦的核心解释与意象提示。</small><em>${course0718.palaceStages.join(" → ")}</em>`;
+    meta.innerHTML=`<span>先天序 ${String(course0718.palaceOrder.indexOf(palaceKey)+1).padStart(2,"0")} · 宫五行${palace.element}</span><h3>${palaceKey}宫</h3><strong>${palace.theme}</strong><p>${palace.status==="pending-meaning"?"本宫八卦的卦名、卦象与宫内序位已列入；核心取象尚待补充。":"本宫八卦按固定序位排列。先辨卦象，再记宫位与核心取象。"}</p><small>点击右侧任一卦，可展开该卦的核心解释与意象提示。</small><em>${course0718.palaceStages.join(" → ")}</em>`;
   }
   grid.innerHTML=palace.hexagrams.map((h,index)=>`<button type="button" data-gua0718="${index}" class="scroll-gua-card ${index===activeIndex?"active":""} ${palace.status==="pending-meaning"?"pending":""}" style="--card-delay:${index*.045}s"><small>${String(index+1).padStart(2,"0")} · ${course0718.palaceStages[index]}</small><span class="scroll-gua-glyph">${h[1]}</span><b>${h[0]}</b><p>${h[2]}</p><i>${palaceKey}宫 · ${palace.element}</i></button>`).join("");
   grid.querySelectorAll("[data-gua0718]").forEach(button=>button.addEventListener("click",()=>render0718Palace(palaceKey,Number(button.dataset.gua0718))));
@@ -1236,7 +1236,7 @@ function render0725Course(){
   render0815Cards("#tombStorehouse0815Grid",course0815.tombStorehousePrinciples);
   render0815Cards("#hexagramBody0815Grid",course0815.hexagramBodyPrinciples);
   const caseStudy=document.querySelector("#caseStudy0815");
-  if(caseStudy)caseStudy.innerHTML=`<div><span>课堂例题</span><h3>${course0815.caseStudy.title}</h3><p>${course0815.caseStudy.detail}</p></div><ol>${course0815.caseStudy.steps.map(step=>`<li>${step}</li>`).join("")}</ol>`;
+  if(caseStudy)caseStudy.innerHTML=`<div><span>结构示例</span><h3>${course0815.caseStudy.title}</h3><p>${course0815.caseStudy.detail}</p></div><ol>${course0815.caseStudy.steps.map(step=>`<li>${step}</li>`).join("")}</ol>`;
   document.querySelector("#judgment0725Rules").innerHTML=[...new Set([...course0725.judgmentRules,...course0801.judgmentRules,...course0808.judgmentRules,...course0815.judgmentRules])].map(rule=>`<li>${rule}</li>`).join("");
   document.querySelector("#next0725Lesson").innerHTML=`<b>总原则：</b>${course0815.ethicsBoundary}`;
 }
@@ -1249,7 +1249,7 @@ function render0822Course(){
   if(!steps||!concepts||!cases)return;
   steps.innerHTML=course0822.judgmentSteps.map((item,index)=>`<article><small>${String(index+1).padStart(2,"0")}</small><div><strong>${item.cue}</strong><h3>${item.name}</h3><p>${item.detail}</p></div></article>`).join("");
   concepts.innerHTML=course0822.coreConcepts.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
-  cases.innerHTML=course0822.caseStudies.map((item,index)=>`<article><header><span>课堂示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header><p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`).join("");
+  cases.innerHTML=course0822.caseStudies.map((item,index)=>`<article><header><span>结构示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header><p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`).join("");
   document.querySelector("#judgment0822Rules").innerHTML=course0822.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
   document.querySelector("#judgment0822Ethics").innerHTML=`<b>总原则：</b>${course0822.ethicsBoundary}`;
 }
@@ -1267,7 +1267,7 @@ function render0829Course(){
   if(!timing||!wealth||!cases)return;
   timing.innerHTML=course0829.timingPrinciples.map((item,index)=>`<article><small>${String(index+1).padStart(2,"0")}</small><div><strong>${item.cue}</strong><h3>${item.name}</h3><p>${item.detail}</p></div></article>`).join("");
   wealth.innerHTML=course0829.wealthPrinciples.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
-  cases.innerHTML=course0829.caseStudies.map((item,index)=>`<article><header><span>课堂示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header>${courseCaseDiagramMarkup(item.hexagram)}<p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`).join("");
+  cases.innerHTML=course0829.caseStudies.map((item,index)=>`<article><header><span>结构示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header>${courseCaseDiagramMarkup(item.hexagram)}<p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`).join("");
   document.querySelector("#judgment0829Rules").innerHTML=course0829.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
   document.querySelector("#judgment0829Ethics").innerHTML=`<b>总原则：</b>${course0829.ethicsBoundary}`;
 }
@@ -1280,7 +1280,7 @@ function render0905Course(){
   if(!concepts||!rules||!ethics)return;
   concepts.innerHTML=course0905.wealthCompletion.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
   rules.innerHTML=course0905.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
-  ethics.innerHTML=`<b>专题边界：</b>${course0905.ethicsBoundary}`;
+  ethics.innerHTML=`<b>使用边界：</b>${course0905.ethicsBoundary}`;
 }
 
 document.querySelectorAll(".nav-item").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
