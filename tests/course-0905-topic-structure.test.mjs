@@ -15,7 +15,7 @@ test("09-05 extends self-contained wealth knowledge without publishing teaching-
   assert.equal(course.meta.topic,"求财");
   assert.equal(course.meta.evidenceStatus,"verified");
   assert.ok(course.wealthCompletion.length>=5);
-  assert.ok(course.holdingSelfPrinciples.some(item=>item.name.includes("父母持世")));
+  assert.ok(course.holdingSelfPrinciples.some(item=>item.name==="父母持世"));
   assert.ok(course.wealthCompletion.some(item=>item.name.includes("动变")));
   assert.ok(course.wealthCompletion.some(item=>item.name.includes("伏藏")));
   assert.doesNotMatch(JSON.stringify([...course.holdingSelfPrinciples,...course.wealthCompletion]),/课堂|课程|本讲|讲师|陈师/);
