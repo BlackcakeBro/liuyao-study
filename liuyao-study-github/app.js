@@ -1266,7 +1266,10 @@ function render0829Course(){
   const cases=document.querySelector("#judgmentCases0829");
   if(!timing||!wealth||!cases)return;
   timing.innerHTML=course0829.timingPrinciples.map((item,index)=>`<article><small>${String(index+1).padStart(2,"0")}</small><div><strong>${item.cue}</strong><h3>${item.name}</h3><p>${item.detail}</p></div></article>`).join("");
-  wealth.innerHTML=course0829.wealthPrinciples.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
+  const holdingSelf=[...course0829.wealthPrinciples];
+  const wifeHoldingIndex=holdingSelf.findIndex(item=>item.name==="妻财持世");
+  if(typeof course0905!=="undefined"&&Array.isArray(course0905.holdingSelfPrinciples))holdingSelf.splice(wifeHoldingIndex+1,0,...course0905.holdingSelfPrinciples);
+  wealth.innerHTML=holdingSelf.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
   cases.innerHTML=course0829.caseStudies.map((item,index)=>`<article><header><span>结构示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header>${courseCaseDiagramMarkup(item.hexagram)}<p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`).join("");
   document.querySelector("#judgment0829Rules").innerHTML=course0829.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
   document.querySelector("#judgment0829Ethics").innerHTML=`<b>总原则：</b>${course0829.ethicsBoundary}`;

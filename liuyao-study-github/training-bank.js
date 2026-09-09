@@ -278,8 +278,9 @@
 
   if(typeof course0905!=="undefined"){
     const source0905="求财";
-    const wealthChoices0905=course0905.wealthCompletion.map(item=>item.detail);
-    course0905.wealthCompletion.forEach((item,index)=>add({id:`0905-wealth-${index+1}`,module:"judgmentWealth",kind:"judgment-wealth",source:source0905,question:`求财中“${item.name}”的观察重点是什么？`,answer:item.detail,candidates:wealthChoices0905,feedback:`${item.name}：${item.detail}`}));
+    const wealthKnowledge0905=[course0905.wealthCompletion[0],...course0905.holdingSelfPrinciples,...course0905.wealthCompletion.slice(1)];
+    const wealthChoices0905=wealthKnowledge0905.map(item=>item.detail);
+    wealthKnowledge0905.forEach((item,index)=>add({id:`0905-wealth-${index+1}`,module:"judgmentWealth",kind:"judgment-wealth",source:source0905,question:`求财中“${item.name}”的观察重点是什么？`,answer:item.detail,candidates:wealthChoices0905,feedback:`${item.name}：${item.detail}`}));
   }
 
   window.LIUYAO_TRAINING={modules,classics,bank};
