@@ -25,8 +25,10 @@ test("08-22 course is reconciled against the complete screen recording and audio
   assert.deepEqual(Array.from(course.coreConcepts,item=>item.name),["游魂与归魂","用神","多用神取舍","元神、忌神与仇神","飞神与伏神","进神与退神","伏吟","反吟","应期"]);
   const fuyin=course.coreConcepts.find(item=>item.name==="伏吟");
   const fanyin=course.coreConcepts.find(item=>item.name==="反吟");
-  assert.match(fuyin.detail,/重复|回环/);
-  assert.match(fanyin.detail,/翻转|往复/);
+  assert.match(fuyin.detail,/六爻逐位/);
+  assert.match(fuyin.detail,/地支都相同/);
+  assert.match(fanyin.detail,/六爻逐位/);
+  assert.match(fanyin.detail,/地支都相冲/);
   assert.equal(course.caseStudies.length,6);
   assert.match(course.caseStudies.map(item=>item.title).join("\n"),/伏神/);
   assert.match(course.caseStudies.map(item=>item.title).join("\n"),/进神/);
