@@ -610,7 +610,7 @@ test("classics reference is source-backed and ships with one fresh cache version
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(10).fill("20260909-parent-title-v11"),
+    Array(10).fill("20260912-fuyin-layout-v12"),
     "course data, renderer, training bank, and styling must ship with one fresh cache version"
   );
 });

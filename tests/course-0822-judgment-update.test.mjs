@@ -22,7 +22,11 @@ test("08-22 course is reconciled against the complete screen recording and audio
   assert.match(course.meta.evidence,/屏幕共享画面/);
   assert.match(course.meta.evidence,/音轨/);
   assert.deepEqual(Array.from(course.judgmentSteps,item=>item.name),["先定占问","取用神","看力量与关系","辨吉凶与细节","最后看应期"]);
-  assert.deepEqual(Array.from(course.coreConcepts,item=>item.name),["游魂与归魂","用神","多用神取舍","元神、忌神与仇神","飞神与伏神","进神与退神","伏吟与反吟","应期"]);
+  assert.deepEqual(Array.from(course.coreConcepts,item=>item.name),["游魂与归魂","用神","多用神取舍","元神、忌神与仇神","飞神与伏神","进神与退神","伏吟","反吟","应期"]);
+  const fuyin=course.coreConcepts.find(item=>item.name==="伏吟");
+  const fanyin=course.coreConcepts.find(item=>item.name==="反吟");
+  assert.match(fuyin.detail,/重复|回环/);
+  assert.match(fanyin.detail,/翻转|往复/);
   assert.equal(course.caseStudies.length,6);
   assert.match(course.caseStudies.map(item=>item.title).join("\n"),/伏神/);
   assert.match(course.caseStudies.map(item=>item.title).join("\n"),/进神/);
@@ -41,6 +45,8 @@ test("08-22 judgment page and training module keep learning content in the exten
   assert.ok(html.indexOf("course-0822.js")<html.indexOf("training-bank.js"));
   assert.match(app,/render0822Course\(\)/);
   assert.match(app,/course0822\.judgmentSteps/);
+  assert.match(app,/course0822\.coreConcepts/);
+  assert.match(read("liuyao-study-github/styles.css"),/judgment0822-section\.section-block::after/);
   assert.match(training,/id:"lecture0822"/);
   assert.match(training,/陈师 2026-08-22/);
   assert.doesNotMatch(training,/全程音画复核|02:35:05/);
