@@ -610,7 +610,7 @@ test("classics reference is source-backed and ships with one fresh cache version
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(11).fill("20260914-relationship-v14"),
+    Array(11).fill("20260914-relationship-v15"),
     "course data, renderer, training bank, and styling must ship with one fresh cache version"
   );
 });
