@@ -1,0 +1,23 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import test from "node:test";
+import vm from "node:vm";
+const root=path.resolve(import.meta.dirname,"..");
+const read=file=>fs.readFileSync(path.join(root,file),"utf8");
+test("09-12 maps verified wealth refinements and relationship reading to the extended judgment page",()=>{
+  const source=read("liuyao-study-github/course-0912.js"); const sandbox={};
+  vm.runInNewContext(`${source};globalThis.__course=course0912;`,sandbox); const course=sandbox.__course;
+  assert.equal(course.meta.topic,"婚恋");
+  assert.equal(course.meta.evidenceStatus,"verified");
+  assert.equal(course.wealthRefinements.length,2);
+  assert.equal(course.relationshipPrinciples.length,6);
+  assert.ok(course.relationshipPrinciples.some(item=>item.name==="世应：先看双方能否相接"));
+  assert.ok(course.relationshipPrinciples.some(item=>item.name.includes("桃花")));
+  assert.match(course.relationshipPrinciples.map(item=>item.detail).join("\n"),/不得把桃花、合局或伏藏直接写成第三者/);
+  assert.doesNotMatch(JSON.stringify(course.relationshipPrinciples),/课堂|课程|本讲|讲师|陈师/);
+  const html=read("liuyao-study-github/index.html"),app=read("liuyao-study-github/app.js");
+  assert.match(html,/id="judgmentRelationshipTopic"/); assert.match(html,/断卦方向 02/);
+  assert.match(html,/course-0912\.js\?v=/); assert.match(app,/function render0912Course\(/);
+  assert.match(app,/course0912\.wealthRefinements/);
+});

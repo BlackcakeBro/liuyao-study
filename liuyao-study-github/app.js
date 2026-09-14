@@ -1275,13 +1275,27 @@ function render0829Course(){
   document.querySelector("#judgment0829Ethics").innerHTML=`<b>总原则：</b>${course0829.ethicsBoundary}`;
 }
 
+function render0912Course(){
+  if(typeof course0912==="undefined")return;
+  const principles=document.querySelector("#judgmentRelationship0912");
+  const conditions=document.querySelector("#judgmentRelationshipConditions0912");
+  const rules=document.querySelector("#judgment0912Rules");
+  const ethics=document.querySelector("#judgment0912Ethics");
+  if(!principles||!conditions||!rules||!ethics)return;
+  principles.innerHTML=course0912.relationshipPrinciples.slice(0,2).map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
+  conditions.innerHTML=course0912.relationshipPrinciples.slice(2).map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
+  rules.innerHTML=course0912.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
+  ethics.innerHTML=`<b>使用边界：</b>${course0912.ethicsBoundary}`;
+}
+
 function render0905Course(){
   if(typeof course0905==="undefined")return;
   const concepts=document.querySelector("#judgmentWealth0905");
   const rules=document.querySelector("#judgment0905Rules");
   const ethics=document.querySelector("#judgment0905Ethics");
   if(!concepts||!rules||!ethics)return;
-  concepts.innerHTML=course0905.wealthCompletion.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
+  const wealthCompletion=[...course0905.wealthCompletion,...(typeof course0912!=="undefined"&&Array.isArray(course0912.wealthRefinements)?course0912.wealthRefinements:[])];
+  concepts.innerHTML=wealthCompletion.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
   rules.innerHTML=course0905.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
   ethics.innerHTML=`<b>使用边界：</b>${course0905.ethicsBoundary}`;
 }
@@ -1308,7 +1322,7 @@ document.querySelector("#resetCast").addEventListener("click",()=>{state.cast=[]
 
 document.querySelectorAll("[data-map]").forEach(b=>b.addEventListener("click",()=>renderMap(b.dataset.map)));
 document.querySelectorAll("#scroll0718Shell .scroll-roller").forEach(button=>button.addEventListener("click",replay0718Scroll));
-renderPath();render0718Atlas();render0725Course();render0822Course();render0829Course();render0905Course();renderAssemblyLearningTools();renderClassicsReference();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
+renderPath();render0718Atlas();render0725Course();render0822Course();render0829Course();render0905Course();render0912Course();renderAssemblyLearningTools();renderClassicsReference();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
 initImmersiveMotion();
 if(["path","foundation","lecture0704","lecture0718","lecture0725","judgment","casting","branches","training"].includes(requestedInitialView))setView(requestedInitialView);
 if(requestedAnchor)requestAnimationFrame(()=>requestAnimationFrame(()=>document.getElementById(requestedAnchor)?.scrollIntoView({block:"start"})));
