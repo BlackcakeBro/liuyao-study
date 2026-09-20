@@ -6,7 +6,7 @@
   <meta name="description" content="以陈师讲义为主线，结合古籍校注、万物类象与主动回忆训练的六爻学习网站。">
   <title>爻象研习 · 六爻学习系统｜旺衰、八宫卦谱、装卦与断卦</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=20260808-logo-v1">
-  <link rel="stylesheet" href="./styles.css?v=20260914-relationship-v16">
+  <link rel="stylesheet" href="./styles.css?v=20260920-health-v17">
 </head>
 <body>
   <div class="paper-noise"></div>
@@ -513,6 +513,7 @@
         <a href="#judgmentFramework" class="is-active"><b>总</b><span>判断骨架</span><small>定问 · 取用 · 合看</small></a>
         <a href="#judgmentWealthTopic" data-judgment-topic="wealth"><b>01</b><span>求财</span><small>财 · 世 · 应 · 子孙</small></a>
         <a href="#judgmentRelationshipTopic" data-judgment-topic="relationship"><b>02</b><span>婚恋</span><small>用神 · 世应 · 条件</small></a>
+        <a href="#judgmentHealthTopic" data-judgment-topic="health"><b>03</b><span>疾病</span><small>取用 · 病象 · 医药</small></a>
       </nav>
 
       <section class="section-block judgment0822-section" id="judgmentFramework">
@@ -568,7 +569,38 @@
           <div class="section-heading"><div><span class="section-index">02</span><h2>条件层与关系线索</h2></div><p>间爻、父母、阴阳配位、桃花、合局与伏藏都须回到用神、世应和现实事实核验。</p></div>
           <div class="judgment0822-concepts judgment0912-concepts" id="judgmentRelationshipConditions0912"></div>
         </section>
+        <section class="section-block judgment0822-section">
+          <div class="section-heading"><div><span class="section-index">03</span><h2>案例辅助：从结构到验证</h2></div><p>本卦、动爻、变卦与装卦完整呈现；案例用于训练观察顺序，不替代当事人的真实沟通。</p></div>
+          <div class="judgment0822-cases" id="judgmentRelationshipCases0918"></div>
+        </section>
         <section class="judgment-topic-panel__boundary"><span>婚恋边界</span><ul id="judgment0912Rules"></ul><p id="judgment0912Ethics"></p></section>
+      </section>
+
+      <section class="judgment-topic-panel judgment-health-topic" id="judgmentHealthTopic" data-learning-module="judgmentHealth">
+        <header class="judgment-topic-panel__head"><span>断卦方向 03</span><h2>疾病</h2><p>先分自测与代测，再按用神、本人状态、病象、医药和饮食建立传统观察结构；所有健康判断以正规医疗证据为先。</p></header>
+        <div class="wealth-topic-map" aria-label="疾病判断结构图"><span>分清自测代测</span><i>→</i><b>确定用神</b><i>→</i><span>爻位五行六神</span><i>→</i><span>动变与现实就医</span></div>
+        <aside class="health-safety-banner"><b>医疗优先</b><p>术数只作传统知识学习，不能用于诊断、排除疾病、决定用药或延误就医。</p></aside>
+        <section class="section-block judgment0822-section">
+          <div class="section-heading"><div><span class="section-index">01</span><h2>先定问题与太极点</h2></div><p>自测与代测的用神体系不同；病情已知与症状未明也要分开处理。</p></div>
+          <div class="judgment0822-concepts judgment0918-concepts" id="judgmentHealthFramework0918"></div>
+        </section>
+        <section class="section-block judgment0822-section">
+          <div class="section-heading"><div><span class="section-index">02</span><h2>病象的四层定位</h2></div><p>先用神、再爻位，再合五行卦宫，最后用六神补充；任何单层都不构成医学结论。</p></div>
+          <div class="health-layer-map" id="judgmentHealthLayerMap0918"></div>
+        </section>
+        <section class="section-block judgment0822-section">
+          <div class="section-heading"><div><span class="section-index">03</span><h2>官鬼、子孙与饮食</h2></div><p>动变只说明传统结构怎样变化；药物、治疗和饮食必须遵循专业医嘱。</p></div>
+          <div class="judgment0822-concepts judgment0918-concepts" id="judgmentHealthDynamics0918"></div>
+        </section>
+        <section class="section-block judgment0822-section">
+          <div class="section-heading"><div><span class="section-index">04</span><h2>代测时重新排生克</h2></div><p>六亲身份改变后，原神、忌神与泄耗随太极点重排，不能照搬自测规则。</p></div>
+          <div class="judgment0822-concepts judgment0918-concepts" id="judgmentHealthProxy0918"></div>
+        </section>
+        <section class="section-block judgment0822-section">
+          <div class="section-heading"><div><span class="section-index">05</span><h2>案例辅助：关系转用</h2></div><p>卦象只帮助理解取用转换与观察顺序；现实中的疾病必须依靠医疗检查。</p></div>
+          <div class="judgment0822-cases" id="judgmentHealthCase0918"></div>
+        </section>
+        <section class="judgment-topic-panel__boundary health-boundary"><span>健康边界</span><ul id="judgment0918Rules"></ul><p id="judgment0918Ethics"></p></section>
       </section>
 
       <section class="section-block judgment0822-boundary"><span>判断边界</span><h2>先看结构，再谈结果</h2><ul id="judgment0829Rules"></ul><p id="judgment0829Ethics"></p><ul id="judgment0822Rules"></ul><p id="judgment0822Ethics"></p></section>
@@ -727,20 +759,21 @@
     <aside><button class="drawer-close" aria-label="关闭">×</button><div id="drawerContent"></div></aside>
   </div>
   <footer><span>爻象研习 · 六爻知识体系</span><p>关系 → 结构 → 力量 → 类象 → 验证</p></footer>
-  <script src="./data.js?v=20260914-relationship-v16"></script>
-  <script src="./course-0718.js?v=20260914-relationship-v16"></script>
-  <script src="./course-0725.js?v=20260914-relationship-v16"></script>
-  <script src="./course-0801.js?v=20260914-relationship-v16"></script>
-  <script src="./course-0808.js?v=20260914-relationship-v16"></script>
-  <script src="./course-0815.js?v=20260914-relationship-v16"></script>
-  <script src="./course-0822.js?v=20260914-relationship-v16"></script>
-  <script src="./course-0829.js?v=20260914-relationship-v16"></script>
-  <script src="./course-0905.js?v=20260914-relationship-v16"></script>
-  <script src="./course-0912.js?v=20260914-relationship-v16"></script>
-  <script src="./training-bank.js?v=20260914-relationship-v16"></script>
+  <script src="./data.js?v=20260920-health-v17"></script>
+  <script src="./course-0718.js?v=20260920-health-v17"></script>
+  <script src="./course-0725.js?v=20260920-health-v17"></script>
+  <script src="./course-0801.js?v=20260920-health-v17"></script>
+  <script src="./course-0808.js?v=20260920-health-v17"></script>
+  <script src="./course-0815.js?v=20260920-health-v17"></script>
+  <script src="./course-0822.js?v=20260920-health-v17"></script>
+  <script src="./course-0829.js?v=20260920-health-v17"></script>
+  <script src="./course-0905.js?v=20260920-health-v17"></script>
+  <script src="./course-0912.js?v=20260920-health-v17"></script>
+  <script src="./course-0918.js?v=20260920-health-v17"></script>
+  <script src="./training-bank.js?v=20260920-health-v17"></script>
   <script src="./vendor/jquery-3.7.1.min.js"></script>
   <script src="./vendor/jquery.ripples-min.js"></script>
-  <script src="./app.js?v=20260914-relationship-v16"></script>
+  <script src="./app.js?v=20260920-health-v17"></script>
   <script>
     window.addEventListener('load', function(){
       setTimeout(function(){

@@ -12,6 +12,7 @@
     {id:"lecture0829",label:"断卦：应期与求财",short:"应期"},
     {id:"judgmentWealth",label:"断卦：求财",short:"求财"},
     {id:"judgmentRelationship",label:"断卦：婚恋",short:"婚恋"},
+    {id:"judgmentHealth",label:"断卦：疾病",short:"疾病"},
     {id:"classics",label:"古籍参考",short:"古籍"}
   ];
   const classics={
@@ -292,6 +293,18 @@
     course0912.relationshipPrinciples.forEach((item,index)=>add({id:`0912-relationship-${index+1}`,module:"judgmentRelationship",kind:"judgment-relationship",source:source0912,question:`婚恋占问中“${item.name}”的观察重点是什么？`,answer:item.detail,candidates:relationshipDetails,feedback:`${item.name}：${item.detail} ${course0912.ethicsBoundary}`}));
     const relationshipRules=[...course0912.judgmentRules,"只凭桃花、伏藏或单一六亲就能判断他人的隐私与关系结果。"];
     course0912.judgmentRules.forEach((rule,index)=>add({id:`0912-rule-${index+1}`,module:"judgmentRelationship",kind:"judgment-boundary",source:source0912,question:"哪一项符合婚恋占问的使用边界？",answer:rule,candidates:relationshipRules,feedback:`${rule} ${course0912.ethicsBoundary}`}));
+  }
+
+  if(typeof course0918!=="undefined"){
+    const source0918="疾病";
+    const healthItems=[...course0918.healthFramework,...course0918.healthLayers,...course0918.illnessDynamics,...course0918.proxyRules];
+    const healthChoices=healthItems.map(item=>item.detail);
+    healthItems.forEach((item,index)=>add({id:`0918-health-${index+1}`,module:"judgmentHealth",kind:"judgment-health",source:source0918,question:`疾病占问中“${item.name}”的观察重点是什么？`,answer:item.detail,candidates:healthChoices,feedback:`${item.name}：${item.detail} ${course0918.ethicsBoundary}`}));
+    const healthRules=[...course0918.judgmentRules,"卦象可以替代检查、诊断和治疗，并可据此自行调整药物。"];
+    course0918.judgmentRules.forEach((rule,index)=>add({id:`0918-rule-${index+1}`,module:"judgmentHealth",kind:"judgment-boundary",source:source0918,question:"哪一项符合疾病占问的使用边界？",answer:rule,candidates:healthRules,feedback:`${rule} ${course0918.ethicsBoundary}`}));
+    const relationshipCaseChoices=[...course0918.relationshipCases.map(item=>item.detail),"只看一个桃花、相合或动爻，就可直接确定他人的隐私与关系结果。"];
+    course0918.relationshipCases.forEach((item,index)=>add({id:`0918-relationship-case-${index+1}`,module:"judgmentRelationship",kind:"case-study",source:"婚恋",question:`“${item.title}”首先训练什么？`,answer:item.detail,candidates:relationshipCaseChoices,feedback:`${item.title}：${item.detail}`}));
+    add({id:"0918-health-case",module:"judgmentHealth",kind:"case-study",source:source0918,question:`“${course0918.healthCase.title}”首先训练什么？`,answer:course0918.healthCase.detail,candidates:[course0918.healthCase.detail,...healthChoices.slice(0,3)],feedback:`${course0918.healthCase.title}：${course0918.healthCase.detail}`});
   }
 
   window.LIUYAO_TRAINING={modules,classics,bank};

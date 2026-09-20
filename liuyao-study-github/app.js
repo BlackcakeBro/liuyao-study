@@ -85,7 +85,7 @@ const state = {
   castMode:"random", manualCoins:["字","背","字"],quizModule:extendedEdition?"lecture0718":"classic"
 };
 const learningModules = [
-  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦"],["lecture0822-main","断卦：用神与判断步骤"],["course-najia","纳甲装支"],["course-shiying","世应定位"],["course-relatives","六亲生克"],["course-yongshen","按占问取用"],["course-sixgods","六神详解"],["course-daymonth","日月建与旺衰"],["course-moving","动爻与寻物例"],["course-void","旬空与月破"],["course-tomb","墓库与卦身"],["classics-reference","古籍原著与案例"]]:[]),
+  ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦"],["lecture0822-main","断卦：用神与判断步骤"],["judgmentHealth","断卦：疾病"],["course-najia","纳甲装支"],["course-shiying","世应定位"],["course-relatives","六亲生克"],["course-yongshen","按占问取用"],["course-sixgods","六神详解"],["course-daymonth","日月建与旺衰"],["course-moving","动爻与寻物例"],["course-void","旬空与月破"],["course-tomb","墓库与卦身"],["classics-reference","古籍原著与案例"]]:[]),
   ["foundation-01","术数定位"],["foundation-02","五行能量与万物象"],["foundation-03","五行生克与六亲"],
   ["foundation-04","河图洛书与先后天八卦"],["foundation-05","四时旺衰"],["foundation-06","地支时空"],
   ["foundation-07","八卦体系"],["foundation-08","十天干"],["foundation-09","五味五脏五常"],
@@ -1288,6 +1288,28 @@ function render0912Course(){
   ethics.innerHTML=`<b>使用边界：</b>${course0912.ethicsBoundary}`;
 }
 
+function render0918Course(){
+  if(typeof course0918==="undefined")return;
+  const cardMarkup=item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`;
+  const caseMarkup=(item,index)=>`<article><header><span>结构示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header>${courseCaseDiagramMarkup(item.hexagram)}<p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`;
+  const relationshipCases=document.querySelector("#judgmentRelationshipCases0918");
+  const framework=document.querySelector("#judgmentHealthFramework0918");
+  const layers=document.querySelector("#judgmentHealthLayerMap0918");
+  const dynamics=document.querySelector("#judgmentHealthDynamics0918");
+  const proxy=document.querySelector("#judgmentHealthProxy0918");
+  const healthCase=document.querySelector("#judgmentHealthCase0918");
+  const rules=document.querySelector("#judgment0918Rules");
+  const ethics=document.querySelector("#judgment0918Ethics");
+  if(relationshipCases)relationshipCases.innerHTML=course0918.relationshipCases.map(caseMarkup).join("");
+  if(framework)framework.innerHTML=course0918.healthFramework.map(cardMarkup).join("");
+  if(layers)layers.innerHTML=course0918.healthLayers.map((item,index)=>`<article><b>${String(index+1).padStart(2,"0")}</b><div><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></div></article>`).join("");
+  if(dynamics)dynamics.innerHTML=course0918.illnessDynamics.map(cardMarkup).join("");
+  if(proxy)proxy.innerHTML=course0918.proxyRules.map(cardMarkup).join("");
+  if(healthCase)healthCase.innerHTML=caseMarkup(course0918.healthCase,0);
+  if(rules)rules.innerHTML=course0918.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
+  if(ethics)ethics.innerHTML=`<b>使用边界：</b>${course0918.ethicsBoundary}`;
+}
+
 function render0905Course(){
   if(typeof course0905==="undefined")return;
   const concepts=document.querySelector("#judgmentWealth0905");
@@ -1322,7 +1344,7 @@ document.querySelector("#resetCast").addEventListener("click",()=>{state.cast=[]
 
 document.querySelectorAll("[data-map]").forEach(b=>b.addEventListener("click",()=>renderMap(b.dataset.map)));
 document.querySelectorAll("#scroll0718Shell .scroll-roller").forEach(button=>button.addEventListener("click",replay0718Scroll));
-renderPath();render0718Atlas();render0725Course();render0822Course();render0829Course();render0905Course();render0912Course();renderAssemblyLearningTools();renderClassicsReference();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
+renderPath();render0718Atlas();render0725Course();render0822Course();render0829Course();render0905Course();render0912Course();render0918Course();renderAssemblyLearningTools();renderClassicsReference();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
 initImmersiveMotion();
 if(["path","foundation","lecture0704","lecture0718","lecture0725","judgment","casting","branches","training"].includes(requestedInitialView))setView(requestedInitialView);
 if(requestedAnchor)requestAnimationFrame(()=>requestAnimationFrame(()=>document.getElementById(requestedAnchor)?.scrollIntoView({block:"start"})));
