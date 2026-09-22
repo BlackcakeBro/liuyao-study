@@ -49,4 +49,6 @@ test("judgment page is organized as content, not a course schedule",()=>{
   assert.doesNotMatch(app,/来源：\$\{state\.quiz\.source\}/);
   assert.match(css,/\.judgment-topic-rail\{/);
   assert.match(css,/\.judgment-topic-panel\{/);
+  assert.doesNotMatch(css,/\.judgment-topic-rail a:nth-child\([^)]*\) b\{background:var\(--red\)\}/);
+  assert.match(css,/\.judgment-topic-rail a:hover b,\.judgment-topic-rail a:focus-visible b\{background:var\(--red\)\}/);
 });
