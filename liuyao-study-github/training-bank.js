@@ -297,7 +297,7 @@
 
   if(typeof course0918!=="undefined"){
     const source0918="疾病";
-    const healthItems=[...course0918.healthFramework,...course0918.healthLayers,...course0918.illnessDynamics,...course0918.proxyRules];
+    const healthItems=[...course0918.healthFramework,...course0918.selfHoldingRules,...course0918.yaoPositionRules,...course0918.fiveElementRules,...course0918.palaceRules,...course0918.sixSpiritRules,...course0918.hiddenGhostRules,...course0918.ghostDynamicRules,...course0918.medicineRules,...course0918.foodRules,...course0918.proxyRules];
     const healthChoices=healthItems.map(item=>item.detail);
     healthItems.forEach((item,index)=>add({id:`0918-health-${index+1}`,module:"judgmentHealth",kind:"judgment-health",source:source0918,question:`疾病占问中“${item.name}”的观察重点是什么？`,answer:item.detail,candidates:healthChoices,feedback:`${item.name}：${item.detail} ${course0918.ethicsBoundary}`}));
     const healthRules=[...course0918.judgmentRules,"卦象可以替代检查、诊断和治疗，并可据此自行调整药物。"];

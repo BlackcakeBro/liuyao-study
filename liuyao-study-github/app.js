@@ -1291,20 +1291,28 @@ function render0912Course(){
 function render0918Course(){
   if(typeof course0918==="undefined")return;
   const cardMarkup=item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`;
+  const ruleMarkup=item=>`<article class="health-rule-card"><span>${item.cue}</span><h4>${item.name}</h4><p>${item.detail}</p></article>`;
   const caseMarkup=(item,index)=>`<article><header><span>结构示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header>${courseCaseDiagramMarkup(item.hexagram)}<p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`;
   const relationshipCases=document.querySelector("#judgmentRelationshipCases0918");
   const framework=document.querySelector("#judgmentHealthFramework0918");
-  const layers=document.querySelector("#judgmentHealthLayerMap0918");
-  const dynamics=document.querySelector("#judgmentHealthDynamics0918");
-  const proxy=document.querySelector("#judgmentHealthProxy0918");
+  const groups={
+    judgmentHealthSelf0918:course0918.selfHoldingRules,
+    judgmentHealthYao0918:course0918.yaoPositionRules,
+    judgmentHealthElement0918:course0918.fiveElementRules,
+    judgmentHealthPalace0918:course0918.palaceRules,
+    judgmentHealthSpirit0918:course0918.sixSpiritRules,
+    judgmentHealthHidden0918:course0918.hiddenGhostRules,
+    judgmentHealthGhost0918:course0918.ghostDynamicRules,
+    judgmentHealthMedicine0918:course0918.medicineRules,
+    judgmentHealthFood0918:course0918.foodRules,
+    judgmentHealthProxy0918:course0918.proxyRules
+  };
   const healthCase=document.querySelector("#judgmentHealthCase0918");
   const rules=document.querySelector("#judgment0918Rules");
   const ethics=document.querySelector("#judgment0918Ethics");
   if(relationshipCases)relationshipCases.innerHTML=course0918.relationshipCases.map(caseMarkup).join("");
   if(framework)framework.innerHTML=course0918.healthFramework.map(cardMarkup).join("");
-  if(layers)layers.innerHTML=course0918.healthLayers.map((item,index)=>`<article><b>${String(index+1).padStart(2,"0")}</b><div><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></div></article>`).join("");
-  if(dynamics)dynamics.innerHTML=course0918.illnessDynamics.map(cardMarkup).join("");
-  if(proxy)proxy.innerHTML=course0918.proxyRules.map(cardMarkup).join("");
+  Object.entries(groups).forEach(([id,items])=>{const target=document.getElementById(id);if(target)target.innerHTML=items.map(ruleMarkup).join("");});
   if(healthCase)healthCase.innerHTML=caseMarkup(course0918.healthCase,0);
   if(rules)rules.innerHTML=course0918.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
   if(ethics)ethics.innerHTML=`<b>使用边界：</b>${course0918.ethicsBoundary}`;
