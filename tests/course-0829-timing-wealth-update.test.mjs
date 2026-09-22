@@ -21,7 +21,9 @@ test("08-29 course is grounded in the complete recording's audio and screen trac
   assert.match(course.meta.evidence,/屏幕共享画面/);
   assert.match(course.meta.evidence,/音轨/);
   assert.deepEqual(Array.from(course.timingPrinciples,item=>item.name),["先看能否，再谈何时","逐项找出限制条件","先月后日，寻找窗口","空、墓、合、冲须分吉凶","应期范围先近后远"]);
-  assert.deepEqual(Array.from(course.wealthPrinciples,item=>item.name),["求财先定四个观察点","财路、阻力与耗财","世应先看双方能否相接","妻财持世","子孙持世","兄弟持世","官鬼持世"]);
+  assert.equal(course.wealthFrameworkRules.length,7);
+  assert.deepEqual(Array.from(course.wealthHoldingRules,item=>item.name),["妻财持世","子孙持世","兄弟持世","官鬼持世"]);
+  assert.match(course.wealthFrameworkRules.map(item=>item.detail).join("\n"),/身弱不担财/);
   assert.equal(course.caseStudies.length,4);
   assert.match(course.caseStudies.map(item=>item.title).join("\n"),/调动/);
   course.caseStudies.forEach(item=>{
@@ -34,18 +36,18 @@ test("08-29 course is grounded in the complete recording's audio and screen trac
 });
 
 test("08-29 timing and wealth surface is loaded, rendered, and trained only in the extended edition",()=>{
-  for(const id of ["judgmentTiming0829","judgmentWealth0829","judgmentCases0829","judgment0829Rules","judgment0829Ethics"]){
+  for(const id of ["judgmentTiming0829","judgmentWealthFramework0829","judgmentWealthHolding0829","judgmentCases0829","judgment0829Rules","judgment0829Ethics"]){
     assert.match(html,new RegExp(`id="${id}"`));
   }
   assert.match(html,/course-0829\.js\?v=/);
   assert.ok(html.indexOf("course-0829.js")<html.indexOf("training-bank.js"));
   assert.match(app,/function render0829Course\(/);
-  for(const key of ["timingPrinciples","wealthPrinciples","caseStudies","judgmentRules"]){
+  for(const key of ["timingPrinciples","wealthFrameworkRules","wealthHoldingRules","caseStudies","judgmentRules"]){
     assert.match(app,new RegExp(`course0829\\.${key}`));
     assert.match(training,new RegExp(`course0829\\.${key}`));
   }
-  assert.match(training,/id:"lecture0829"/);
-  assert.match(training,/陈师 2026-08-29/);
+  assert.match(training,/module:"judgmentWealth"/);
+  assert.match(training,/source:"求财"/);
   assert.doesNotMatch(html,/<b>全程复核|屏幕共享画面|<span>音轨<\/span>|<span>02:35:05<\/span>|<span>02:48:00<\/span>/);
   assert.match(css,/\.judgment0822-intro\{[^}]*max-width:none/);
   assert.doesNotMatch(training,/全程音画复核|02:48:00|02:35:05/);

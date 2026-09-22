@@ -1262,14 +1262,15 @@ function courseCaseDiagramMarkup(hexagram){
 function render0829Course(){
   if(typeof course0829==="undefined")return;
   const timing=document.querySelector("#judgmentTiming0829");
-  const wealth=document.querySelector("#judgmentWealth0829");
+  const framework=document.querySelector("#judgmentWealthFramework0829");
+  const holding=document.querySelector("#judgmentWealthHolding0829");
   const cases=document.querySelector("#judgmentCases0829");
-  if(!timing||!wealth||!cases)return;
+  if(!timing||!framework||!holding||!cases)return;
+  const ruleMarkup=item=>`<article class="health-rule-card"><span>${item.cue}</span><h4>${item.name}</h4><p>${item.detail}</p></article>`;
   timing.innerHTML=course0829.timingPrinciples.map((item,index)=>`<article><small>${String(index+1).padStart(2,"0")}</small><div><strong>${item.cue}</strong><h3>${item.name}</h3><p>${item.detail}</p></div></article>`).join("");
-  const holdingSelf=[...course0829.wealthPrinciples];
-  const wifeHoldingIndex=holdingSelf.findIndex(item=>item.name==="妻财持世");
-  if(typeof course0905!=="undefined"&&Array.isArray(course0905.holdingSelfPrinciples))holdingSelf.splice(wifeHoldingIndex+1,0,...course0905.holdingSelfPrinciples);
-  wealth.innerHTML=holdingSelf.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
+  framework.innerHTML=course0829.wealthFrameworkRules.map(ruleMarkup).join("");
+  const holdingRules=[...course0829.wealthHoldingRules,...(typeof course0905!=="undefined"?course0905.holdingSelfPrinciples:[])];
+  holding.innerHTML=holdingRules.map(ruleMarkup).join("");
   cases.innerHTML=course0829.caseStudies.map((item,index)=>`<article><header><span>结构示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header>${courseCaseDiagramMarkup(item.hexagram)}<p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`).join("");
   document.querySelector("#judgment0829Rules").innerHTML=course0829.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
   document.querySelector("#judgment0829Ethics").innerHTML=`<b>总原则：</b>${course0829.ethicsBoundary}`;
@@ -1277,13 +1278,17 @@ function render0829Course(){
 
 function render0912Course(){
   if(typeof course0912==="undefined")return;
-  const principles=document.querySelector("#judgmentRelationship0912");
-  const conditions=document.querySelector("#judgmentRelationshipConditions0912");
+  const groups={
+    judgmentRelationshipFramework0912:course0912.relationshipFrameworkRules,
+    judgmentRelationshipWorld0912:course0912.relationshipWorldResponseRules,
+    judgmentRelationshipRole0912:course0912.relationshipRoleRules,
+    judgmentRelationshipConditions0912:course0912.relationshipConditionRules
+  };
   const rules=document.querySelector("#judgment0912Rules");
   const ethics=document.querySelector("#judgment0912Ethics");
-  if(!principles||!conditions||!rules||!ethics)return;
-  principles.innerHTML=course0912.relationshipPrinciples.slice(0,2).map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
-  conditions.innerHTML=course0912.relationshipPrinciples.slice(2).map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
+  if(!rules||!ethics)return;
+  const ruleMarkup=item=>`<article class="health-rule-card"><span>${item.cue}</span><h4>${item.name}</h4><p>${item.detail}</p></article>`;
+  Object.entries(groups).forEach(([id,items])=>{const target=document.getElementById(id);if(target)target.innerHTML=items.map(ruleMarkup).join("");});
   rules.innerHTML=course0912.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
   ethics.innerHTML=`<b>使用边界：</b>${course0912.ethicsBoundary}`;
 }
@@ -1320,12 +1325,18 @@ function render0918Course(){
 
 function render0905Course(){
   if(typeof course0905==="undefined")return;
-  const concepts=document.querySelector("#judgmentWealth0905");
   const rules=document.querySelector("#judgment0905Rules");
   const ethics=document.querySelector("#judgment0905Ethics");
-  if(!concepts||!rules||!ethics)return;
-  const wealthCompletion=[...course0905.wealthCompletion,...(typeof course0912!=="undefined"&&Array.isArray(course0912.wealthRefinements)?course0912.wealthRefinements:[])];
-  concepts.innerHTML=wealthCompletion.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
+  if(!rules||!ethics)return;
+  const ruleMarkup=item=>`<article class="health-rule-card"><span>${item.cue}</span><h4>${item.name}</h4><p>${item.detail}</p></article>`;
+  const groups={
+    judgmentWealthGeneral0905:course0905.wealthGeneralRules,
+    judgmentWealthWife0905:course0905.wealthWifeDynamicRules,
+    judgmentWealthHidden0905:course0905.wealthHiddenRules,
+    judgmentWealthSource0905:course0905.wealthSourceRules,
+    judgmentWealthRefine0912:typeof course0912!=="undefined"?course0912.wealthRefinements:[]
+  };
+  Object.entries(groups).forEach(([id,items])=>{const target=document.getElementById(id);if(target)target.innerHTML=items.map(ruleMarkup).join("");});
   rules.innerHTML=course0905.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
   ethics.innerHTML=`<b>使用边界：</b>${course0905.ethicsBoundary}`;
 }

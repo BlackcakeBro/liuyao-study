@@ -266,10 +266,11 @@
   }
 
   if(typeof course0829!=="undefined"){
-    const source0829="陈师 2026-08-29";
-    const all0829Details=[...course0829.timingPrinciples,...course0829.wealthPrinciples].map(item=>item.detail);
+    const source0829="应期与求财";
+    const wealth0829=[...course0829.wealthFrameworkRules,...course0829.wealthHoldingRules];
+    const all0829Details=[...course0829.timingPrinciples,...wealth0829].map(item=>item.detail);
     course0829.timingPrinciples.forEach((item,index)=>add({id:`0829-timing-${index+1}`,module:"lecture0829",kind:"judgment-timing",source:source0829,question:`应期“${item.name}”的重点是什么？`,answer:item.detail,candidates:all0829Details,feedback:`${item.name}：${item.detail}`}));
-    course0829.wealthPrinciples.forEach((item,index)=>add({id:`0829-wealth-${index+1}`,module:"lecture0829",kind:"judgment-wealth",source:source0829,question:`求财中“${item.name}”的观察重点是什么？`,answer:item.detail,candidates:all0829Details,feedback:`${item.name}：${item.detail}`}));
+    wealth0829.forEach((item,index)=>add({id:`0829-wealth-${index+1}`,module:"judgmentWealth",kind:"judgment-wealth",source:"求财",question:`求财中“${item.name}”的观察重点是什么？`,answer:item.detail,candidates:all0829Details,feedback:`${item.name}：${item.detail}`}));
     const caseChoices0829=course0829.caseStudies.map(item=>item.detail);
     course0829.caseStudies.forEach((item,index)=>add({id:`0829-case-${index+1}`,module:"lecture0829",kind:"case-study",source:source0829,question:`“${item.title}”例首先提醒如何处理？`,answer:item.detail,candidates:caseChoices0829,feedback:`${item.title}：${item.detail} ${course0829.ethicsBoundary}`}));
 
@@ -280,17 +281,18 @@
 
   if(typeof course0905!=="undefined"){
     const source0905="求财";
-    const wealthKnowledge0905=[course0905.wealthCompletion[0],...course0905.holdingSelfPrinciples,...course0905.wealthCompletion.slice(1)];
+    const wealthKnowledge0905=[...course0905.holdingSelfPrinciples,...course0905.wealthGeneralRules,...course0905.wealthWifeDynamicRules,...course0905.wealthHiddenRules,...course0905.wealthSourceRules];
     const wealthChoices0905=wealthKnowledge0905.map(item=>item.detail);
     wealthKnowledge0905.forEach((item,index)=>add({id:`0905-wealth-${index+1}`,module:"judgmentWealth",kind:"judgment-wealth",source:source0905,question:`求财中“${item.name}”的观察重点是什么？`,answer:item.detail,candidates:wealthChoices0905,feedback:`${item.name}：${item.detail}`}));
   }
 
   if(typeof course0912!=="undefined"){
     const source0912="婚恋";
-    const wealthDetails0912=[...course0905.wealthCompletion,...course0912.wealthRefinements].map(item=>item.detail);
+    const wealthDetails0912=[...course0905.wealthGeneralRules,...course0905.wealthWifeDynamicRules,...course0905.wealthHiddenRules,...course0905.wealthSourceRules,...course0912.wealthRefinements].map(item=>item.detail);
     course0912.wealthRefinements.forEach((item,index)=>add({id:`0912-wealth-${index+1}`,module:"judgmentWealth",kind:"judgment-wealth",source:source0912,question:`求财中“${item.name}”的观察重点是什么？`,answer:item.detail,candidates:wealthDetails0912,feedback:`${item.name}：${item.detail}`}));
-    const relationshipDetails=course0912.relationshipPrinciples.map(item=>item.detail);
-    course0912.relationshipPrinciples.forEach((item,index)=>add({id:`0912-relationship-${index+1}`,module:"judgmentRelationship",kind:"judgment-relationship",source:source0912,question:`婚恋占问中“${item.name}”的观察重点是什么？`,answer:item.detail,candidates:relationshipDetails,feedback:`${item.name}：${item.detail} ${course0912.ethicsBoundary}`}));
+    const relationshipItems=[...course0912.relationshipFrameworkRules,...course0912.relationshipWorldResponseRules,...course0912.relationshipRoleRules,...course0912.relationshipConditionRules];
+    const relationshipDetails=relationshipItems.map(item=>item.detail);
+    relationshipItems.forEach((item,index)=>add({id:`0912-relationship-${index+1}`,module:"judgmentRelationship",kind:"judgment-relationship",source:source0912,question:`婚恋占问中“${item.name}”的观察重点是什么？`,answer:item.detail,candidates:relationshipDetails,feedback:`${item.name}：${item.detail} ${course0912.ethicsBoundary}`}));
     const relationshipRules=[...course0912.judgmentRules,"只凭桃花、伏藏或单一六亲就能判断他人的隐私与关系结果。"];
     course0912.judgmentRules.forEach((rule,index)=>add({id:`0912-rule-${index+1}`,module:"judgmentRelationship",kind:"judgment-boundary",source:source0912,question:"哪一项符合婚恋占问的使用边界？",answer:rule,candidates:relationshipRules,feedback:`${rule} ${course0912.ethicsBoundary}`}));
   }
