@@ -1344,6 +1344,13 @@ function render0905Course(){
 document.querySelectorAll(".nav-item").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
 document.querySelectorAll("[data-jump]").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.jump)));
 document.querySelector("[data-view-link]").addEventListener("click",()=>setView("path"));
+document.querySelectorAll('#judgmentTopicRail a[href^="#"]').forEach(link=>link.addEventListener("click",event=>{
+  event.preventDefault();
+  const anchor=link.getAttribute("href").slice(1);
+  const route=new URLSearchParams({edition:"extended",view:"judgment",anchor});
+  history.replaceState(null,"",`${location.pathname}${location.search}#${route}`);
+  document.getElementById(anchor)?.scrollIntoView({behavior:"smooth",block:"start"});
+}));
 document.querySelector("#branchSearch").addEventListener("input",e=>{state.search=e.target.value.trim();renderBranchGrid();});
 document.querySelector("#categoryFilter").addEventListener("change",e=>{state.category=e.target.value;renderBranchGrid();});
 document.querySelector("#branchDrawer .drawer-backdrop").addEventListener("click",closeDrawer);document.querySelector(".drawer-close").addEventListener("click",closeDrawer);

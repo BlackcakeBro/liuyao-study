@@ -45,10 +45,13 @@ test("judgment page is organized as content, not a course schedule",()=>{
   assert.match(app,/function render0905Course\(/);
   assert.match(app,/course0905\.holdingSelfPrinciples/);
   assert.match(app,/course0905\.wealthWifeDynamicRules/);
+  assert.match(app,/new URLSearchParams\(\{edition:"extended",view:"judgment",anchor\}\)/);
+  assert.match(app,/history\.replaceState\(null,"",`\$\{location\.pathname\}\$\{location\.search\}#\$\{route\}`\)/);
   assert.doesNotMatch(app,/课堂示例/);
   assert.doesNotMatch(app,/来源：\$\{state\.quiz\.source\}/);
   assert.match(css,/\.judgment-topic-rail\{/);
   assert.match(css,/\.judgment-topic-panel\{/);
+  assert.match(css,/#judgmentFramework,#judgment \.judgment-topic-panel\{scroll-margin-top:94px\}/);
   assert.doesNotMatch(css,/\.judgment-topic-rail a:nth-child\([^)]*\) b\{background:var\(--red\)\}/);
   assert.match(css,/\.judgment-topic-rail a:hover b,\.judgment-topic-rail a:focus-visible b\{background:var\(--red\)\}/);
 });

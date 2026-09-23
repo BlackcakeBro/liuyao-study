@@ -589,7 +589,7 @@ button,.branch-card,.map-switcher,.relationship-lab{position:relative;overflow:h
 @media(max-width:760px){.judgment0822-section.section-block::after{top:16px}.judgment0822-section.section-block .section-heading{padding-top:6px}}
 
 /* 疾病专题：知识层级先于案例，医疗边界持续可见。 */
-#judgment .judgment-topic-rail{grid-template-columns:repeat(4,minmax(0,1fr))}
+#judgment .judgment-topic-rail{grid-template-columns:repeat(4,minmax(0,1fr))}#judgmentFramework,#judgment .judgment-topic-panel{scroll-margin-top:94px}
 .health-safety-banner{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;margin:30px 0 0;padding:22px 26px;border:1px solid rgba(164,59,43,.3);border-left:4px solid var(--red);background:rgba(164,59,43,.07)}
 .health-safety-banner b{color:var(--red);font-size:18px;white-space:nowrap}.health-safety-banner p{margin:0;color:var(--ink);line-height:1.8}
 .judgment0918-concepts{grid-template-columns:repeat(2,minmax(0,1fr))}
