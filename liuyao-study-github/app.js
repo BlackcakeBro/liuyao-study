@@ -6,9 +6,14 @@ const courseTraining=window.LIUYAO_TRAINING;
 const siteParams=new URLSearchParams(location.search);
 const rawHash=decodeURIComponent(location.hash.slice(1));
 const hashParams=new URLSearchParams(location.hash.slice(1));
-const requestedInitialView=hashParams.get("view")||siteParams.get("view");
 const requestedAnchor=hashParams.get("anchor")||(!rawHash.includes("=")?rawHash:null);
+const legacyJudgmentAnchor=Boolean(requestedAnchor?.startsWith("judgment")&&!rawHash.includes("="));
+const requestedInitialView=hashParams.get("view")||siteParams.get("view")||(legacyJudgmentAnchor?"judgment":null);
 const extendedEdition=hashParams.get("edition")==="extended"||siteParams.get("v")==="changsheng-ring-v3"||["lecture0704","lecture0718","lecture0725"].includes(requestedInitialView)||requestedInitialView==="judgment";
+if(legacyJudgmentAnchor){
+  const normalizedRoute=new URLSearchParams({edition:"extended",view:"judgment",anchor:requestedAnchor});
+  history.replaceState(null,"",`${location.pathname}${location.search}#${normalizedRoute}`);
+}
 document.documentElement.dataset.siteEdition=extendedEdition?"extended":"classic";
 if(extendedEdition)document.querySelector('[data-view="casting"]').textContent="古籍参考";
 if(extendedEdition)document.querySelectorAll('[data-edition-only="classic"]').forEach(element=>element.remove());

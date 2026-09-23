@@ -47,6 +47,8 @@ test("judgment page is organized as content, not a course schedule",()=>{
   assert.match(app,/course0905\.wealthWifeDynamicRules/);
   assert.match(app,/new URLSearchParams\(\{edition:"extended",view:"judgment",anchor\}\)/);
   assert.match(app,/history\.replaceState\(null,"",`\$\{location\.pathname\}\$\{location\.search\}#\$\{route\}`\)/);
+  assert.match(app,/requestedAnchor\?\.startsWith\("judgment"\)/);
+  assert.match(app,/new URLSearchParams\(\{edition:"extended",view:"judgment",anchor:requestedAnchor\}\)/);
   assert.doesNotMatch(app,/课堂示例/);
   assert.doesNotMatch(app,/来源：\$\{state\.quiz\.source\}/);
   assert.match(css,/\.judgment-topic-rail\{/);
