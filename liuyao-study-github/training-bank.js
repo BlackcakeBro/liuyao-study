@@ -272,7 +272,7 @@
     course0829.timingPrinciples.forEach((item,index)=>add({id:`0829-timing-${index+1}`,module:"lecture0829",kind:"judgment-timing",source:source0829,question:`应期“${item.name}”的重点是什么？`,answer:item.detail,candidates:all0829Details,feedback:`${item.name}：${item.detail}`}));
     wealth0829.forEach((item,index)=>add({id:`0829-wealth-${index+1}`,module:"judgmentWealth",kind:"judgment-wealth",source:"求财",question:`求财中“${item.name}”的观察重点是什么？`,answer:item.detail,candidates:all0829Details,feedback:`${item.name}：${item.detail}`}));
     const caseChoices0829=course0829.caseStudies.map(item=>item.detail);
-    course0829.caseStudies.forEach((item,index)=>add({id:`0829-case-${index+1}`,module:item.topic==="relationship"?"judgmentRelationship":"lecture0829",kind:"case-study",source:item.topic==="relationship"?"婚恋":source0829,question:`“${item.title}”例首先提醒如何处理？`,answer:item.detail,candidates:caseChoices0829,feedback:`${item.title}：${item.detail} ${course0829.ethicsBoundary}`}));
+    course0829.caseStudies.forEach((item,index)=>add({id:`0829-case-${index+1}`,module:item.topic==="relationship"?"judgmentRelationship":"judgmentWealth",kind:"case-study",source:item.topic==="relationship"?"婚恋":"求财",question:`“${item.title}”例首先提醒如何处理？`,answer:item.detail,candidates:caseChoices0829,feedback:`${item.title}：${item.detail} ${course0829.ethicsBoundary}`}));
 
     const ruleChoices0829=[...course0829.judgmentRules,"离开具体占问，只凭单一爻象就能确定应期、财运或他人处境。"];
     course0829.judgmentRules.forEach((rule,index)=>add({id:`0829-rule-${index+1}`,module:"lecture0829",kind:"judgment-boundary",source:source0829,question:"哪一项符合应期与求财的使用边界？",answer:rule,candidates:ruleChoices0829,feedback:`${rule} ${course0829.ethicsBoundary}`}));

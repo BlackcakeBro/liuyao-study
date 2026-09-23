@@ -1254,10 +1254,7 @@ function render0822Course(){
   if(!steps||!concepts||!cases)return;
   steps.innerHTML=course0822.judgmentSteps.map((item,index)=>`<article><small>${String(index+1).padStart(2,"0")}</small><div><strong>${item.cue}</strong><h3>${item.name}</h3><p>${item.detail}</p></div></article>`).join("");
   concepts.innerHTML=course0822.coreConcepts.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
-  const generalCases0829=typeof course0829!=="undefined"?course0829.caseStudies.filter(item=>item.topic==="general"):[];
-  const frameworkCases=course0822.caseStudies.map((item,index)=>`<article><header><span>结构示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header><p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`).join("");
-  const transferredCases=generalCases0829.map((item,index)=>courseCaseArticleMarkup(item,course0822.caseStudies.length+index)).join("");
-  cases.innerHTML=frameworkCases+transferredCases;
+  cases.innerHTML=course0822.caseStudies.map((item,index)=>`<article><header><span>结构示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header><p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`).join("");
   document.querySelector("#judgment0822Rules").innerHTML=course0822.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
   document.querySelector("#judgment0822Ethics").innerHTML=`<b>总原则：</b>${course0822.ethicsBoundary}`;
 }
@@ -1276,12 +1273,14 @@ function render0829Course(){
   const timing=document.querySelector("#judgmentTiming0829");
   const framework=document.querySelector("#judgmentWealthFramework0829");
   const holding=document.querySelector("#judgmentWealthHolding0829");
-  if(!timing||!framework||!holding)return;
+  const cases=document.querySelector("#judgmentCases0829");
+  if(!timing||!framework||!holding||!cases)return;
   const ruleMarkup=item=>`<article class="health-rule-card"><span>${item.cue}</span><h4>${item.name}</h4><p>${item.detail}</p></article>`;
   timing.innerHTML=course0829.timingPrinciples.map((item,index)=>`<article><small>${String(index+1).padStart(2,"0")}</small><div><strong>${item.cue}</strong><h3>${item.name}</h3><p>${item.detail}</p></div></article>`).join("");
   framework.innerHTML=course0829.wealthFrameworkRules.map(ruleMarkup).join("");
   const holdingRules=[...course0829.wealthHoldingRules,...(typeof course0905!=="undefined"?course0905.holdingSelfPrinciples:[])];
   holding.innerHTML=holdingRules.map(ruleMarkup).join("");
+  cases.innerHTML=course0829.caseStudies.filter(item=>item.topic==="wealth").map(courseCaseArticleMarkup).join("");
   document.querySelector("#judgment0829Rules").innerHTML=course0829.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
   document.querySelector("#judgment0829Ethics").innerHTML=`<b>总原则：</b>${course0829.ethicsBoundary}`;
 }

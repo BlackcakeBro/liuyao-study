@@ -25,8 +25,8 @@ test("audited question bank covers foundation, all taught courses, and ancient a
     lecture0808:35,
     lecture0815:23,
     lecture0822:18,
-    lecture0829:12,
-    judgmentWealth:40,
+    lecture0829:9,
+    judgmentWealth:43,
     judgmentRelationship:35,
     judgmentHealth:80,
     classics:11

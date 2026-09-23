@@ -25,7 +25,7 @@ test("08-29 course is grounded in the complete recording's audio and screen trac
   assert.deepEqual(Array.from(course.wealthHoldingRules,item=>item.name),["妻财持世","子孙持世","兄弟持世","官鬼持世"]);
   assert.match(course.wealthFrameworkRules.map(item=>item.detail).join("\n"),/身弱不担财/);
   assert.equal(course.caseStudies.length,4);
-  assert.equal(course.caseStudies.filter(item=>item.topic==="general").length,3);
+  assert.equal(course.caseStudies.filter(item=>item.topic==="wealth").length,3);
   assert.deepEqual(Array.from(course.caseStudies.filter(item=>item.topic==="relationship"),item=>item.title),["女测婚恋：风山渐变山水蒙"]);
   course.caseStudies.forEach(item=>{
     assert.ok(item.hexagram);
@@ -37,13 +37,13 @@ test("08-29 course is grounded in the complete recording's audio and screen trac
 });
 
 test("08-29 timing and wealth surface is loaded, rendered, and trained only in the extended edition",()=>{
-  for(const id of ["judgmentTiming0829","judgmentWealthFramework0829","judgmentWealthHolding0829","judgment0829Rules","judgment0829Ethics"]){
+  for(const id of ["judgmentTiming0829","judgmentWealthFramework0829","judgmentWealthHolding0829","judgmentCases0829","judgment0829Rules","judgment0829Ethics"]){
     assert.match(html,new RegExp(`id="${id}"`));
   }
   assert.match(html,/course-0829\.js\?v=/);
   assert.ok(html.indexOf("course-0829.js")<html.indexOf("training-bank.js"));
   assert.match(app,/function render0829Course\(/);
-  assert.doesNotMatch(html,/id="judgmentCases0829"/);
+  assert.match(app,/item=>item\.topic==="wealth"/);
   assert.match(app,/item=>item\.topic==="relationship"/);
   for(const key of ["timingPrinciples","wealthFrameworkRules","wealthHoldingRules","caseStudies","judgmentRules"]){
     assert.match(app,new RegExp(`course0829\\.${key}`));
