@@ -66,6 +66,12 @@ const changshengNodePoints = [
   [50, 10], [70, 15], [85, 30], [90, 50], [85, 70], [70, 85],
   [50, 90], [30, 85], [15, 70], [10, 50], [15, 30], [30, 15]
 ];
+const changshengStarts={木:"亥",火:"寅",金:"巳",水:"申",土:"申"};
+const changshengState={element:"木",branch:"亥"};
+function changshengSequenceFor(element){
+  const start=branchOrder.indexOf(changshengStarts[element]);
+  return Array.from({length:12},(_,index)=>branchOrder[(start+index)%12]);
+}
 
 const hiddenStemData = {
   寅:{group:"四长生", stems:["甲","丙","戊"], logic:"寅属木藏甲，又为火长生藏丙，并带戊土。", relation:"与巳、申等关系中常看甲、丙、戊如何被合克。"},
@@ -382,6 +388,19 @@ function renderChangsheng(activeName="长生") {
   document.querySelector("#changshengActiveName").textContent=stage.name;
   document.querySelector("#changshengActivePhase").textContent=stage.phase;
   document.querySelector("#changshengDetail").innerHTML=`<span>当前阶段</span><h3>${stage.name} · ${stage.phase}</h3><p>${stage.note}</p><div><b>核心象</b><strong>${stage.image}</strong></div><div><b>常用场景</b><strong>${stage.use}</strong></div><ol>${changshengStages.map(x=>`<li class="${x.name===stage.name?"active":""}">${x.name}</li>`).join("")}</ol>`;
+  renderChangshengApplication();
+}
+
+function renderChangshengApplication(){
+  const elementPicker=document.querySelector("#changshengElementPicker"),branchPicker=document.querySelector("#changshengBranchPicker");
+  if(!elementPicker||!branchPicker)return;
+  elementPicker.innerHTML=["木","火","金","水","土"].map(element=>`<button class="${element===changshengState.element?"active":""}" data-cs-element="${element}">${element}</button>`).join("");
+  branchPicker.innerHTML=branchOrder.map(branch=>`<button class="${branch===changshengState.branch?"active":""}" data-cs-branch="${branch}">${branch}</button>`).join("");
+  const sequence=changshengSequenceFor(changshengState.element),index=sequence.indexOf(changshengState.branch),stage=changshengStages[index];
+  document.querySelector("#changshengResult").innerHTML=`<span>当前对照</span><h3>${changshengState.element}爻遇${changshengState.branch}：${stage.name}</h3><p>${stage.note}</p><div><b>可取之象</b><strong>${stage.image}</strong></div><small>使用边界：先看月日与生克动变；${stage.name}只补充状态，不单独判成败吉凶。</small>`;
+  document.querySelector("#changshengTable").innerHTML=["木","火","金","水土"].map(element=>{const key=element==="水土"?"水":element,seq=changshengSequenceFor(key);return `<article class="${element.includes(changshengState.element)?"active":""}"><b>${element}</b><div>${seq.map((branch,i)=>`<span class="${branch===changshengState.branch?"selected":""}"><small>${changshengStages[i].name}</small><strong>${branch}</strong></span>`).join("")}</div></article>`}).join("");
+  elementPicker.querySelectorAll("button").forEach(button=>button.addEventListener("click",()=>{changshengState.element=button.dataset.csElement;renderChangshengApplication();}));
+  branchPicker.querySelectorAll("button").forEach(button=>button.addEventListener("click",()=>{changshengState.branch=button.dataset.csBranch;renderChangshengApplication();}));
 }
 
 function renderHiddenStems(active="寅") {
@@ -567,6 +586,9 @@ function closeDrawer(){document.querySelector("#branchDrawer").classList.remove(
 function renderAssemblyLearningTools(){
   if(!extendedEdition||!courseTraining?.classics)return;
   const classics=courseTraining.classics;
+
+  const najiaMnemonic=document.querySelector("#najiaMnemonic0725");
+  if(najiaMnemonic&&typeof course0725!=="undefined")najiaMnemonic.innerHTML=`<header><span>纳甲歌</span><h3>一句定一卦：天干与内外起支同时记</h3><p>口诀中的前一组干支为内卦起点，“外”后一组为外卦起点；各爻仍按固定阴阳顺序由下向上装。</p></header><div>${course0725.najiaMnemonic.map(item=>`<article><b>${item.trigram}<small>${item.element}</small></b><strong>${item.verse}</strong><span>内 ${item.innerStem}${item.inner} · 外 ${item.outerStem}${item.outer}</span></article>`).join("")}</div>`;
 
   const picker=document.querySelector("#najiaTrigramPicker");
   const detail=document.querySelector("#najiaDetail");
@@ -1223,9 +1245,10 @@ function render0725Course(){
     </article>`).join("");
   document.querySelector("#useGod0801Steps").innerHTML=course0801.useGodSteps.map((item,index)=>`
     <article><small>0${index+1}</small><h3>${item.name}</h3><strong>${item.cue}</strong><p>${item.detail}</p></article>`).join("");
+  document.querySelector("#sixGodStart0808").innerHTML=`<header><span>排六神</span><h3>按占日天干定初爻，再按固定顺序向上排</h3><p>先查起点，不按卦宫、爻支或六亲起六神。</p></header><div class="six-god-start-rules">${course0808.sixGodStartingRules.map(item=>`<article><b>${item.stems}日</b><strong>起${item.start}</strong></article>`).join("")}</div><div class="six-god-order"><b>固定循环</b>${course0808.sixGodOrder.map((name,index)=>`<span><small>${index+1}</small>${name}</span>`).join("<i>→</i>")}<b>玄武后回青龙</b></div>`;
   document.querySelector("#sixGod0808Grid").innerHTML=course0808.sixGodDetails.map(item=>`
-    <article><header><span>${item.cue}</span><h3>${item.name}</h3></header>
-      <dl><div><dt>核心</dt><dd>${item.core}</dd></div><div><dt>人物</dt><dd>${item.people}</dd></div><div><dt>事物</dt><dd>${item.things}</dd></div><div><dt>场景</dt><dd>${item.scenes}</dd></div></dl>
+    <article><header><i>${item.key}</i><span>${item.cue}</span><h3>${item.name}</h3></header>
+      <dl><div><dt>核心</dt><dd>${item.core}</dd></div><div><dt>象意</dt><dd>${item.images}</dd></div><div><dt>人物</dt><dd>${item.people}</dd></div><div><dt>事物</dt><dd>${item.things}</dd></div><div><dt>场景</dt><dd>${item.scenes}</dd></div></dl>
       <footer><b>使用边界</b><p>${item.boundary}</p></footer></article>`).join("");
   document.querySelector("#sixGod0808Boundary").innerHTML=`<b>取象顺序</b>占问 → 用神与六亲 → 月日旺衰 → 动变 → 六神落象 → 现实核验`;
   document.querySelector("#dayMonth0808TimeLayers").innerHTML=course0808.timeLayers.map((item,index)=>`<article><small>0${index+1}</small><h3>${item.name}</h3><strong>${item.cue}</strong><p>${item.detail}</p></article>`).join("");

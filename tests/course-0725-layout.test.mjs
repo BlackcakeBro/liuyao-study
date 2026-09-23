@@ -430,6 +430,7 @@ test("07-25 six-relative relationships use one accessible SVG with distinct shen
       ["#relative0725Cycles",domNode()],
       ["#relative0725Focus",domNode()],
       ["#useGod0801Steps",domNode()],
+      ["#sixGodStart0808",domNode()],
       ["#sixGod0808Grid",domNode()],
       ["#sixGod0808Boundary",domNode()],
       ["#dayMonth0808TimeLayers",domNode()],
@@ -494,6 +495,7 @@ test("relative cards and judgment boundary expose stable aligned regions",()=>{
       ["#relative0725Cycles",domNode()],
       ["#relative0725Focus",domNode()],
       ["#useGod0801Steps",domNode()],
+      ["#sixGodStart0808",domNode()],
       ["#sixGod0808Grid",domNode()],
       ["#sixGod0808Boundary",domNode()],
       ["#dayMonth0808TimeLayers",domNode()],
@@ -610,7 +612,7 @@ test("classics reference is source-backed and ships with one fresh cache version
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(11).fill("20260923-case-placement-v24"),
+    Array(11).fill("20260923-najia-sixgod-changsheng-v25"),
     "course data, renderer, training bank, and styling must ship with one fresh cache version"
   );
 });

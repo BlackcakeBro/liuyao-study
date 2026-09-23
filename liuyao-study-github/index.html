@@ -6,7 +6,7 @@
   <meta name="description" content="以陈师讲义为主线，结合古籍校注、万物类象与主动回忆训练的六爻学习网站。">
   <title>爻象研习 · 六爻学习系统｜旺衰、八宫卦谱、装卦与断卦</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=20260808-logo-v1">
-  <link rel="stylesheet" href="./styles.css?v=20260923-case-placement-v24">
+  <link rel="stylesheet" href="./styles.css?v=20260923-najia-sixgod-changsheng-v25">
 </head>
 <body>
   <div class="paper-noise"></div>
@@ -283,6 +283,13 @@
           </div>
           <article class="changsheng-detail" id="changshengDetail"><span>当前阶段</span><h3>长生 · 生起</h3><p>事情开始有气，像根苗初生。</p><div><b>核心象</b><strong>出生、起点、根源、依靠</strong></div><div><b>常用场景</b><strong>长辈、父母、靠山、企业背景、资源来源</strong></div></article>
         </div>
+        <div class="changsheng-application">
+          <header><span>入卦使用</span><h3>先定爻的五行，再看它遇到哪一支</h3><p>六爻以五行之气顺排：木长生亥、火长生寅、金长生巳、水土长生申。十二长生用于补充用神的进退与状态，不越过月日、生克、动变直接定吉凶。</p></header>
+          <div class="changsheng-steps"><article><b>01</b><strong>定对象</strong><p>先按占问取用神或目标爻。</p></article><article><b>02</b><strong>取五行</strong><p>读取该爻地支所属的木、火、金、水、土。</p></article><article><b>03</b><strong>对照作用支</strong><p>把月、日、动爻或变爻的地支放入对应十二宫。</p></article><article><b>04</b><strong>回到全卦</strong><p>先判生克旺衰，再用阶段象补充细节与应期。</p></article></div>
+          <div class="changsheng-calculator" id="changshengCalculator"><div><b>爻的五行</b><div id="changshengElementPicker"></div></div><div><b>所遇地支</b><div id="changshengBranchPicker"></div></div><article id="changshengResult"></article></div>
+          <div class="changsheng-table" id="changshengTable"></div>
+          <p class="changsheng-example"><b>例：</b>未土逢午支，按水土同宫从申起长生，顺排至午为“胎”；应读作尚在酝酿、未完全成形，再回看未土在月日、生克与动变中的实际力量。</p>
+        </div>
       </section>
 
       <section class="section-block split-block">
@@ -405,6 +412,7 @@
           <div><span class="section-index">02</span><h2>纳甲装支：内外卦依次落位</h2></div>
           <p>先分内卦、外卦，再由下向上装入六个爻位；实占可由软件排盘，理解顺序不能省略。</p>
         </div>
+        <div class="najia-mnemonic" id="najiaMnemonic0725"></div>
         <div class="najia-lab"><div class="najia-trigram-picker" id="najiaTrigramPicker"></div><div class="najia-detail" id="najiaDetail"></div></div>
       </section>
 
@@ -446,6 +454,7 @@
           <div><span class="section-index">07</span><h2>六神详解：由核心象到现实语境</h2></div>
           <p>先辨人物、事物与场景，再结合所临六亲、用神、月日旺衰和动变收束。</p>
         </div>
+        <div class="six-god-start" id="sixGodStart0808"></div>
         <div class="six-god-grid six-god-detail-grid" id="sixGod0808Grid"></div>
         <p class="six-god-boundary" id="sixGod0808Boundary"></p>
       </section>
@@ -776,21 +785,21 @@
     <aside><button class="drawer-close" aria-label="关闭">×</button><div id="drawerContent"></div></aside>
   </div>
   <footer><span>爻象研习 · 六爻知识体系</span><p>关系 → 结构 → 力量 → 类象 → 验证</p></footer>
-  <script src="./data.js?v=20260923-case-placement-v24"></script>
-  <script src="./course-0718.js?v=20260923-case-placement-v24"></script>
-  <script src="./course-0725.js?v=20260923-case-placement-v24"></script>
-  <script src="./course-0801.js?v=20260923-case-placement-v24"></script>
-  <script src="./course-0808.js?v=20260923-case-placement-v24"></script>
-  <script src="./course-0815.js?v=20260923-case-placement-v24"></script>
-  <script src="./course-0822.js?v=20260923-case-placement-v24"></script>
-  <script src="./course-0829.js?v=20260923-case-placement-v24"></script>
-  <script src="./course-0905.js?v=20260923-case-placement-v24"></script>
-  <script src="./course-0912.js?v=20260923-case-placement-v24"></script>
-  <script src="./course-0918.js?v=20260923-case-placement-v24"></script>
-  <script src="./training-bank.js?v=20260923-case-placement-v24"></script>
+  <script src="./data.js?v=20260923-najia-sixgod-changsheng-v25"></script>
+  <script src="./course-0718.js?v=20260923-najia-sixgod-changsheng-v25"></script>
+  <script src="./course-0725.js?v=20260923-najia-sixgod-changsheng-v25"></script>
+  <script src="./course-0801.js?v=20260923-najia-sixgod-changsheng-v25"></script>
+  <script src="./course-0808.js?v=20260923-najia-sixgod-changsheng-v25"></script>
+  <script src="./course-0815.js?v=20260923-najia-sixgod-changsheng-v25"></script>
+  <script src="./course-0822.js?v=20260923-najia-sixgod-changsheng-v25"></script>
+  <script src="./course-0829.js?v=20260923-najia-sixgod-changsheng-v25"></script>
+  <script src="./course-0905.js?v=20260923-najia-sixgod-changsheng-v25"></script>
+  <script src="./course-0912.js?v=20260923-najia-sixgod-changsheng-v25"></script>
+  <script src="./course-0918.js?v=20260923-najia-sixgod-changsheng-v25"></script>
+  <script src="./training-bank.js?v=20260923-najia-sixgod-changsheng-v25"></script>
   <script src="./vendor/jquery-3.7.1.min.js"></script>
   <script src="./vendor/jquery.ripples-min.js"></script>
-  <script src="./app.js?v=20260923-case-placement-v24"></script>
+  <script src="./app.js?v=20260923-najia-sixgod-changsheng-v25"></script>
   <script>
     window.addEventListener('load', function(){
       setTimeout(function(){

@@ -11,6 +11,16 @@ const course0725 = {
     {name:"定世应",cue:"世为自己 · 应为所测",detail:"世爻代表求测者本人；应爻代表所测之事、对方或合作对象。应与世中间隔两爻，也就是爻位相差三。"},
     {name:"安六亲",cue:"以我为中心 · 五类关系",detail:"生我为父母、同我为兄弟、我生为子孙、我克为妻财、克我为官鬼。先定宫五行为“我”，再看各爻五行关系。"}
   ],
+  najiaMnemonic: [
+    {trigram:"乾",element:"金",verse:"乾金甲子外壬午",innerStem:"甲",outerStem:"壬",inner:"子寅辰",outer:"午申戌"},
+    {trigram:"坎",element:"水",verse:"坎水戊寅外戊申",innerStem:"戊",outerStem:"戊",inner:"寅辰午",outer:"申戌子"},
+    {trigram:"艮",element:"土",verse:"艮土丙辰外丙戌",innerStem:"丙",outerStem:"丙",inner:"辰午申",outer:"戌子寅"},
+    {trigram:"震",element:"木",verse:"震木庚子外庚午",innerStem:"庚",outerStem:"庚",inner:"子寅辰",outer:"午申戌"},
+    {trigram:"巽",element:"木",verse:"巽木辛丑外辛未",innerStem:"辛",outerStem:"辛",inner:"丑亥酉",outer:"未巳卯"},
+    {trigram:"离",element:"火",verse:"离火己卯外己酉",innerStem:"己",outerStem:"己",inner:"卯丑亥",outer:"酉未巳"},
+    {trigram:"坤",element:"土",verse:"坤土乙未外癸丑",innerStem:"乙",outerStem:"癸",inner:"未巳卯",outer:"丑亥酉"},
+    {trigram:"兑",element:"金",verse:"兑金丁巳外丁亥",innerStem:"丁",outerStem:"丁",inner:"巳卯丑",outer:"亥酉未"}
+  ],
   shiYingRoles: [
     {name:"世",role:"求测者本人",note:"判断自己的状态、立场与承受力。"},
     {name:"应",role:"所测之事或对方",note:"合作、关系类占问中也可代表对方；须随占问转换太极点。"}
@@ -42,6 +52,9 @@ const course0725 = {
   ],
   nextLesson:"子孙、妻财、兄弟三类六亲留待后续课堂继续展开。",
   classicsReferences: [
+    {book:"《卜筮全书》",location:"卷一·启蒙节要·纳甲歌",excerpt:"乾金甲子外壬午，坎水戊寅外戊申；艮土丙辰外丙戌，震木庚子外庚午；巽木辛丑外辛未，离火己卯外己酉；坤土乙未外癸丑，兑金丁巳外丁亥。",keywords:"纳甲歌、八经卦、内外卦",connection:"口诀先给出卦宫五行、内卦所纳天干与起支、外卦所纳天干与起支；实际落爻仍须依阴阳卦的固定次序从初爻排到上爻。"},
+    {book:"《增删卜易》",location:"六神章·起六神诀",excerpt:"甲乙起青龙，丙丁起朱雀，戊日起勾陈，己日起螣蛇，庚辛起白虎，壬癸起玄武。",keywords:"日干、六神、初爻起",connection:"先按占日天干确定初爻所临六神，再按青龙、朱雀、勾陈、螣蛇、白虎、玄武的固定次序逐爻向上排。"},
+    {book:"《黄金策》",location:"总断千金赋",excerpt:"长生帝旺，争如金谷之园；死墓绝空，乃是泥犁之地。",keywords:"长生、帝旺、死墓绝空、用神",connection:"古法以生旺墓绝观察用神气势；实用时先定用神并以月日、生克、动变为纲，再用十二长生补充进退与状态，不能单凭一宫定吉凶。"},
     {book:"《增删卜易》",location:"卷一·浑天甲子章",excerpt:"甲子之数，始于乾而终于坤；八卦纳甲，内外六爻各有定支。乾纳甲壬，坤纳乙癸；震纳庚，巽纳辛；坎纳戊，离纳己；艮纳丙，兑纳丁。",keywords:"浑天甲子、纳甲、内外卦",connection:"从八经卦所纳天干入手，再依内外两组三爻由下而上装入卦中。"},
     {book:"《增删卜易》",location:"卷一·六亲歌章",excerpt:"生我者父母，克我者官鬼，我生者子孙，我克者妻财，比和者兄弟。",keywords:"父母、官鬼、子孙、妻财、兄弟",connection:"先定卦宫五行，再将每一爻五行同宫五行相比较，六亲由此而定。"},
     {book:"《卜筮正宗》",location:"六亲相生相克",excerpt:"六亲皆由五行生克而定；父母、兄弟、子孙、妻财、官鬼，环环相生，亦各有相克。",keywords:"五行、六亲、生克",connection:"把六亲放回五行循环中阅读，避免把任何一类六亲理解为固定的人事吉凶。"},

@@ -33,7 +33,7 @@ test("extended classics reference retains casting but renders sourced references
   assert.match(html,/id="classicsReferenceCards"/);
   assert.match(html,/id="classicsCaseCards"/);
   assert.match(html,/id="tossCoins"/);
-  assert.equal(sandbox.__course.classicsReferences.length,8);
+  assert.equal(sandbox.__course.classicsReferences.length,11);
   assert.ok(sandbox.__course.classicsReferences.every(item=>item.book&&item.location&&item.excerpt&&item.keywords&&item.connection));
   assert.equal(sandbox.__course.classicsCases.length,6);
   assert.ok(sandbox.__course.classicsCases.every(item=>item.book&&item.location&&item.sourceText&&item.hexagram?.lines?.length===6&&item.boundary));
