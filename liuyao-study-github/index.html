@@ -6,7 +6,7 @@
   <meta name="description" content="以陈师讲义为主线，结合古籍校注、万物类象与主动回忆训练的六爻学习网站。">
   <title>爻象研习 · 六爻学习系统｜旺衰、八宫卦谱、装卦与断卦</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=20260808-logo-v1">
-  <link rel="stylesheet" href="./styles.css?v=20260923-najia-sixgod-changsheng-v25">
+  <link rel="stylesheet" href="./styles.css?v=20260923-classics-pages-v26">
 </head>
 <body>
   <div class="paper-noise"></div>
@@ -642,7 +642,7 @@
       <div class="page-intro classics-current-intro" data-edition-only="extended">
         <span class="eyebrow">SOURCE TEXT · CASE STUDY · CASTING PRACTICE</span>
         <h1>古籍参考</h1>
-        <p>模拟起卦用于巩固爻序与动变；原著出处与案例研读用于补足纳甲、六亲、世应、用神和动变的依据与用法。</p>
+        <p>模拟起卦用于巩固爻序与动变；原著参考围绕空破、飞伏、进退、反伏、应期等实占难点组织原文、解读与案例。</p>
       </div>
 
       <div class="casting-roadmap" data-edition-only="classic">
@@ -688,13 +688,15 @@
       </section>
 
       <section class="section-block classics-reference-section" data-edition-only="extended">
-        <div class="section-heading"><div><span class="section-index">02</span><h2>原著参考</h2></div><p>以原著条文对读纳甲、六亲、世应、用神与动变。</p></div>
+        <div class="section-heading"><div><span class="section-index">02</span><h2>原著参考</h2></div><p>按判断难点阅读原文、白话释义、实占落点与核查顺序；每页只保留少量条目。</p></div>
         <div class="classics-reference-cards" id="classicsReferenceCards"></div>
+        <nav class="classics-pager" id="classicsReferencePager" aria-label="原著参考翻页"></nav>
       </section>
 
       <section class="section-block classics-case-section" data-edition-only="extended">
-        <div class="section-heading"><div><span class="section-index">03</span><h2>原著案例研读</h2></div><p>逐案比对占问、本卦、动爻、变卦与原文判断线索。</p></div>
+        <div class="section-heading"><div><span class="section-index">03</span><h2>原著案例研读</h2></div><p>逐案比对占问、本卦、动爻、变卦、判断步骤与应验；每页专注一个完整案例。</p></div>
         <div class="classics-case-cards" id="classicsCaseCards"></div>
+        <nav class="classics-pager" id="classicsCasePager" aria-label="原著案例翻页"></nav>
       </section>
 
       <section class="section-block" data-edition-only="classic">
@@ -705,9 +707,9 @@
         <div class="relative-cards" id="classicRelativeCards"></div>
       </section>
 
-      <section class="section-block yongshen-section">
+      <section class="section-block yongshen-section" data-edition-only="classic">
         <div class="section-heading">
-          <div><span class="section-index" data-edition-only="classic">06</span><span class="section-index" data-edition-only="extended">04</span><h2 data-edition-only="classic">取用神：先问什么，再看什么</h2><h2 data-edition-only="extended">后续参考：取用神</h2></div>
+          <div><span class="section-index">06</span><h2>取用神：先问什么，再看什么</h2></div>
           <p>选择占问主题，系统给出初步观察对象；真正断卦仍要检查旺衰、空破、动变和组合。</p>
         </div>
         <div class="yongshen-picker">
@@ -717,13 +719,18 @@
         <div class="classics-role-chain" id="classicsRoleChain" data-edition-only="extended"></div>
       </section>
 
+      <section class="section-block classics-practical-section" data-edition-only="extended">
+        <div class="section-heading"><div><span class="section-index">04</span><h2>实用查阅：从卦中问题回到原著</h2></div><p>不重复已经掌握的取用基础，改为断卦时遇到空破、飞伏、进退、反伏、应期等问题的快速索引。</p></div>
+        <div class="classics-practical-index" id="classicsPracticalIndex"></div>
+      </section>
+
       <section class="classic-note" data-edition-only="classic">
         <span>古籍学习提示</span>
         <p>《增删卜易》把入门顺序明确落在：八卦爻画、起卦、六十四卦宫、浑天甲子、六亲、世应、动变、用神及元忌仇神。网站后续将按这条顺序逐项建立古籍原文对照。</p>
       </section>
       <section class="classic-note" data-edition-only="extended">
         <span>古籍参考边界</span>
-        <p>本页保留模拟起卦、原著出处、案例研读与取用参考。遇到版本差异时，应标明版本、回到原文语境，并与具体占问和全卦结构合看。</p>
+        <p>本页保留模拟起卦、原著出处、案例研读与实占问题索引。遇到版本差异时，应标明版本、回到原文语境，并与具体占问和全卦结构合看。</p>
       </section>
     </section>
 
@@ -785,21 +792,21 @@
     <aside><button class="drawer-close" aria-label="关闭">×</button><div id="drawerContent"></div></aside>
   </div>
   <footer><span>爻象研习 · 六爻知识体系</span><p>关系 → 结构 → 力量 → 类象 → 验证</p></footer>
-  <script src="./data.js?v=20260923-najia-sixgod-changsheng-v25"></script>
-  <script src="./course-0718.js?v=20260923-najia-sixgod-changsheng-v25"></script>
-  <script src="./course-0725.js?v=20260923-najia-sixgod-changsheng-v25"></script>
-  <script src="./course-0801.js?v=20260923-najia-sixgod-changsheng-v25"></script>
-  <script src="./course-0808.js?v=20260923-najia-sixgod-changsheng-v25"></script>
-  <script src="./course-0815.js?v=20260923-najia-sixgod-changsheng-v25"></script>
-  <script src="./course-0822.js?v=20260923-najia-sixgod-changsheng-v25"></script>
-  <script src="./course-0829.js?v=20260923-najia-sixgod-changsheng-v25"></script>
-  <script src="./course-0905.js?v=20260923-najia-sixgod-changsheng-v25"></script>
-  <script src="./course-0912.js?v=20260923-najia-sixgod-changsheng-v25"></script>
-  <script src="./course-0918.js?v=20260923-najia-sixgod-changsheng-v25"></script>
-  <script src="./training-bank.js?v=20260923-najia-sixgod-changsheng-v25"></script>
+  <script src="./data.js?v=20260923-classics-pages-v26"></script>
+  <script src="./course-0718.js?v=20260923-classics-pages-v26"></script>
+  <script src="./course-0725.js?v=20260923-classics-pages-v26"></script>
+  <script src="./course-0801.js?v=20260923-classics-pages-v26"></script>
+  <script src="./course-0808.js?v=20260923-classics-pages-v26"></script>
+  <script src="./course-0815.js?v=20260923-classics-pages-v26"></script>
+  <script src="./course-0822.js?v=20260923-classics-pages-v26"></script>
+  <script src="./course-0829.js?v=20260923-classics-pages-v26"></script>
+  <script src="./course-0905.js?v=20260923-classics-pages-v26"></script>
+  <script src="./course-0912.js?v=20260923-classics-pages-v26"></script>
+  <script src="./course-0918.js?v=20260923-classics-pages-v26"></script>
+  <script src="./training-bank.js?v=20260923-classics-pages-v26"></script>
   <script src="./vendor/jquery-3.7.1.min.js"></script>
   <script src="./vendor/jquery.ripples-min.js"></script>
-  <script src="./app.js?v=20260923-najia-sixgod-changsheng-v25"></script>
+  <script src="./app.js?v=20260923-classics-pages-v26"></script>
   <script>
     window.addEventListener('load', function(){
       setTimeout(function(){

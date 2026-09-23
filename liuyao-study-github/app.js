@@ -95,6 +95,7 @@ const state = {
   learnedModules:new Set(JSON.parse(localStorage.getItem("liuyao-learned-modules") || "[]")),
   castMode:"random", manualCoins:["字","背","字"],quizModule:extendedEdition?"lecture0718":"classic"
 };
+const classicsPageState={references:0,cases:0};
 const learningModules = [
   ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦"],["lecture0822-main","断卦：用神与判断步骤"],["judgmentHealth","断卦：疾病"],["course-najia","纳甲装支"],["course-shiying","世应定位"],["course-relatives","六亲生克"],["course-yongshen","按占问取用"],["course-sixgods","六神详解"],["course-daymonth","日月建与旺衰"],["course-moving","动爻与寻物例"],["course-void","旬空与月破"],["course-tomb","墓库与卦身"],["classics-reference","古籍原著与案例"]]:[]),
   ["foundation-01","术数定位"],["foundation-02","五行能量与万物象"],["foundation-03","五行生克与六亲"],
@@ -545,9 +546,11 @@ function renderRelatives() {
   document.querySelectorAll("#relativeCards,#classicRelativeCards").forEach(root=>{root.innerHTML=markup;});
 }
 function renderTopics(active=0) {
-  document.querySelector("#topicButtons").innerHTML=yongshenTopics.map((x,i)=>`<button data-topic="${i}" class="${i===active?"active":""}">${x.topic}</button>`).join("");
+  const buttons=document.querySelector("#topicButtons"),result=document.querySelector("#topicResult");
+  if(!buttons||!result)return;
+  buttons.innerHTML=yongshenTopics.map((x,i)=>`<button data-topic="${i}" class="${i===active?"active":""}">${x.topic}</button>`).join("");
   const x=yongshenTopics[active];
-  document.querySelector("#topicResult").innerHTML=`<span>初步取用</span><strong>${x.use}</strong><p>${x.note}</p><small>下一步：检查用神是否旺相、有根、受生，是否空破、入墓或受动爻克制。</small>`;
+  result.innerHTML=`<span>初步取用</span><strong>${x.use}</strong><p>${x.note}</p><small>下一步：检查用神是否旺相、有根、受生，是否空破、入墓或受动爻克制。</small>`;
   document.querySelectorAll("[data-topic]").forEach(b=>b.addEventListener("click",()=>renderTopics(Number(b.dataset.topic))));
 }
 
@@ -638,16 +641,37 @@ function classicsHexagramMarkup(hexagram){
 function renderClassicsReference(){
   if(!extendedEdition||typeof course0725==="undefined")return;
   const references=document.querySelector("#classicsReferenceCards");
-  if(references)references.innerHTML=course0725.classicsReferences.map((item,index)=>`
-    <article><small>${String(index+1).padStart(2,"0")}</small><span>${item.book}</span><h3>${item.location}</h3>
-      <blockquote class="classics-reference-excerpt">${item.excerpt}</blockquote><p><b>关键词</b> ${item.keywords}</p><footer><b>关联知识</b><p>${item.connection}</p></footer>
+  const referencePageSize=2,referencePages=Math.ceil(course0725.classicsReferences.length/referencePageSize);
+  classicsPageState.references=Math.max(0,Math.min(classicsPageState.references,referencePages-1));
+  const referenceStart=classicsPageState.references*referencePageSize;
+  if(references)references.innerHTML=course0725.classicsReferences.slice(referenceStart,referenceStart+referencePageSize).map((item,index)=>`
+    <article><small>${String(referenceStart+index+1).padStart(2,"0")} · ${item.category||"原文校注"}</small><span>${item.book}</span><h3>${item.location}</h3>
+      <blockquote class="classics-reference-excerpt">${item.excerpt}</blockquote>
+      ${item.plain?`<section class="classics-reference-reading"><b>白话释义</b><p>${item.plain}</p></section>`:""}
+      ${item.application?`<section class="classics-reference-reading"><b>实占落点</b><p>${item.application}</p></section>`:""}
+      ${item.checklist?`<ol class="classics-reference-checklist">${item.checklist.map(step=>`<li>${step}</li>`).join("")}</ol>`:""}
+      <p><b>关键词</b> ${item.keywords}</p><footer><b>解决什么问题</b><p>${item.connection}</p></footer>
     </article>`).join("");
+  renderClassicsPager("#classicsReferencePager",classicsPageState.references,referencePages,page=>{classicsPageState.references=page;renderClassicsReference();},"原著");
   const cases=document.querySelector("#classicsCaseCards");
-  if(cases)cases.innerHTML=course0725.classicsCases.map((item,index)=>`
-    <article><header><small>案例 ${String(index+1).padStart(2,"0")}</small><span>${item.book}</span><h3>${item.title}</h3><p>${item.location}</p></header>
+  const casePages=course0725.classicsCases.length;
+  classicsPageState.cases=Math.max(0,Math.min(classicsPageState.cases,casePages-1));
+  const item=course0725.classicsCases[classicsPageState.cases];
+  if(cases&&item)cases.innerHTML=`
+    <article><header><small>案例 ${String(classicsPageState.cases+1).padStart(2,"0")} / ${String(casePages).padStart(2,"0")}</small><span>${item.book}</span><h3>${item.title}</h3><p>${item.location}</p></header>
       <div class="classics-case-article">${classicsHexagramMarkup(item.hexagram)}<section><b>占问</b><p>${item.question}</p><b>原文</b><blockquote>${item.sourceText}</blockquote></section></div>
+      ${item.analysis?`<section class="classics-case-analysis"><b>逐步拆解</b><ol>${item.analysis.map(step=>`<li>${step}</li>`).join("")}</ol></section>`:""}
       <footer><b>阅读提示</b><p>${item.focus}</p><b>使用边界</b><p>${item.boundary}</p></footer>
-    </article>`).join("");
+    </article>`;
+  renderClassicsPager("#classicsCasePager",classicsPageState.cases,casePages,page=>{classicsPageState.cases=page;renderClassicsReference();},"案例");
+  const practical=document.querySelector("#classicsPracticalIndex");
+  if(practical)practical.innerHTML=course0725.classicsPracticalIndex.map((item,index)=>`<article><small>${String(index+1).padStart(2,"0")}</small><h3>${item.problem}</h3><strong>${item.read}</strong><span>${item.path}</span><ul>${item.checks.map(check=>`<li>${check}</li>`).join("")}</ul></article>`).join("");
+}
+
+function renderClassicsPager(selector,current,total,onChange,label){
+  const pager=document.querySelector(selector);if(!pager)return;
+  pager.innerHTML=`<button type="button" data-classics-page="${current-1}" ${current===0?"disabled":""}>上一页</button><div>${Array.from({length:total},(_,index)=>`<button type="button" class="${index===current?"active":""}" data-classics-page="${index}" aria-label="${label}第${index+1}页">${index+1}</button>`).join("")}</div><span>${current+1} / ${total}</span><button type="button" data-classics-page="${current+1}" ${current===total-1?"disabled":""}>下一页</button>`;
+  pager.querySelectorAll("button[data-classics-page]:not([disabled])").forEach(button=>button.addEventListener("click",()=>{onChange(Number(button.dataset.classicsPage));document.querySelector(selector)?.scrollIntoView({block:"nearest",behavior:"smooth"});}));
 }
 
 function renderFlashcard(){
