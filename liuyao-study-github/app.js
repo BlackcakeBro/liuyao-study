@@ -1254,7 +1254,10 @@ function render0822Course(){
   if(!steps||!concepts||!cases)return;
   steps.innerHTML=course0822.judgmentSteps.map((item,index)=>`<article><small>${String(index+1).padStart(2,"0")}</small><div><strong>${item.cue}</strong><h3>${item.name}</h3><p>${item.detail}</p></div></article>`).join("");
   concepts.innerHTML=course0822.coreConcepts.map(item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`).join("");
-  cases.innerHTML=course0822.caseStudies.map((item,index)=>`<article><header><span>结构示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header><p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`).join("");
+  const generalCases0829=typeof course0829!=="undefined"?course0829.caseStudies.filter(item=>item.topic==="general"):[];
+  const frameworkCases=course0822.caseStudies.map((item,index)=>`<article><header><span>结构示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header><p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`).join("");
+  const transferredCases=generalCases0829.map((item,index)=>courseCaseArticleMarkup(item,course0822.caseStudies.length+index)).join("");
+  cases.innerHTML=frameworkCases+transferredCases;
   document.querySelector("#judgment0822Rules").innerHTML=course0822.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
   document.querySelector("#judgment0822Ethics").innerHTML=`<b>总原则：</b>${course0822.ethicsBoundary}`;
 }
@@ -1264,19 +1267,21 @@ function courseCaseDiagramMarkup(hexagram){
   return `<div class="case-diagram"><div class="case-diagram-figures">${figure("本卦",hexagram,hexagram.moving)}${figure("变卦",hexagram.changed)}</div><dl class="case-assembly"><dt>装卦</dt>${hexagram.assembly.map(row=>`<div class="${hexagram.moving.includes(row.position)?"is-moving":""}"><b>${row.position===6?"上":row.position}爻</b><span>${row.main}</span><i>→</i><span>${row.changed}</span></div>`).join("")}</dl></div>`;
 }
 
+function courseCaseArticleMarkup(item,index){
+  return `<article><header><span>结构示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header>${courseCaseDiagramMarkup(item.hexagram)}<p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`;
+}
+
 function render0829Course(){
   if(typeof course0829==="undefined")return;
   const timing=document.querySelector("#judgmentTiming0829");
   const framework=document.querySelector("#judgmentWealthFramework0829");
   const holding=document.querySelector("#judgmentWealthHolding0829");
-  const cases=document.querySelector("#judgmentCases0829");
-  if(!timing||!framework||!holding||!cases)return;
+  if(!timing||!framework||!holding)return;
   const ruleMarkup=item=>`<article class="health-rule-card"><span>${item.cue}</span><h4>${item.name}</h4><p>${item.detail}</p></article>`;
   timing.innerHTML=course0829.timingPrinciples.map((item,index)=>`<article><small>${String(index+1).padStart(2,"0")}</small><div><strong>${item.cue}</strong><h3>${item.name}</h3><p>${item.detail}</p></div></article>`).join("");
   framework.innerHTML=course0829.wealthFrameworkRules.map(ruleMarkup).join("");
   const holdingRules=[...course0829.wealthHoldingRules,...(typeof course0905!=="undefined"?course0905.holdingSelfPrinciples:[])];
   holding.innerHTML=holdingRules.map(ruleMarkup).join("");
-  cases.innerHTML=course0829.caseStudies.map((item,index)=>`<article><header><span>结构示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header>${courseCaseDiagramMarkup(item.hexagram)}<p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`).join("");
   document.querySelector("#judgment0829Rules").innerHTML=course0829.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
   document.querySelector("#judgment0829Ethics").innerHTML=`<b>总原则：</b>${course0829.ethicsBoundary}`;
 }
@@ -1302,7 +1307,6 @@ function render0918Course(){
   if(typeof course0918==="undefined")return;
   const cardMarkup=item=>`<article><span>${item.cue}</span><h3>${item.name}</h3><p>${item.detail}</p></article>`;
   const ruleMarkup=item=>`<article class="health-rule-card"><span>${item.cue}</span><h4>${item.name}</h4><p>${item.detail}</p></article>`;
-  const caseMarkup=(item,index)=>`<article><header><span>结构示例 ${String(index+1).padStart(2,"0")}</span><h3>${item.title}</h3></header>${courseCaseDiagramMarkup(item.hexagram)}<p>${item.detail}</p><ol>${item.steps.map(step=>`<li>${step}</li>`).join("")}</ol></article>`;
   const relationshipCases=document.querySelector("#judgmentRelationshipCases0918");
   const framework=document.querySelector("#judgmentHealthFramework0918");
   const groups={
@@ -1320,10 +1324,11 @@ function render0918Course(){
   const healthCase=document.querySelector("#judgmentHealthCase0918");
   const rules=document.querySelector("#judgment0918Rules");
   const ethics=document.querySelector("#judgment0918Ethics");
-  if(relationshipCases)relationshipCases.innerHTML=course0918.relationshipCases.map(caseMarkup).join("");
+  const earlierRelationshipCases=typeof course0829!=="undefined"?course0829.caseStudies.filter(item=>item.topic==="relationship"):[];
+  if(relationshipCases)relationshipCases.innerHTML=[...earlierRelationshipCases,...course0918.relationshipCases].map(courseCaseArticleMarkup).join("");
   if(framework)framework.innerHTML=course0918.healthFramework.map(cardMarkup).join("");
   Object.entries(groups).forEach(([id,items])=>{const target=document.getElementById(id);if(target)target.innerHTML=items.map(ruleMarkup).join("");});
-  if(healthCase)healthCase.innerHTML=caseMarkup(course0918.healthCase,0);
+  if(healthCase)healthCase.innerHTML=courseCaseArticleMarkup(course0918.healthCase,0);
   if(rules)rules.innerHTML=course0918.judgmentRules.map(rule=>`<li>${rule}</li>`).join("");
   if(ethics)ethics.innerHTML=`<b>使用边界：</b>${course0918.ethicsBoundary}`;
 }
