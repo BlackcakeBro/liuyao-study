@@ -650,7 +650,7 @@ function renderClassicsReference(){
       ${item.plain?`<section class="classics-reference-reading"><b>白话释义</b><p>${item.plain}</p></section>`:""}
       ${item.application?`<section class="classics-reference-reading"><b>实占落点</b><p>${item.application}</p></section>`:""}
       ${item.checklist?`<ol class="classics-reference-checklist">${item.checklist.map(step=>`<li>${step}</li>`).join("")}</ol>`:""}
-      <p><b>关键词</b> ${item.keywords}</p><footer><b>解决什么问题</b><p>${item.connection}</p></footer>
+      <p><b>关键词</b> ${item.keywords}</p><footer>${item.connection!==item.application?`<b>解决什么问题</b><p>${item.connection}</p>`:""}${item.sourceUrl?`<a href="${item.sourceUrl}" target="_blank" rel="noopener noreferrer">核对原文 ↗</a>`:""}</footer>
     </article>`).join("");
   renderClassicsPager("#classicsReferencePager",classicsPageState.references,referencePages,page=>{classicsPageState.references=page;renderClassicsReference();},"原著");
   const cases=document.querySelector("#classicsCaseCards");
@@ -661,7 +661,7 @@ function renderClassicsReference(){
     <article><header><small>案例 ${String(classicsPageState.cases+1).padStart(2,"0")} / ${String(casePages).padStart(2,"0")}</small><span>${item.book}</span><h3>${item.title}</h3><p>${item.location}</p></header>
       <div class="classics-case-article">${classicsHexagramMarkup(item.hexagram)}<section><b>占问</b><p>${item.question}</p><b>原文</b><blockquote>${item.sourceText}</blockquote></section></div>
       ${item.analysis?`<section class="classics-case-analysis"><b>逐步拆解</b><ol>${item.analysis.map(step=>`<li>${step}</li>`).join("")}</ol></section>`:""}
-      <footer><b>阅读提示</b><p>${item.focus}</p><b>使用边界</b><p>${item.boundary}</p></footer>
+      <footer><b>阅读提示</b><p>${item.focus}</p><b>使用边界</b><p>${item.boundary}</p>${item.sourceUrl?`<a href="${item.sourceUrl}" target="_blank" rel="noopener noreferrer">核对原文 ↗</a>`:""}</footer>
     </article>`;
   renderClassicsPager("#classicsCasePager",classicsPageState.cases,casePages,page=>{classicsPageState.cases=page;renderClassicsReference();},"案例");
   const practical=document.querySelector("#classicsPracticalIndex");
@@ -670,7 +670,15 @@ function renderClassicsReference(){
 
 function renderClassicsPager(selector,current,total,onChange,label){
   const pager=document.querySelector(selector);if(!pager)return;
-  pager.innerHTML=`<button type="button" data-classics-page="${current-1}" ${current===0?"disabled":""}>上一页</button><div>${Array.from({length:total},(_,index)=>`<button type="button" class="${index===current?"active":""}" data-classics-page="${index}" aria-label="${label}第${index+1}页">${index+1}</button>`).join("")}</div><span>${current+1} / ${total}</span><button type="button" data-classics-page="${current+1}" ${current===total-1?"disabled":""}>下一页</button>`;
+  const visible=new Set([0,total-1,current-2,current-1,current,current+1,current+2]);
+  const pages=[...visible].filter(index=>index>=0&&index<total).sort((a,b)=>a-b);
+  let pageButtons="",previous=-1;
+  for(const index of pages){
+    if(index-previous>1)pageButtons+=`<span class="classics-pager-ellipsis" aria-hidden="true">…</span>`;
+    pageButtons+=`<button type="button" class="${index===current?"active":""}" data-classics-page="${index}" aria-label="${label}第${index+1}页" ${index===current?'aria-current="page"':""}>${index+1}</button>`;
+    previous=index;
+  }
+  pager.innerHTML=`<button type="button" data-classics-page="${current-1}" ${current===0?"disabled":""}>上一页</button><div>${pageButtons}</div><span>${current+1} / ${total}</span><button type="button" data-classics-page="${current+1}" ${current===total-1?"disabled":""}>下一页</button>`;
   pager.querySelectorAll("button[data-classics-page]:not([disabled])").forEach(button=>button.addEventListener("click",()=>{onChange(Number(button.dataset.classicsPage));document.querySelector(selector)?.scrollIntoView({block:"nearest",behavior:"smooth"});}));
 }
 

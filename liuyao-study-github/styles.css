@@ -627,3 +627,6 @@ button,.branch-card,.map-switcher,.relationship-lab{position:relative;overflow:h
 .classics-case-article{display:grid;grid-template-columns:minmax(0,490px) minmax(0,1fr);align-items:start;gap:30px}.classics-case-diagrams{width:auto;max-width:100%;margin:0}.classics-case-diagrams:has(figure:only-child){grid-template-columns:220px}.classics-case-article>section{min-width:0}.classics-case-article blockquote{overflow-wrap:anywhere}
 @media(max-width:900px){.classics-case-article{grid-template-columns:1fr}.classics-case-diagrams{margin-bottom:20px}}
 @media(max-width:760px){.classics-case-diagrams:has(figure:only-child){grid-template-columns:1fr}.classics-case-diagrams{width:100%}}
+
+.classics-pager-ellipsis{display:inline-flex;align-items:center;padding:0 4px;color:var(--muted)}
+.classics-reference-cards footer a,.classics-case-cards footer a{display:inline-flex;margin-top:14px;color:var(--red);font-size:12px;font-weight:700;text-decoration:none;border-bottom:1px solid currentColor}

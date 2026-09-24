@@ -6,7 +6,7 @@ import vm from "node:vm";
 const html=fs.readFileSync("liuyao-study-github/index.html","utf8");
 const css=fs.readFileSync("liuyao-study-github/styles.css","utf8");
 const app=fs.readFileSync("liuyao-study-github/app.js","utf8");
-const source=["data.js","course-0718.js","course-0725.js","course-0801.js","course-0808.js","course-0815.js","training-bank.js"]
+const source=["data.js","course-0718.js","course-0725.js","classics-library.js","course-0801.js","course-0808.js","course-0815.js","training-bank.js"]
   .map(file=>fs.readFileSync(`liuyao-study-github/${file}`,"utf8")).join("\n")+
   "\n;globalThis.__training=window.LIUYAO_TRAINING;globalThis.__course=course0725;";
 const sandbox={window:{}};
@@ -33,10 +33,21 @@ test("extended classics reference retains casting but renders sourced references
   assert.match(html,/id="classicsReferenceCards"/);
   assert.match(html,/id="classicsCaseCards"/);
   assert.match(html,/id="tossCoins"/);
-  assert.equal(sandbox.__course.classicsReferences.length,10);
-  assert.ok(new Set(sandbox.__course.classicsReferences.map(item=>item.book)).size>=4);
+  assert.equal(sandbox.__course.classicsReferences.length,70);
+  assert.ok(new Set(sandbox.__course.classicsReferences.map(item=>item.book)).size>=7);
+  assert.ok(sandbox.__course.classicsReferences.slice(10).every(item=>item.sourceUrl));
+  assert.ok(sandbox.__course.classicsCases.slice(11).every(item=>item.sourceUrl));
+  assert.equal(new Set(sandbox.__course.classicsCases.slice(11).map(item=>item.title)).size,100);
+  assert.ok(sandbox.__course.classicsCases.slice(11).every(item=>{
+    const changed=item.hexagram.changed;
+    if(!changed)return !item.hexagram.moving?.length;
+    const positions=item.hexagram.lines.flatMap((line,index)=>line===changed.lines[index]?[]:[index+1]);
+    return JSON.stringify(positions)===JSON.stringify(item.hexagram.moving);
+  }));
+  assert.ok(sandbox.__course.classicsCases.slice(11).every(item=>!/%[A-F0-9]{2}|原剑按|⚊|⚋/.test(item.sourceText)));
+  assert.match(app,/classics-pager-ellipsis/);
   assert.ok(sandbox.__course.classicsReferences.every(item=>item.book&&item.location&&item.excerpt&&item.plain&&item.application&&item.checklist?.length===3&&item.keywords&&item.connection));
-  assert.equal(sandbox.__course.classicsCases.length,11);
+  assert.equal(sandbox.__course.classicsCases.length,111);
   assert.ok(sandbox.__course.classicsCases.every(item=>item.book&&item.location&&item.sourceText&&item.hexagram?.lines?.length===6&&item.analysis?.length>=3&&item.boundary));
   assert.ok(sandbox.__course.classicsReferences.every(item=>!/(预习|后续课堂|等待课程)/.test(JSON.stringify(item))));
   assert.match(app,/classics-case-hexagram/);

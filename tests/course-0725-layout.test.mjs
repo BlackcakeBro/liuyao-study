@@ -608,11 +608,11 @@ test("classics reference is source-backed and ships with one fresh cache version
   assert.doesNotMatch(html,/id="classicsRoadmap"/);
 
   const coupledAssetVersions=[
-    ...html.matchAll(/(?:href|src)="\.\/(?:styles\.css|course-0725\.js|course-0801\.js|course-0808\.js|course-0815\.js|course-0822\.js|course-0829\.js|course-0905\.js|course-0912\.js|training-bank\.js|app\.js)\?v=([^"]+)"/g)
+    ...html.matchAll(/(?:href|src)="\.\/(?:styles\.css|course-0725\.js|classics-library\.js|course-0801\.js|course-0808\.js|course-0815\.js|course-0822\.js|course-0829\.js|course-0905\.js|course-0912\.js|training-bank\.js|app\.js)\?v=([^"]+)"/g)
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(11).fill("20260923-classics-pages-v26"),
+    Array(12).fill("20260924-classics-library-v27"),
     "course data, renderer, training bank, and styling must ship with one fresh cache version"
   );
 });
