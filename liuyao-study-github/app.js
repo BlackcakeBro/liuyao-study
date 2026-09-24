@@ -96,6 +96,8 @@ const state = {
   castMode:"random", manualCoins:["字","背","字"],quizModule:extendedEdition?"lecture0718":"classic"
 };
 const classicsPageState={references:0,cases:0};
+let castPending=false;
+let castTimer=null;
 const classicsSourceState={references:"全部古籍",cases:"全部古籍"};
 const learningModules = [
   ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦"],["lecture0822-main","断卦：用神与判断步骤"],["judgmentHealth","断卦：疾病"],["course-najia","纳甲装支"],["course-shiying","世应定位"],["course-relatives","六亲生克"],["course-yongshen","按占问取用"],["course-sixgods","六神详解"],["course-daymonth","日月建与旺衰"],["course-moving","动爻与寻物例"],["course-void","旬空与月破"],["course-tomb","墓库与卦身"],["classics-reference","古籍原著与案例"]]:[]),
@@ -486,9 +488,10 @@ function identifyHex(lines) {
 }
 function renderCast() {
   const board=document.querySelector("#hexagramBoard");
+  const cast=state.cast.slice(0,6);
   const rows=[];
   for(let i=5;i>=0;i--) {
-    const item=state.cast[i];
+    const item=cast[i];
     if(!item) rows.push(`<div class="hex-row empty"><span>${i+1}</span><div>等待</div><div>等待</div></div>`);
     else {
       const yang=item.value%2===1, changed=item.moving?!yang:yang;
@@ -496,12 +499,12 @@ function renderCast() {
     }
   }
   board.innerHTML=rows.join("");
-  const base=state.cast.map(x=>x.value%2===1?1:0), changed=state.cast.map(x=>x.moving?(x.value%2===1?0:1):(x.value%2===1?1:0));
+  const base=cast.map(x=>x.value%2===1?1:0), changed=cast.map(x=>x.moving?(x.value%2===1?0:1):(x.value%2===1?1:0));
   document.querySelector("#baseHexName").textContent=identifyHex(base);
-  document.querySelector("#changedHexName").textContent=state.cast.length===6&&state.cast.some(x=>x.moving)?identifyHex(changed):"—";
-  document.querySelector("#tossCoins").disabled=state.cast.length>=6;
+  document.querySelector("#changedHexName").textContent=cast.length===6&&cast.some(x=>x.moving)?identifyHex(changed):"—";
+  document.querySelector("#tossCoins").disabled=castPending||cast.length>=6;
   document.querySelector("#tossCoins").textContent=state.castMode==="manual"?"确认本爻":"掷三枚铜钱";
-  document.querySelector("#castMessage").textContent=state.cast.length<6?`下一次记录为第 ${state.cast.length+1} 爻（由下向上）`:`本卦已完成：${identifyHex(base)}。${state.cast.some(x=>x.moving)?"动爻已生成变卦。":"本次六爻皆静，无变卦。"}`;
+  document.querySelector("#castMessage").textContent=cast.length<6?`下一次记录为第 ${cast.length+1} 爻（由下向上）`:`本卦已完成：${identifyHex(base)}。${cast.some(x=>x.moving)?"动爻已生成变卦。":"本次六爻皆静，无变卦。"}`;
 }
 function coinMarkup(face,flipDirection="",index=0){
   return `<button class="coin ${face==="字"?"front":"back"} ${flipDirection}" data-coin-index="${index}" aria-label="乾隆通宝铜钱${index+1}，当前${face}面"><span class="coin-face coin-front"></span><span class="coin-face coin-back"></span><b>${face}</b></button>`;
@@ -529,16 +532,25 @@ function renderCoins(flippingIndex=-1,previousFace=""){
   });
 }
 function addCastFromCoins(coins){
+  if(state.cast.length>=6)return;
   const backs=coins.filter(x=>x==="背").length;
   const map={0:{value:6,name:"老阴",moving:true},1:{value:7,name:"少阳",moving:false},2:{value:8,name:"少阴",moving:false},3:{value:9,name:"老阳",moving:true}};
   state.cast.push(map[backs]);
   renderCast();
 }
+function cancelPendingCast(){
+  if(castTimer!==null)clearTimeout(castTimer);
+  castTimer=null;
+  castPending=false;
+}
 function tossCoins() {
+  if(castPending||state.cast.length>=6)return;
   const coins=state.castMode==="manual"?[...state.manualCoins]:Array.from({length:3},()=>Math.random()<.5?"字":"背");
   if(state.castMode==="random"){
+    castPending=true;
+    document.querySelector("#tossCoins").disabled=true;
     document.querySelector("#coins").innerHTML=coins.map((x,i)=>coinMarkup(x,x==="字"?"toss-to-front":"toss-to-back",i)).join("");
-    setTimeout(()=>addCastFromCoins(coins),420);
+    castTimer=setTimeout(()=>{castTimer=null;castPending=false;addCastFromCoins(coins)},420);
   }else addCastFromCoins(coins);
 }
 
@@ -1460,12 +1472,13 @@ document.querySelector("#nextFlashcard").addEventListener("click",nextFlashcard)
 document.querySelector("#nextQuiz").addEventListener("click",createQuiz);
 document.querySelector("#tossCoins").addEventListener("click",tossCoins);
 document.querySelectorAll("[data-cast-mode]").forEach(button=>button.addEventListener("click",()=>{
+  cancelPendingCast();
   state.castMode=button.dataset.castMode;
   document.querySelectorAll("[data-cast-mode]").forEach(x=>x.classList.toggle("active",x===button));
   renderCoins();
   renderCast();
 }));
-document.querySelector("#resetCast").addEventListener("click",()=>{state.cast=[];state.manualCoins=["字","背","字"];renderCoins();renderCast();});
+document.querySelector("#resetCast").addEventListener("click",()=>{cancelPendingCast();state.cast=[];state.manualCoins=["字","背","字"];renderCoins();renderCast();});
 
 document.querySelectorAll("[data-map]").forEach(b=>b.addEventListener("click",()=>renderMap(b.dataset.map)));
 document.querySelectorAll("#scroll0718Shell .scroll-roller").forEach(button=>button.addEventListener("click",replay0718Scroll));

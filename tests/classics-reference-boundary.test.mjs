@@ -92,3 +92,12 @@ test("every site view shares the red footer credits at the title's font size",()
   assert.match(html,/内容版权者：陈师（陈济明）/);
   assert.match(css,/\.site-footer__credits\{[^}]*color:var\(--red\);font-size:inherit/s);
 });
+
+
+test("simulated casting never queues more than six lines and names the changed hexagram",()=>{
+  assert.match(app,/if\(state\.cast\.length>=6\)return;/);
+  assert.match(app,/if\(castPending\|\|state\.cast\.length>=6\)return;/);
+  assert.match(app,/const cast=state\.cast\.slice\(0,6\)/);
+  assert.match(app,/changedHexName"\)\.textContent=cast\.length===6&&cast\.some\(x=>x\.moving\)\?identifyHex\(changed\)/);
+  assert.match(app,/cancelPendingCast\(\);state\.cast=\[\]/);
+});
