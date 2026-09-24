@@ -37,7 +37,7 @@ test("extended classics reference retains casting but renders sourced references
   assert.ok(new Set(sandbox.__course.classicsReferences.map(item=>item.book)).size>=7);
   assert.ok(sandbox.__course.classicsReferences.slice(10).every(item=>item.sourceUrl));
   assert.ok(sandbox.__course.classicsCases.slice(11).every(item=>item.sourceUrl));
-  assert.equal(new Set(sandbox.__course.classicsCases.slice(11).map(item=>item.title)).size,100);
+  assert.equal(new Set(sandbox.__course.classicsCases.slice(11).map(item=>item.title)).size,103);
   assert.ok(sandbox.__course.classicsCases.slice(11).every(item=>{
     const changed=item.hexagram.changed;
     if(!changed)return !item.hexagram.moving?.length;
@@ -46,8 +46,12 @@ test("extended classics reference retains casting but renders sourced references
   }));
   assert.ok(sandbox.__course.classicsCases.slice(11).every(item=>!/%[A-F0-9]{2}|原剑按|⚊|⚋/.test(item.sourceText)));
   assert.match(app,/classics-pager-ellipsis/);
+  assert.match(html,/id="classicsReferenceBook"/);
+  assert.match(html,/id="classicsCaseBook"/);
+  assert.match(app,/classics-pager-jump/);
+  assert.ok(new Set(sandbox.__course.classicsCases.map(item=>item.book)).size>=3);
   assert.ok(sandbox.__course.classicsReferences.every(item=>item.book&&item.location&&item.excerpt&&item.plain&&item.application&&item.checklist?.length===3&&item.keywords&&item.connection));
-  assert.equal(sandbox.__course.classicsCases.length,111);
+  assert.equal(sandbox.__course.classicsCases.length,114);
   assert.ok(sandbox.__course.classicsCases.every(item=>item.book&&item.location&&item.sourceText&&item.hexagram?.lines?.length===6&&item.analysis?.length>=3&&item.boundary));
   assert.ok(sandbox.__course.classicsReferences.every(item=>!/(预习|后续课堂|等待课程)/.test(JSON.stringify(item))));
   assert.match(app,/classics-case-hexagram/);
@@ -55,7 +59,7 @@ test("extended classics reference retains casting but renders sourced references
   assert.match(app,/function renderClassicsReference\(/);
   assert.match(app,/function renderClassicsPager\(/);
   assert.match(app,/const referencePageSize=2/);
-  assert.match(app,/const casePages=course0725\.classicsCases\.length/);
+  assert.match(app,/const casePages=caseItems\.length/);
   assert.match(app,/if\(!buttons\|\|!result\)return;/);
   assert.doesNotMatch(html,/后续参考：取用神/);
   assert.match(html,/id="classicsReferencePager"/);

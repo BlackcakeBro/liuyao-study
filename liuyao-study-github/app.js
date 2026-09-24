@@ -96,6 +96,7 @@ const state = {
   castMode:"random", manualCoins:["字","背","字"],quizModule:extendedEdition?"lecture0718":"classic"
 };
 const classicsPageState={references:0,cases:0};
+const classicsSourceState={references:"全部古籍",cases:"全部古籍"};
 const learningModules = [
   ...(extendedEdition?[["lecture0704-main","旺衰关系专题"],["lecture0718-main","八宫六十四卦"],["lecture0725-main","装卦"],["lecture0822-main","断卦：用神与判断步骤"],["judgmentHealth","断卦：疾病"],["course-najia","纳甲装支"],["course-shiying","世应定位"],["course-relatives","六亲生克"],["course-yongshen","按占问取用"],["course-sixgods","六神详解"],["course-daymonth","日月建与旺衰"],["course-moving","动爻与寻物例"],["course-void","旬空与月破"],["course-tomb","墓库与卦身"],["classics-reference","古籍原著与案例"]]:[]),
   ["foundation-01","术数定位"],["foundation-02","五行能量与万物象"],["foundation-03","五行生克与六亲"],
@@ -638,13 +639,35 @@ function classicsHexagramMarkup(hexagram){
   return `<div class="classics-case-diagrams">${base}${changed}</div>`;
 }
 
+function interleaveClassicsByBook(items){
+  const groups=new Map();
+  items.forEach(item=>{if(!groups.has(item.book))groups.set(item.book,[]);groups.get(item.book).push(item)});
+  const result=[];
+  while([...groups.values()].some(group=>group.length))groups.forEach(group=>{if(group.length)result.push(group.shift())});
+  return result;
+}
+
+function selectClassicsBook(selector,countSelector,items,key){
+  const select=document.querySelector(selector),books=[...new Set(items.map(item=>item.book))];
+  if(select&&!select.options.length){
+    select.innerHTML=`<option value="全部古籍">全部古籍</option>${books.map(book=>`<option value="${book}">${book}</option>`).join("")}`;
+    select.addEventListener("change",()=>{classicsSourceState[key]=select.value;classicsPageState[key]=0;renderClassicsReference()});
+  }
+  if(select)select.value=classicsSourceState[key];
+  const filtered=interleaveClassicsByBook(items).filter(item=>classicsSourceState[key]==="全部古籍"||item.book===classicsSourceState[key]);
+  const count=document.querySelector(countSelector);
+  if(count)count.textContent=`${filtered.length} 条 · ${books.length} 种来源`;
+  return filtered;
+}
+
 function renderClassicsReference(){
   if(!extendedEdition||typeof course0725==="undefined")return;
   const references=document.querySelector("#classicsReferenceCards");
-  const referencePageSize=2,referencePages=Math.ceil(course0725.classicsReferences.length/referencePageSize);
+  const referenceItems=selectClassicsBook("#classicsReferenceBook","#classicsReferenceCount",course0725.classicsReferences,"references");
+  const referencePageSize=2,referencePages=Math.ceil(referenceItems.length/referencePageSize);
   classicsPageState.references=Math.max(0,Math.min(classicsPageState.references,referencePages-1));
   const referenceStart=classicsPageState.references*referencePageSize;
-  if(references)references.innerHTML=course0725.classicsReferences.slice(referenceStart,referenceStart+referencePageSize).map((item,index)=>`
+  if(references)references.innerHTML=referenceItems.slice(referenceStart,referenceStart+referencePageSize).map((item,index)=>`
     <article><small>${String(referenceStart+index+1).padStart(2,"0")} · ${item.category||"原文校注"}</small><span>${item.book}</span><h3>${item.location}</h3>
       <blockquote class="classics-reference-excerpt">${item.excerpt}</blockquote>
       ${item.plain?`<section class="classics-reference-reading"><b>白话释义</b><p>${item.plain}</p></section>`:""}
@@ -654,9 +677,10 @@ function renderClassicsReference(){
     </article>`).join("");
   renderClassicsPager("#classicsReferencePager",classicsPageState.references,referencePages,page=>{classicsPageState.references=page;renderClassicsReference();},"原著");
   const cases=document.querySelector("#classicsCaseCards");
-  const casePages=course0725.classicsCases.length;
+  const caseItems=selectClassicsBook("#classicsCaseBook","#classicsCaseCount",course0725.classicsCases,"cases");
+  const casePages=caseItems.length;
   classicsPageState.cases=Math.max(0,Math.min(classicsPageState.cases,casePages-1));
-  const item=course0725.classicsCases[classicsPageState.cases];
+  const item=caseItems[classicsPageState.cases];
   if(cases&&item)cases.innerHTML=`
     <article><header><small>案例 ${String(classicsPageState.cases+1).padStart(2,"0")} / ${String(casePages).padStart(2,"0")}</small><span>${item.book}</span><h3>${item.title}</h3><p>${item.location}</p></header>
       <div class="classics-case-article">${classicsHexagramMarkup(item.hexagram)}<section><b>占问</b><p>${item.question}</p><b>原文</b><blockquote>${item.sourceText}</blockquote></section></div>
@@ -678,8 +702,19 @@ function renderClassicsPager(selector,current,total,onChange,label){
     pageButtons+=`<button type="button" class="${index===current?"active":""}" data-classics-page="${index}" aria-label="${label}第${index+1}页" ${index===current?'aria-current="page"':""}>${index+1}</button>`;
     previous=index;
   }
-  pager.innerHTML=`<button type="button" data-classics-page="${current-1}" ${current===0?"disabled":""}>上一页</button><div>${pageButtons}</div><span>${current+1} / ${total}</span><button type="button" data-classics-page="${current+1}" ${current===total-1?"disabled":""}>下一页</button>`;
-  pager.querySelectorAll("button[data-classics-page]:not([disabled])").forEach(button=>button.addEventListener("click",()=>{onChange(Number(button.dataset.classicsPage));document.querySelector(selector)?.scrollIntoView({block:"nearest",behavior:"smooth"});}));
+  pager.innerHTML=`<button type="button" data-classics-role="prev" data-classics-page="${current-1}" ${current===0?"disabled":""}>上一页</button><div>${pageButtons}</div><span>${current+1} / ${total}</span><form class="classics-pager-jump"><input type="number" min="1" max="${total}" value="${current+1}" required aria-label="跳转到${label}第几页"><button type="submit">跳转</button></form><button type="button" data-classics-role="next" data-classics-page="${current+1}" ${current===total-1?"disabled":""}>下一页</button>`;
+  const navigate=(page,focusSelector)=>{
+    const oldTop=pager.getBoundingClientRect().top;
+    onChange(page);
+    requestAnimationFrame(()=>{
+      const nextPager=document.querySelector(selector);
+      if(!nextPager)return;
+      window.scrollBy(0,nextPager.getBoundingClientRect().top-oldTop);
+      nextPager.querySelector(focusSelector)?.focus({preventScroll:true});
+    });
+  };
+  pager.querySelectorAll("button[data-classics-page]:not([disabled])").forEach(button=>button.addEventListener("click",()=>navigate(Number(button.dataset.classicsPage),button.dataset.classicsRole?`button[data-classics-role="${button.dataset.classicsRole}"]`:`button[data-classics-page="${button.dataset.classicsPage}"]`)));
+  pager.querySelector("form").addEventListener("submit",event=>{event.preventDefault();const input=event.currentTarget.querySelector("input"),page=Number(input.value);if(!Number.isInteger(page)||page<1||page>total){input.reportValidity();return}navigate(page-1,".classics-pager-jump input")});
 }
 
 function renderFlashcard(){

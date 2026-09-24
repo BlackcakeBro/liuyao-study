@@ -6,7 +6,7 @@
   <meta name="description" content="以陈师讲义为主线，结合古籍校注、万物类象与主动回忆训练的六爻学习网站。">
   <title>爻象研习 · 六爻学习系统｜旺衰、八宫卦谱、装卦与断卦</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=20260808-logo-v1">
-  <link rel="stylesheet" href="./styles.css?v=20260924-classics-library-v27">
+  <link rel="stylesheet" href="./styles.css?v=20260924-classics-navigation-v28">
 </head>
 <body>
   <div class="paper-noise"></div>
@@ -689,12 +689,14 @@
 
       <section class="section-block classics-reference-section" data-edition-only="extended">
         <div class="section-heading"><div><span class="section-index">02</span><h2>原著参考</h2></div><p>按判断难点阅读原文、白话释义、实占落点与核查顺序；每页只保留少量条目。</p></div>
+        <div class="classics-source-picker"><label for="classicsReferenceBook">选择古籍</label><select id="classicsReferenceBook"></select><span id="classicsReferenceCount"></span></div>
         <div class="classics-reference-cards" id="classicsReferenceCards"></div>
         <nav class="classics-pager" id="classicsReferencePager" aria-label="原著参考翻页"></nav>
       </section>
 
       <section class="section-block classics-case-section" data-edition-only="extended">
         <div class="section-heading"><div><span class="section-index">03</span><h2>原著案例研读</h2></div><p>逐案比对占问、本卦、动爻、变卦、判断步骤与应验；每页专注一个完整案例。</p></div>
+        <div class="classics-source-picker"><label for="classicsCaseBook">选择古籍</label><select id="classicsCaseBook"></select><span id="classicsCaseCount"></span></div>
         <div class="classics-case-cards" id="classicsCaseCards"></div>
         <nav class="classics-pager" id="classicsCasePager" aria-label="原著案例翻页"></nav>
       </section>
@@ -792,22 +794,22 @@
     <aside><button class="drawer-close" aria-label="关闭">×</button><div id="drawerContent"></div></aside>
   </div>
   <footer><span>爻象研习 · 六爻知识体系</span><p>关系 → 结构 → 力量 → 类象 → 验证</p></footer>
-  <script src="./data.js?v=20260924-classics-library-v27"></script>
-  <script src="./course-0718.js?v=20260924-classics-library-v27"></script>
-  <script src="./course-0725.js?v=20260924-classics-library-v27"></script>
-  <script src="./classics-library.js?v=20260924-classics-library-v27"></script>
-  <script src="./course-0801.js?v=20260924-classics-library-v27"></script>
-  <script src="./course-0808.js?v=20260924-classics-library-v27"></script>
-  <script src="./course-0815.js?v=20260924-classics-library-v27"></script>
-  <script src="./course-0822.js?v=20260924-classics-library-v27"></script>
-  <script src="./course-0829.js?v=20260924-classics-library-v27"></script>
-  <script src="./course-0905.js?v=20260924-classics-library-v27"></script>
-  <script src="./course-0912.js?v=20260924-classics-library-v27"></script>
-  <script src="./course-0918.js?v=20260924-classics-library-v27"></script>
-  <script src="./training-bank.js?v=20260924-classics-library-v27"></script>
+  <script src="./data.js?v=20260924-classics-navigation-v28"></script>
+  <script src="./course-0718.js?v=20260924-classics-navigation-v28"></script>
+  <script src="./course-0725.js?v=20260924-classics-navigation-v28"></script>
+  <script src="./classics-library.js?v=20260924-classics-navigation-v28"></script>
+  <script src="./course-0801.js?v=20260924-classics-navigation-v28"></script>
+  <script src="./course-0808.js?v=20260924-classics-navigation-v28"></script>
+  <script src="./course-0815.js?v=20260924-classics-navigation-v28"></script>
+  <script src="./course-0822.js?v=20260924-classics-navigation-v28"></script>
+  <script src="./course-0829.js?v=20260924-classics-navigation-v28"></script>
+  <script src="./course-0905.js?v=20260924-classics-navigation-v28"></script>
+  <script src="./course-0912.js?v=20260924-classics-navigation-v28"></script>
+  <script src="./course-0918.js?v=20260924-classics-navigation-v28"></script>
+  <script src="./training-bank.js?v=20260924-classics-navigation-v28"></script>
   <script src="./vendor/jquery-3.7.1.min.js"></script>
   <script src="./vendor/jquery.ripples-min.js"></script>
-  <script src="./app.js?v=20260924-classics-library-v27"></script>
+  <script src="./app.js?v=20260924-classics-navigation-v28"></script>
   <script>
     window.addEventListener('load', function(){
       setTimeout(function(){
