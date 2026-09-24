@@ -6,6 +6,7 @@ import vm from "node:vm";
 const read=path=>fs.existsSync(path)?fs.readFileSync(path,"utf8"):"";
 const html=read("liuyao-study-github/index.html");
 const app=read("liuyao-study-github/app.js");
+const css=read("liuyao-study-github/styles.css");
 const training=read("liuyao-study-github/training-bank.js");
 const source0808=read("liuyao-study-github/course-0808.js");
 
@@ -47,6 +48,11 @@ test("08-08 learning surface expands six gods and adds day-month strength readin
   assert.match(app,/course0808\.outcomePatterns/);
   assert.match(app,/course0808\.xuMonthZiDayExample/);
   assert.match(app,/course0808\.applications/);
+});
+
+test("six-god detail cards keep their height while placing the boundary at the bottom",()=>{
+  assert.match(css,/\.six-god-grid\.six-god-detail-grid article\{grid-template-rows:auto 1fr auto\}/);
+  assert.match(css,/\.six-god-detail-grid footer\{display:grid/);
 });
 
 test("08-08 asset and its distinct training module load before the question bank",()=>{

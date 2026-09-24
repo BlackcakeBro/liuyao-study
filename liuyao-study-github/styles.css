@@ -495,7 +495,7 @@ button,.branch-card,.map-switcher,.relationship-lab{position:relative;overflow:h
 @media(max-width:760px){.judgment-boundary{padding:28px 22px}.classics-reference-cards article,.classics-case-cards header,.classics-case-cards>article>div,.classics-case-cards footer{padding:20px}.classics-case-cards blockquote{padding:20px;font-size:19px}}
 
 /* 2026-08-08 · 六神详解与日月建 */
-.six-god-detail-grid article{grid-template-rows:auto 1fr auto}
+.six-god-grid.six-god-detail-grid article{grid-template-rows:auto 1fr auto}
 .six-god-detail-grid dl{margin:0}
 .six-god-detail-grid dl>div{display:grid;grid-template-columns:42px minmax(0,1fr);gap:10px;padding:12px 22px;border-bottom:1px solid var(--line)}
 .six-god-detail-grid dt{color:var(--red);font-size:11px;font-weight:800;line-height:1.8}

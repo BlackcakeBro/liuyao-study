@@ -41,7 +41,7 @@ test("disease topic has complete page, render, training and cache wiring",()=>{
   const bank=read("liuyao-study-github/training-bank.js");
   ["judgmentHealthTopic","judgmentHealthSelf0918","judgmentHealthYao0918","judgmentHealthElement0918","judgmentHealthPalace0918","judgmentHealthSpirit0918","judgmentHealthHidden0918","judgmentHealthGhost0918","judgmentHealthMedicine0918","judgmentHealthFood0918","judgmentHealthProxy0918","judgmentHealthCase0918"].forEach(id=>assert.match(html,new RegExp(`id="${id}"`)));
   assert.match(html,/断卦方向 03/);
-  assert.match(html,/course-0918\.js\?v=20260924-cast-name-v30/);
+  assert.match(html,/course-0918\.js\?v=20260924-sixgod-layout-v31/);
   assert.match(app,/function render0918Course\(/);
   assert.match(app,/course0918\.medicineRules/);
   assert.match(bank,/id:"judgmentHealth"/);
