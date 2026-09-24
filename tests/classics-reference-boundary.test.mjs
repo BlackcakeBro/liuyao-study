@@ -84,3 +84,11 @@ test("training names classics as a reference and moves taught structures to lect
   assert.ok(taught.every(item=>item.module==="lecture0725"||item.module==="foundation"));
   assert.equal(sandbox.__training.bank.length,431);
 });
+
+
+test("every site view shares the red footer credits at the title's font size",()=>{
+  assert.match(html,/<footer class="site-footer"><div class="site-footer__identity"><span>爻象研习 · 六爻知识体系<\/span>/);
+  assert.match(html,/制作者：归莫/);
+  assert.match(html,/内容版权者：陈师（陈济明）/);
+  assert.match(css,/\.site-footer__credits\{[^}]*color:var\(--red\);font-size:inherit/s);
+});
