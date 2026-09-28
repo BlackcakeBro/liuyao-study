@@ -1437,12 +1437,25 @@ function render0918Course(){
 function render0924Course(){
   if(typeof course0924==="undefined")return;
   const groups={
+    judgmentMethod0924:course0924.methodRules,
     judgmentLawsuitRoles0924:course0924.lawsuit.roles,
-    judgmentLawsuitSequence0924:course0924.lawsuit.sequence,
-    judgmentCareerRoles0924:course0924.career.roles,
-    judgmentCareerAdvancement0924:course0924.career.advancement,
+    judgmentLawsuitHoldings0924:course0924.lawsuit.holdings,
+    judgmentLawsuitWorld0924:course0924.lawsuit.world,
+    judgmentLawsuitGhost0924:course0924.lawsuit.ghost,
+    judgmentLawsuitSpirits0924:course0924.lawsuit.spirits,
+    judgmentLawsuitDocuments0924:course0924.lawsuit.documents,
+    judgmentLawsuitWealth0924:course0924.lawsuit.wealth,
+    judgmentLawsuitParticipants0924:course0924.lawsuit.participants,
+    judgmentCareerEnterprise0924:course0924.career.enterprise,
+    judgmentCareerHoldings0924:course0924.career.holdings,
+    judgmentCareerOffice0924:course0924.career.office,
+    judgmentCareerPositions0924:course0924.career.positions,
+    judgmentCareerIndustry0924:course0924.career.industry,
     judgmentExamRoles0924:course0924.exam.roles,
-    judgmentExamInteractions0924:course0924.exam.interactions
+    judgmentExamWorld0924:course0924.exam.world,
+    judgmentExamRelatives0924:course0924.exam.relatives,
+    judgmentExamProxy0924:course0924.exam.proxy,
+    judgmentExamPositions0924:course0924.exam.positions
   };
   const ruleMarkup=item=>`<article class="health-rule-card"><span>${item.cue}</span><h4>${item.name}</h4><p>${item.detail}</p></article>`;
   Object.entries(groups).forEach(([id,items])=>{const target=document.getElementById(id);if(target)target.innerHTML=items.map(ruleMarkup).join("");});

@@ -314,9 +314,9 @@
 
   if(typeof course0924!=="undefined"){
     const groups=[
-      {id:"judgmentLawsuit",label:"官司",items:[...course0924.lawsuit.roles,...course0924.lawsuit.sequence],boundary:course0924.lawsuit.boundary},
-      {id:"judgmentCareer",label:"事业",items:[...course0924.career.roles,...course0924.career.advancement],boundary:course0924.career.boundary},
-      {id:"judgmentExam",label:"考试",items:[...course0924.exam.roles,...course0924.exam.interactions],boundary:course0924.exam.boundary}
+      {id:"judgmentLawsuit",label:"官司",items:[...course0924.lawsuit.roles,...course0924.lawsuit.holdings,...course0924.lawsuit.world,...course0924.lawsuit.ghost,...course0924.lawsuit.spirits,...course0924.lawsuit.documents,...course0924.lawsuit.wealth,...course0924.lawsuit.participants],boundary:course0924.lawsuit.boundary},
+      {id:"judgmentCareer",label:"事业",items:[...course0924.career.enterprise,...course0924.career.holdings,...course0924.career.office,...course0924.career.positions,...course0924.career.industry],boundary:course0924.career.boundary},
+      {id:"judgmentExam",label:"考试",items:[...course0924.exam.roles,...course0924.exam.world,...course0924.exam.relatives,...course0924.exam.proxy,...course0924.exam.positions],boundary:course0924.exam.boundary}
     ];
     groups.forEach(group=>{
       const choices=group.items.map(item=>item.detail);

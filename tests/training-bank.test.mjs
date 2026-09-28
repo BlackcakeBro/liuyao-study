@@ -29,12 +29,12 @@ test("audited question bank covers foundation, all taught courses, and ancient a
     judgmentWealth:43,
     judgmentRelationship:35,
     judgmentHealth:80,
-    judgmentLawsuit:10,
-    judgmentCareer:7,
-    judgmentExam:10,
+    judgmentLawsuit:41,
+    judgmentCareer:23,
+    judgmentExam:21,
     classics:11
   });
-  assert.equal(training.bank.length,643);
+  assert.equal(training.bank.length,701);
   assert.equal(new Set(training.bank.map(question=>question.id)).size,training.bank.length);
 });
 
