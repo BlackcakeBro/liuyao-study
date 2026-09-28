@@ -13,6 +13,9 @@
     {id:"judgmentWealth",label:"断卦：求财",short:"求财"},
     {id:"judgmentRelationship",label:"断卦：婚恋",short:"婚恋"},
     {id:"judgmentHealth",label:"断卦：疾病",short:"疾病"},
+    {id:"judgmentLawsuit",label:"断卦：官司",short:"官司"},
+    {id:"judgmentCareer",label:"断卦：事业",short:"事业"},
+    {id:"judgmentExam",label:"断卦：考试",short:"考试"},
     {id:"classics",label:"古籍参考",short:"古籍"}
   ];
   const classics={
@@ -307,6 +310,20 @@
     const relationshipCaseChoices=[...course0918.relationshipCases.map(item=>item.detail),"只看一个桃花、相合或动爻，就可直接确定他人的隐私与关系结果。"];
     course0918.relationshipCases.forEach((item,index)=>add({id:`0918-relationship-case-${index+1}`,module:"judgmentRelationship",kind:"case-study",source:"婚恋",question:`“${item.title}”首先训练什么？`,answer:item.detail,candidates:relationshipCaseChoices,feedback:`${item.title}：${item.detail}`}));
     add({id:"0918-health-case",module:"judgmentHealth",kind:"case-study",source:source0918,question:`“${course0918.healthCase.title}”首先训练什么？`,answer:course0918.healthCase.detail,candidates:[course0918.healthCase.detail,...healthChoices.slice(0,3)],feedback:`${course0918.healthCase.title}：${course0918.healthCase.detail}`});
+  }
+
+  if(typeof course0924!=="undefined"){
+    const groups=[
+      {id:"judgmentLawsuit",label:"官司",items:[...course0924.lawsuit.roles,...course0924.lawsuit.sequence],boundary:course0924.lawsuit.boundary},
+      {id:"judgmentCareer",label:"事业",items:[...course0924.career.roles,...course0924.career.advancement],boundary:course0924.career.boundary},
+      {id:"judgmentExam",label:"考试",items:[...course0924.exam.roles,...course0924.exam.interactions],boundary:course0924.exam.boundary}
+    ];
+    groups.forEach(group=>{
+      const choices=group.items.map(item=>item.detail);
+      group.items.forEach((item,index)=>add({id:`0924-${group.id}-${index+1}`,module:group.id,kind:"judgment-rule",source:group.label,question:`${group.label}中“${item.name}”应如何观察？`,answer:item.detail,candidates:choices,feedback:`${item.name}：${item.detail} ${group.boundary}`}));
+    });
+    const caseChoices=course0924.exam.cases.map(item=>item.detail);
+    course0924.exam.cases.forEach((item,index)=>add({id:`0924-exam-case-${index+1}`,module:"judgmentExam",kind:"case-study",source:"考试",question:`“${item.title}”的关键观察是什么？`,answer:item.detail,candidates:[...caseChoices,...course0924.exam.interactions.slice(0,3).map(rule=>rule.detail)],feedback:`${item.title}：${item.detail}`}));
   }
 
   window.LIUYAO_TRAINING={modules,classics,bank};

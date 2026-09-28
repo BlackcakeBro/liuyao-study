@@ -1434,6 +1434,27 @@ function render0918Course(){
   if(ethics)ethics.innerHTML=`<b>使用边界：</b>${course0918.ethicsBoundary}`;
 }
 
+function render0924Course(){
+  if(typeof course0924==="undefined")return;
+  const groups={
+    judgmentLawsuitRoles0924:course0924.lawsuit.roles,
+    judgmentLawsuitSequence0924:course0924.lawsuit.sequence,
+    judgmentCareerRoles0924:course0924.career.roles,
+    judgmentCareerAdvancement0924:course0924.career.advancement,
+    judgmentExamRoles0924:course0924.exam.roles,
+    judgmentExamInteractions0924:course0924.exam.interactions
+  };
+  const ruleMarkup=item=>`<article class="health-rule-card"><span>${item.cue}</span><h4>${item.name}</h4><p>${item.detail}</p></article>`;
+  Object.entries(groups).forEach(([id,items])=>{const target=document.getElementById(id);if(target)target.innerHTML=items.map(ruleMarkup).join("");});
+  const cases=document.getElementById("judgmentExamCases0924");
+  if(cases)cases.innerHTML=course0924.exam.cases.map(courseCaseArticleMarkup).join("");
+  for(const topic of ["lawsuit","career","exam"]){
+    const id=`judgment${topic[0].toUpperCase()}${topic.slice(1)}Boundary0924`;
+    const target=document.getElementById(id);
+    if(target)target.textContent=course0924[topic].boundary;
+  }
+}
+
 function render0905Course(){
   if(typeof course0905==="undefined")return;
   const rules=document.querySelector("#judgment0905Rules");
@@ -1482,7 +1503,7 @@ document.querySelector("#resetCast").addEventListener("click",()=>{cancelPending
 
 document.querySelectorAll("[data-map]").forEach(b=>b.addEventListener("click",()=>renderMap(b.dataset.map)));
 document.querySelectorAll("#scroll0718Shell .scroll-roller").forEach(button=>button.addEventListener("click",replay0718Scroll));
-renderPath();render0718Atlas();render0725Course();render0822Course();render0829Course();render0905Course();render0912Course();render0918Course();renderAssemblyLearningTools();renderClassicsReference();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
+renderPath();render0718Atlas();render0725Course();render0822Course();render0829Course();render0905Course();render0912Course();render0918Course();render0924Course();renderAssemblyLearningTools();renderClassicsReference();renderElementImages();renderWuxing();renderRelativeTransformer();renderMap();renderSeasons();renderWheel();renderTrigrams();renderBranchRelationLab();renderChangsheng();renderHiddenStems();renderLectureTables();renderSeasonNotes();renderCoins();renderCast();renderRelatives();renderTopics();renderFilters();renderBranchGrid();renderFlashcard();renderTrainingFilters();renderLearningTracking();initProgressDetail();updateProgress();
 initImmersiveMotion();
 if(["path","foundation","lecture0704","lecture0718","lecture0725","judgment","casting","branches","training"].includes(requestedInitialView))setView(requestedInitialView);
 if(requestedAnchor)requestAnimationFrame(()=>requestAnimationFrame(()=>document.getElementById(requestedAnchor)?.scrollIntoView({block:"start"})));
