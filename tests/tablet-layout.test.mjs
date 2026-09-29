@@ -15,5 +15,7 @@ test('tablet rules stay inside the extended edition and leave phone/desktop brea
   assert.match(tablet,/\.main-nav\{[^}]*flex-wrap:wrap;[^}]*overflow:visible/);
   assert.match(tablet,/#judgment \.judgment-topic-rail\{[^}]*grid-template-columns:repeat\(2/);
   assert.match(tablet,/\.section-heading\{display:block\}/);
-  assert.match(html,/styles\.css\?v=20260929-tablet-v34/);
+  assert.match(tablet,/#scroll0718Shell \.scroll-paper\{[^}]*border-image:url\("\.\/assets\/scroll-paper-0718\.webp"\) 58 30 58 30 fill/);
+  assert.match(tablet,/#scroll0718Shell \.scroll-atlas-content\{padding-block:78px 88px\}/);
+  assert.match(html,/styles\.css\?v=20260929-tablet-v35/);
 });

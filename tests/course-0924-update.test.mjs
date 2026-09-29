@@ -9,7 +9,7 @@ const lesson=context.lesson;
 test('new directions are independent learning topics, not course logistics',()=>{
   const html=read('index.html');
   for(const id of ['judgmentMethod0924','judgmentLawsuitTopic','judgmentLawsuitHoldings0924','judgmentLawsuitWorld0924','judgmentLawsuitGhost0924','judgmentLawsuitSpirits0924','judgmentLawsuitDocuments0924','judgmentLawsuitWealth0924','judgmentLawsuitParticipants0924','judgmentCareerTopic','judgmentCareerHoldings0924','judgmentExamTopic','judgmentExamCases0924'])assert.match(html,new RegExp(`id="${id}"`));
-  assert.match(html,/course-0924\.js\?v=20260929-tablet-v34/);
+  assert.match(html,/course-0924\.js\?v=20260929-tablet-v35/);
   assert.match(read('app.js'),/render0924Course\(\)/);
   const portion=html.slice(html.indexOf('id="judgmentLawsuitTopic"'),html.indexOf('class="section-block judgment0822-boundary"'));
   assert.doesNotMatch(portion,/课堂|课程时长|逐字稿|屏幕共享|复核/);

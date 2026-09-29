@@ -639,6 +639,9 @@ button,.branch-card,.map-switcher,.relationship-lab{position:relative;overflow:h
 
 /* Tablet only: keep every destination visible and give long Chinese headings room. */
 @media(min-width:761px) and (max-width:1100px){
+  /* Keep the scroll's decorative bands fixed instead of stretching them into its content. */
+  html[data-site-edition="extended"] #scroll0718Shell .scroll-paper{box-sizing:border-box;background:none;border:58px solid transparent;border-image:url("./assets/scroll-paper-0718.webp") 58 30 58 30 fill / 58px 30px 58px 30px stretch}
+  html[data-site-edition="extended"] #scroll0718Shell .scroll-atlas-content{padding-block:78px 88px}
   html[data-site-edition="extended"]{scroll-padding-top:155px}
   html[data-site-edition="extended"] .site-header{height:auto;min-height:112px;grid-template-columns:1fr;gap:7px;padding:9px clamp(24px,4vw,45px)}
   html[data-site-edition="extended"] .brand{justify-self:start}
