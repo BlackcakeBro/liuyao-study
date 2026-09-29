@@ -974,7 +974,7 @@ function initWaterFlow(){
 
   const activateSurface=()=>{
     const surface=document.querySelector(".view.active .water-ripple-surface");
-    if(!surface||surface.dataset.ripplesReady)return surface;
+    if(!surface||surface.dataset.ripplesReady||surface.classList.contains("water-ripple-fallback"))return surface;
     try{
       $(surface).ripples({
         resolution:600,
@@ -991,12 +991,24 @@ function initWaterFlow(){
     return surface;
   };
 
+  let lastFallbackDrop=0;
   const dropAt=(clientX,clientY,radius,strength)=>{
     const surface=activateSurface();
-    if(!surface?.dataset.ripplesReady)return false;
+    if(!surface)return false;
     const rect=surface.getBoundingClientRect();
     if(clientX<rect.left||clientX>rect.right||clientY<rect.top||clientY>rect.bottom)return false;
-    $(surface).ripples("drop",clientX-rect.left,clientY-rect.top,radius,strength);
+    if(surface.dataset.ripplesReady){
+      $(surface).ripples("drop",clientX-rect.left,clientY-rect.top,radius,strength);
+    }else if(surface.classList.contains("water-ripple-fallback")){
+      if(performance.now()-lastFallbackDrop<90)return true;
+      const ring=document.createElement("i");
+      ring.className="water-touch-ring";
+      ring.style.left=`${clientX-rect.left}px`;
+      ring.style.top=`${clientY-rect.top}px`;
+      surface.append(ring);
+      ring.addEventListener("animationend",()=>ring.remove(),{once:true});
+      lastFallbackDrop=performance.now();
+    }else return false;
     return true;
   };
 
@@ -1026,6 +1038,7 @@ function initWaterFlow(){
 function initImmersiveMotion(){
   const reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
   const finePointer=matchMedia("(pointer: fine)").matches;
+  const tabletTouch=matchMedia("(min-width: 761px) and (max-width: 1100px) and (pointer: coarse)").matches;
 
   const progress=document.createElement("div");
   progress.className="deduction-progress";
@@ -1060,8 +1073,8 @@ function initImmersiveMotion(){
   }
   revealVisibleSections();
 
+  if(!reduceMotion&&(finePointer||tabletTouch))initWaterFlow();
   if(reduceMotion||!finePointer)return;
-  initWaterFlow();
 
   document.addEventListener("pointerdown",event=>{
     const target=event.target.closest("button,.branch-card,.map-switcher,.relationship-lab");

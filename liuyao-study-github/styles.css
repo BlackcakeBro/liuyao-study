@@ -76,6 +76,8 @@ main,footer{position:relative;z-index:1}
 .water-ripple-surface:after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(242,238,228,.34),rgba(242,238,228,.62))}
 .water-ripple-surface canvas{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;pointer-events:none!important}
 .water-ripple-fallback{filter:url("#none")}
+.water-touch-ring{position:absolute;z-index:3;width:92px;height:92px;border:2px solid rgba(63,104,119,.7);border-radius:50%;box-shadow:0 0 0 13px rgba(63,104,119,.2),inset 0 0 20px rgba(255,255,255,.55);pointer-events:none;transform:translate(-50%,-50%) scale(.25);animation:water-touch-ring 1.15s ease-out forwards}
+@keyframes water-touch-ring{to{opacity:0;transform:translate(-50%,-50%) scale(3.2)}}
 .view>:not(.water-ripple-surface){position:relative;z-index:1}
 #path,#foundation{--view-art:url("./assets/liuyao-ink-landscape.webp");--view-art-opacity:.21}
 #casting{--view-art:url("./assets/bg-casting-tai-v2.webp");--view-art-opacity:.24}
