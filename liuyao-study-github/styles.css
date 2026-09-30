@@ -670,3 +670,14 @@ button,.branch-card,.map-switcher,.relationship-lab{position:relative;overflow:h
 @media(min-width:761px) and (max-width:900px){
   html[data-site-edition="extended"] .branch-relation-orbit{transform:scale(.75);margin:-74px auto}
 }
+
+/* Wide iPads still need a separate navigation row: the desktop three-column
+   header compresses the brand until its title and subtitle wrap vertically. */
+@media(min-width:1101px) and (max-width:1366px){
+  html[data-site-edition="extended"] .site-header{height:auto;min-height:112px;grid-template-columns:minmax(0,1fr);gap:7px;padding:9px clamp(24px,4vw,45px)}
+  html[data-site-edition="extended"] .brand{justify-self:start;min-width:max-content}
+  html[data-site-edition="extended"] .brand strong,html[data-site-edition="extended"] .brand small{white-space:nowrap}
+  html[data-site-edition="extended"] .main-nav{width:100%;max-width:none;min-width:0;flex-wrap:wrap;justify-content:center;overflow:visible;border-radius:20px;padding:4px}
+  html[data-site-edition="extended"] .nav-item{flex:0 0 auto;padding:7px 12px;font-size:16px}
+  html[data-site-edition="extended"] .header-progress{display:none}
+}
