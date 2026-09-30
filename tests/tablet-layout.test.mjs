@@ -18,15 +18,15 @@ test('tablet rules stay inside the extended edition and leave phone/desktop brea
   assert.match(tablet,/\.section-heading\{display:block\}/);
   assert.match(tablet,/#scroll0718Shell \.scroll-paper\{[^}]*border-image:url\("\.\/assets\/scroll-paper-0718\.webp"\) 58 30 58 30 fill/);
   assert.match(tablet,/#scroll0718Shell \.scroll-atlas-content\{padding-block:78px 88px\}/);
-  assert.match(html,/styles\.css\?v=20260930-ipad-header-v37/);
+  assert.match(html,/styles\.css\?v=20260930-ipad-header-v38/);
 });
 
 test('wide iPad header gives the brand its own row without squeezing its text',()=>{
   assert.match(tablet,/@media\(min-width:1101px\) and \(max-width:1366px\)/);
-  assert.match(tablet,/\.site-header\{[^}]*grid-template-columns:minmax\(0,1fr\)/);
+  assert.match(tablet,/\.site-header\{[^}]*grid-template-columns:minmax\(0,1fr\) auto/);
   assert.match(tablet,/\.brand strong,html\[data-site-edition="extended"\] \.brand small\{white-space:nowrap\}/);
-  assert.match(tablet,/\.main-nav\{[^}]*flex-wrap:wrap;[^}]*overflow:visible/);
-  assert.match(tablet,/\.header-progress\{display:none\}/);
+  assert.match(tablet,/\.main-nav\{[^}]*grid-column:1\/-1;grid-row:2;[^}]*flex-wrap:wrap;[^}]*overflow:visible/);
+  assert.match(tablet,/\.header-progress\{grid-column:2;grid-row:1\}/);
 });
 
 test('tablet touch receives water ripples without enabling phone or hover-only effects',()=>{
