@@ -400,10 +400,21 @@ function renderChangshengApplication(){
   if(!elementPicker||!branchPicker)return;
   elementPicker.innerHTML=["木","火","金","水","土"].map(element=>`<button class="${element===changshengState.element?"active":""}" data-cs-element="${element}">${element}</button>`).join("");
   branchPicker.innerHTML=branchOrder.map(branch=>`<button class="${branch===changshengState.branch?"active":""}" data-cs-branch="${branch}">${branch}</button>`).join("");
-  const sequence=changshengSequenceFor(changshengState.element==="土"?"水":changshengState.element),index=sequence.indexOf(changshengState.branch),stage=changshengStages[index];
-  const earthRule=changshengState.element==="土"?`土的顺排阶段按水土同宫；临官/禄另按火土同宫，戊土取巳、己土取午${changshengState.branch==="巳"?"（此支另为戊土禄位）":changshengState.branch==="午"?"（此支另为己土禄位）":changshengState.branch==="亥"?"（此处是水土同宫顺排的临官标记，不代替戊己土禄位）":""}。`:"";
-  document.querySelector("#changshengResult").innerHTML=`<span>当前对照</span><h3>${changshengState.element}爻遇${changshengState.branch}：${stage.name}</h3><p>${stage.note}</p><div><b>可取之象</b><strong>${stage.image}</strong></div>${earthRule?`<small class="changsheng-earth-note">${earthRule}</small>`:""}<small>使用边界：先看月日与生克动变；${stage.name}只补充状态，不单独判成败吉凶。</small>`;
-  document.querySelector("#changshengTable").innerHTML=["木","火","金","水","土"].map(element=>{const seq=changshengSequenceFor(element==="土"?"水":element);return `<article class="${element===changshengState.element?"active":""}"><b>${element}</b><div>${seq.map((branch,i)=>{const extra=element==="土"?(branch==="巳"?"戊禄":branch==="午"?"己禄":""):"";const stageLabel=element==="土"&&branch==="亥"?"临官*":changshengStages[i].name;return `<span class="${branch===changshengState.branch?"selected":""} ${extra?"earth-lu":""}"><small>${stageLabel}</small><strong>${branch}</strong>${extra?`<em>${extra}</em>`:""}</span>`}).join("")}</div></article>`}).join("");
+  const sequence=changshengSequenceFor(changshengState.element),index=sequence.indexOf(changshengState.branch);
+  const isEarth=changshengState.element==="土",branch=changshengState.branch;
+  let stage=changshengStages[index];
+  if(isEarth&&branch==="亥")stage={name:"不取临官",note:"土的临官不用亥；取临官/禄时按火土同宫，戊土取巳、己土取午。",image:"此处不套用临官的工资、职位与权位之象"};
+  const earthLu=isEarth&&(branch==="巳"||branch==="午")?(branch==="巳"?"戊土临官/禄":"己土临官/禄"):"";
+  const earthRule=isEarth?"土的临官/禄按火土同宫，戊土取巳、己土取午；其他阶段仍按水土同宫，不将整张土表改为火的顺序。":"";
+  document.querySelector("#changshengResult").innerHTML=`<span>当前对照</span><h3>${changshengState.element}爻遇${branch}：${stage.name}${earthLu?`；${earthLu}`:""}</h3><p>${stage.note}</p><div><b>可取之象</b><strong>${stage.image}</strong></div>${earthRule?`<small class="changsheng-earth-note">${earthRule}</small>`:""}<small>使用边界：先看月日与生克动变；阶段只补充状态，不单独判成败吉凶。</small>`;
+  document.querySelector("#changshengTable").innerHTML=["木","火","金","水","土"].map(element=>{
+    const seq=changshengSequenceFor(element);
+    return `<article class="${element===changshengState.element?"active":""}"><b>${element}</b><div>${seq.map((cellBranch,i)=>{
+      const earthOfficer=element==="土"&&i===3;
+      const selected=earthOfficer?["巳","午"].includes(branch):cellBranch===branch;
+      return `<span class="${selected?"selected":""}"><small>${changshengStages[i].name}</small><strong>${earthOfficer?"巳／午":cellBranch}</strong>${earthOfficer?"<em>戊／己</em>":""}</span>`;
+    }).join("")}</div></article>`;
+  }).join("");
   elementPicker.querySelectorAll("button").forEach(button=>button.addEventListener("click",()=>{changshengState.element=button.dataset.csElement;renderChangshengApplication();}));
   branchPicker.querySelectorAll("button").forEach(button=>button.addEventListener("click",()=>{changshengState.branch=button.dataset.csBranch;renderChangshengApplication();}));
 }

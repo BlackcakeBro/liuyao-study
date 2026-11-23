@@ -18,7 +18,7 @@ test('tablet rules stay inside the extended edition and leave phone/desktop brea
   assert.match(tablet,/\.section-heading\{display:block\}/);
   assert.match(tablet,/#scroll0718Shell \.scroll-paper\{[^}]*border-image:url\("\.\/assets\/scroll-paper-0718\.webp"\) 58 30 58 30 fill/);
   assert.match(tablet,/#scroll0718Shell \.scroll-atlas-content\{padding-block:78px 88px\}/);
-  assert.match(html,/styles\.css\?v=20261123-earth-changsheng-v39/);
+  assert.match(html,/styles\.css\?v=20261123-earth-linguan-v40/);
 });
 
 test('wide iPad header gives the brand its own row without squeezing its text',()=>{

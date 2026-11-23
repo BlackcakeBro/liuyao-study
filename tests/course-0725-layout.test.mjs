@@ -612,7 +612,7 @@ test("classics reference is source-backed and ships with one fresh cache version
   ].map(match=>match[1]);
   assert.deepEqual(
     coupledAssetVersions,
-    Array(14).fill("20261123-earth-changsheng-v39"),
+    Array(14).fill("20261123-earth-linguan-v40"),
     "course data, renderer, training bank, and styling must ship with one fresh cache version"
   );
 });
