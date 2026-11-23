@@ -681,3 +681,9 @@ button,.branch-card,.map-switcher,.relationship-lab{position:relative;overflow:h
   html[data-site-edition="extended"] .nav-item{flex:0 0 auto;padding:7px 12px;font-size:16px}
   html[data-site-edition="extended"] .header-progress{grid-column:2;grid-row:1}
 }
+/* 土的临官/禄位另按火土同宫显示，不和水土同宫顺排混为一列。 */
+.changsheng-earth-rule{margin:12px 0 0!important;padding:15px 18px;border-left:3px solid var(--red);background:rgba(164,59,43,.06)}
+.changsheng-earth-rule b{color:var(--red)}
+.changsheng-table span.earth-lu em{display:block;margin-top:4px;color:var(--red);font:700 9px/1.2 sans-serif;white-space:nowrap}
+.changsheng-table span.selected.earth-lu em{color:#e3a291}
+.changsheng-earth-note{padding:10px 12px;border-left:2px solid var(--red);background:rgba(164,59,43,.06)}

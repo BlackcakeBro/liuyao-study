@@ -35,3 +35,11 @@ test("十二长生提供五行起点、入卦步骤、交互对照与使用边�
   assert.match(html,/未土逢午支/);
   assert.match(html,/不越过月日、生克、动变直接定吉凶/);
 });
+
+test("土按水土同宫顺排，但临官禄位另按火土同宫区分戊己",()=>{
+  assert.match(html,/土的临官\/禄位另按火土同宫：戊土参照丙火取巳，己土参照丁火取午/);
+  assert.match(html,/土的临官例外/);
+  assert.match(app,/\["木","火","金","水","土"\]/);
+  assert.match(app,/branch==="巳"\?"戊禄":branch==="午"\?"己禄"/);
+  assert.match(app,/水土同宫顺排的临官标记，不代替戊己土禄位/);
+});
